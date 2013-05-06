@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">ParleyDrone</string>
+    <string name="buttonStartExercise">Übung starten</string>
+    <string name="lesson">Lektion</string>
+    <string name="about">Über</string>
+    <string name="createNewCollection">Neue Sammlung erstellen</string>
+    <string name="openAviableCollection">Vorhandene Sammlung öffnen</string>
+    <string name="loadCollectionsFromNetwork">Neue Sammlungen herunterladen</string>
+    <string name="lastOpenedCollections">Zuletzt geöffnete Sammlungen</string>
+    <string name="edit">Bearbeiten</string>
+    <string name="preferedFileExtension">bevorzugte Dateiendung</string>
+    <string name="newEntry">neuer Eintrag</string>
+    <string name="deleteEntry">Eintrag löschen</string>
+    <string name="deleteCollection">Sammlung löschen</string>
+    <string name="help">Hilfe</string>
+    <string name="maximize">Maximieren</string>
+    <string name="action_settings">Einstellungen</string>
+    <string name="action_general">Allgemein</string>
+    <string name="settings_user">Benutzername</string>
+    <string name="settings_backup">Backup</string>
+    <string name="settings_defaultBackup">true</string>
+    <string name="settings_backupDescription">Vor jedem Speichern einer Datei wird ein Backup angelegt. (empfohlen)</string>
+    <string name="settings_language">Sprache</string>
+    <string name="settings_defaultLanguage">1</string>
+
+    <string-array name="settings_languageArray">
+        <item>Deutsch</item>
+        <item>Englisch</item>
+    </string-array>
+    <string-array name="settings_languageValues">
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string name="settings_storage">Export</string>
+    <string name="settings_preferedStorage">bevorzugter Speicherort</string>
+    <string name="settings_defaultPfreferedStorage">1</string>
+
+    <string-array name="settings_preferedStorageArray">
+        <item>interner Speicher</item>
+        <item>SD-Karte</item>
+        <item>Datenbank</item>
+    </string-array>
+    <string-array name="settings_preferedStorageValues">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string name="settings_path">Speicherort</string>
+    <string name="settings_preferedFileFormat">bevorzugtes Dateiformat</string>
+    <string name="settings_defaultPreferedFileFormat">1</string>
+
+    <string-array name="settings_preferedFileFormatArray">
+        <item>kvtml</item>
+        <item>csv</item>
+        <item>html</item>
+        <item>xhtml</item>
+    </string-array>
+    <string-array name="settings_preferedFileFormatValues">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+
+    <string name="settings_about">Über</string>
+    <string name="settings_licence">Open-Source-Lizenz</string>
+    <string name="settings_licenceDescription">Lizenzdetails</string>
+    <string name="settings_buildVersion">Build-Version</string>
+    <string name="settings_buildVersionDescription">Version: </string>
+    <string name="settings_background">Hintergrundbild</string>
+    <string name="settings_defaultBackground"></string>
+    <string name="settings_backgroundDescription">Ein eigenes Bild als Hintergrund auswählen</string>
+
+</resources>

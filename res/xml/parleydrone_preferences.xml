@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" android:key="@string/action_settings" android:title="@string/action_settings">
+    <PreferenceCategory android:key="@string/action_general" android:title="@string/action_general">
+        <EditTextPreference android:key="@string/settings_user" android:title="@string/settings_user" android:defaultValue="@string/app_name"/>
+        <ListPreference android:key="@string/settings_language" android:title="@string/settings_language" android:entryValues="@array/settings_preferedStorageValues" android:entries="@array/settings_languageArray" android:defaultValue="@string/settings_defaultLanguage"/>
+        <CheckBoxPreference android:key="@string/settings_backup" android:title="@string/settings_backup" android:summary="@string/settings_backupDescription" android:defaultValue="@string/settings_defaultBackup"/>
+        <Preference android:title="@string/settings_background" android:key="@string/settings_background" android:summary="@string/settings_backgroundDescription" android:defaultValue="settings_defaultBackground"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:key="@string/settings_storage" android:title="@string/settings_storage">
+    	<ListPreference android:title="@string/settings_preferedStorage" android:entryValues="@array/settings_preferedStorageValues" android:entries="@array/settings_preferedStorageArray" android:key="@string/settings_preferedStorage" android:defaultValue="@string/settings_defaultPfreferedStorage"/>
+    	<ListPreference android:entryValues="@array/settings_preferedFileFormatValues" android:entries="@array/settings_preferedFileFormatArray" android:title="@string/settings_preferedFileFormat" android:key="@string/settings_preferedFileFormat" android:defaultValue="@string/settings_defaultPreferedFileFormat"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:key="@string/settings_about" android:title="@string/settings_about">
+        <Preference android:summary="@string/settings_licenceDescription" android:title="@string/settings_licence" android:key="@string/settings_licence"/>
+        <Preference android:summary="@string/settings_buildVersionDescription" android:title="@string/settings_buildVersion" android:key="@string/settings_buildVersion"/>
+    </PreferenceCategory>
+    
+</PreferenceScreen>
