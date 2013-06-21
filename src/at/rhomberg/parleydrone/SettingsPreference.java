@@ -27,8 +27,10 @@ public class SettingsPreference extends PreferenceActivity implements OnSharedPr
 			
 	private Preference preferenceScreenObject;
 	private int i;
+	private static final int PICKFILE_RESULT_CODE = 1;
 	
 	public void onCreate( Bundle savedInstanceState) {
+		
 		super.onCreate( savedInstanceState);
 		// deprecated in API level 11; use fragements instead
 		addPreferencesFromResource( R.xml.parleydrone_preferences);
@@ -59,6 +61,12 @@ public class SettingsPreference extends PreferenceActivity implements OnSharedPr
 		preferenceScreenObject = (ListPreference) findPreference( getString( R.string.settings_preferedFileFormat));
 		i = Integer.valueOf( sharedPreferences.getString( getString( R.string.settings_preferedFileFormat), ""));
 		preferenceScreenObject.setSummary( this.getResources().getStringArray( R.array.settings_preferedFileFormatArray)[i-1]);
+		
+		/*
+		Intent intent = new Intent( Intent.ACTION_GET_CONTENT);
+		intent.setType( "file/*");
+		startActivityForResult( intent, PICKFILE_RESULT_CODE);
+		*/
 	}
 
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {

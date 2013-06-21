@@ -36,12 +36,12 @@ public final class R {
     }
     public static final class id {
         public static final int LicenceEditText=0x7f0b0001;
-        public static final int LinearLayout1=0x7f0b0000;
-        public static final int LinearLayout2=0x7f0b0002;
+        public static final int LicenceLayout=0x7f0b0000;
+        public static final int ParleyDroneLayout=0x7f0b0002;
         public static final int action_settings=0x7f0b0007;
         public static final int createNewCollectionButton=0x7f0b0003;
+        public static final int lastOpenedCollectionsTextV=0x7f0b0006;
         public static final int loadCollectionsNetworkButton=0x7f0b0005;
-        public static final int openAviableCollection=0x7f0b0006;
         public static final int openAviableCollectionButton=0x7f0b0004;
     }
     public static final class layout {

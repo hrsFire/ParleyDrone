@@ -40,8 +40,7 @@ public class IOWrapper extends FileFormats{
 		return true;
 	}
 	
-	public boolean getFileFromNetwork( String fileName, String fileLocation)// data type
-	{
+	public boolean getFileFromNetwork( String fileName, String fileLocation) { // data type
 		// ftp, http
 		return true;
 	}
@@ -90,12 +89,20 @@ public class IOWrapper extends FileFormats{
 	// kvtml functions
 	
 	private boolean checkKvtml() {
+		/* header
+		<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE kvtml PUBLIC "kvtml2.dtd" "http://edu.kde.org/kvtml/kvtml2.dtd">
+<kvtml version="2.0">
+</kvtml>
+		 */
 		
 		return true;
 	}
 	
-	private boolean parseAndSetKvtmlObjects( String kvtmlString)
-	{
+	private boolean parseAndSetKvtmlObjects( String kvtmlString) {
+		// <translation id="1"/>
+		// id -> to null should be  "" -> a new row
+		
 		
 		return true;
 	}

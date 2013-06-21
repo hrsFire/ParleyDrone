@@ -33,13 +33,49 @@ class identifier {
 
 class entry {
 	public int id = -1;
-	public translation translationList[] = new translation[2];
+	public ArrayList<translation> translationList = new ArrayList<translation>(2);
 }
 
 class translation {
 	public int id = -1;
 	public String text = "";
 	public grade grade = new grade();
+	
+	//
+	//
+	// add new columns
+	// drop down and edit text
+	
+	/*
+	<translation id="0">
+        <text>worthwhile</text>
+        <conjugation>
+          <tense>k</tense>
+          <singular>
+            <firstperson>
+              <text>k</text>
+            </firstperson>
+            <secondperson>
+              <text>k</text>
+            </secondperson>
+            <thirdpersonneutralcommon>
+              <text>k</text>
+            </thirdpersonneutralcommon>
+          </singular>
+          <plural>
+            <firstperson>
+              <text>k</text>
+            </firstperson>
+            <secondperson>
+              <text>k</text>
+            </secondperson>
+            <thirdpersonneutralcommon>
+              <text>k</text>
+            </thirdpersonneutralcommon>
+          </plural>
+        </conjugation>
+      </translation>
+	 */
 }
 
 class grade {
@@ -50,7 +86,7 @@ class grade {
 }
 
 class lessons {
-	ArrayList<container> container = new ArrayList<container>();
+	ArrayList<container> container = new ArrayList<container>(); // <entry id="197"/> in container section
 }
 
 class container {
@@ -61,4 +97,43 @@ class container {
 
 class wordtypes {
 	// not implemented yet
+	
+	/*
+	<wordtypes>
+    <container>
+      <name>Nomen</name>
+      <specialwordtype>noun</specialwordtype>
+      <container>
+        <name>männlich</name>
+        <specialwordtype>noun/male</specialwordtype>
+      </container>
+      <container>
+        <name>weiblich</name>
+        <specialwordtype>noun/female</specialwordtype>
+        <entry id="17">
+          <translation id="0"/>
+        </entry>
+      </container>
+      <container>
+        <name>sächlich</name>
+        <specialwordtype>noun/neutral</specialwordtype>
+      </container>
+    </container>
+    <container>
+      <name>Verb</name>
+      <specialwordtype>verb</specialwordtype>
+      <entry id="41">
+        <translation id="0"/>
+      </entry>
+    </container>
+    <container>
+      <name>Adjektiv</name>
+      <specialwordtype>adjective</specialwordtype>
+    </container>
+    <container>
+      <name>Adverb</name>
+      <specialwordtype>adverb</specialwordtype>
+    </container>
+  </wordtypes>
+	 */
 }
