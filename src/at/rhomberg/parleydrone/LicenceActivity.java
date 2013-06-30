@@ -7,7 +7,9 @@ import java.io.InputStreamReader;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.text.method.ScrollingMovementMethod;
 import android.widget.EditText;
+import android.widget.TextView;
 
 public class LicenceActivity extends Activity {
 
@@ -16,7 +18,10 @@ public class LicenceActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_licence);
 		
-		EditText licence = (EditText) findViewById( R.id.LicenceEditText);
+		TextView licence = (TextView) findViewById( R.id.TextViewLicence);
+		licence.setMovementMethod(ScrollingMovementMethod.getInstance());
+		licence.setHorizontalScrollBarEnabled(true);
+		
 		InputStream in;	
 		BufferedReader br = null;
 		StringBuilder sb = new StringBuilder();

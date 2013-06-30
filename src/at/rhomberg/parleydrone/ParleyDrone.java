@@ -18,6 +18,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ParleyDrone extends Activity {
 
@@ -31,9 +32,9 @@ public class ParleyDrone extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_parley_drone);
 		
-		createNewCollectionButton = (Button) findViewById( R.id.createNewCollectionButton);
-		openAviableCollectionButton = (Button) findViewById( R.id.openAviableCollectionButton);
-		loadCollectionsNetworkButton = (Button) findViewById(R.id.loadCollectionsNetworkButton);
+		createNewCollectionButton = (Button) findViewById( R.id.ButtoncreateNewCollection);
+		openAviableCollectionButton = (Button) findViewById( R.id.ButtonopenAviableCollection);
+		loadCollectionsNetworkButton = (Button) findViewById(R.id.ButtonloadCollectionsNetwork);
 		ParleyDroneLayout = (LinearLayout) findViewById( R.id.ParleyDroneLayout);
 		
 		// set OnClickListener
@@ -42,18 +43,19 @@ public class ParleyDrone extends Activity {
 				Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
 				intent.setType("file/*");
 			    //startActivityForResult( intent, PICKFILE_RESULT_CODE);
+				Toast.makeText( ParleyDrone.this, R.string.not, Toast.LENGTH_SHORT).show();
 			}
 		});
 		
 		openAviableCollectionButton.setOnClickListener( new OnClickListener() {
 			public void onClick( View arg) {
-				
+				Toast.makeText( ParleyDrone.this, R.string.not, Toast.LENGTH_SHORT).show();
 			}
 		});
 		
 		loadCollectionsNetworkButton.setOnClickListener( new OnClickListener() {
 			public void onClick( View arg) {
-				
+				Toast.makeText( ParleyDrone.this, R.string.not, Toast.LENGTH_SHORT).show();
 			}
 		});
 		
@@ -89,8 +91,6 @@ public class ParleyDrone extends Activity {
 				break;
 			ParleyDroneLayout.removeView( bt);
 		}		
-		
-		
 	}	
 
 	public boolean onCreateOptionsMenu(Menu menu) {

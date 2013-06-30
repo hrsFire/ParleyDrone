@@ -10,15 +10,19 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".LicenceActivity" >
 
-    <EditText
-        android:id="@+id/LicenceEditText"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:inputType="textMultiLine|textNoSuggestions"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
-        android:cursorVisible="false" />
+    <ScrollView
+        android:id="@+id/scrollViewLicence"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
 
-    
+        <TextView
+            android:id="@+id/TextViewLicence"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:scrollbars="vertical"
+             />
+
+    </ScrollView>
 
 </LinearLayout>

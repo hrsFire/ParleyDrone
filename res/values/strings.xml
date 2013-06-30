@@ -75,4 +75,5 @@
     <string name="settings_defaultBackground"></string>
     <string name="settings_backgroundDescription">Ein eigenes Bild als Hintergrund auswählen</string>
 
+    <string name="not">not yet implemented \n coming soon</string>
 </resources>

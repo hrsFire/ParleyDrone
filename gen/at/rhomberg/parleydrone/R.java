@@ -35,14 +35,15 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int LicenceEditText=0x7f0b0001;
+        public static final int ButtoncreateNewCollection=0x7f0b0004;
+        public static final int ButtonloadCollectionsNetwork=0x7f0b0006;
+        public static final int ButtonopenAviableCollection=0x7f0b0005;
         public static final int LicenceLayout=0x7f0b0000;
-        public static final int ParleyDroneLayout=0x7f0b0002;
-        public static final int action_settings=0x7f0b0007;
-        public static final int createNewCollectionButton=0x7f0b0003;
-        public static final int lastOpenedCollectionsTextV=0x7f0b0006;
-        public static final int loadCollectionsNetworkButton=0x7f0b0005;
-        public static final int openAviableCollectionButton=0x7f0b0004;
+        public static final int ParleyDroneLayout=0x7f0b0003;
+        public static final int TextViewLicence=0x7f0b0002;
+        public static final int TextVlastOpenedCollections=0x7f0b0007;
+        public static final int action_settings=0x7f0b0008;
+        public static final int scrollViewLicence=0x7f0b0001;
     }
     public static final class layout {
         public static final int activity_licence=0x7f030000;
@@ -69,6 +70,7 @@ public final class R {
         public static final int loadCollectionsFromNetwork=0x7f070006;
         public static final int maximize=0x7f07000e;
         public static final int newEntry=0x7f07000a;
+        public static final int not=0x7f070025;
         public static final int openAviableCollection=0x7f070005;
         public static final int preferedFileExtension=0x7f070009;
         public static final int settings_about=0x7f07001d;

@@ -11,25 +11,25 @@
     tools:context=".ParleyDrone" >
 
     <Button
-        android:id="@+id/createNewCollectionButton"
+        android:id="@+id/ButtoncreateNewCollection"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/createNewCollection" />
 
     <Button
-        android:id="@+id/openAviableCollectionButton"
+        android:id="@+id/ButtonopenAviableCollection"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/openAviableCollection" />
 
     <Button
-        android:id="@+id/loadCollectionsNetworkButton"
+        android:id="@+id/ButtonloadCollectionsNetwork"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/loadCollectionsFromNetwork" />
 
     <TextView
-        android:id="@+id/lastOpenedCollectionsTextV"
+        android:id="@+id/TextVlastOpenedCollections"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/lastOpenedCollections"
