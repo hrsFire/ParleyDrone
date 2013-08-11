@@ -102,7 +102,7 @@ public class ParleyDrone extends Activity {
 	public boolean onOptionsItemSelected( MenuItem menu) {
 		Intent intentMenu = new Intent( this, SettingsPreference.class);
 		startActivity( intentMenu);
-		finish();
+		//finish();
 		return true;
 	}
 	
