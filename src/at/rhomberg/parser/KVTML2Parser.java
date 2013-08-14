@@ -22,6 +22,10 @@ public class KVTML2Parser implements ImportExportInterface {
 	private int error = 0;
 	private String result = "";
     private int idResult;
+    private NodeList subNodeList, secondSubNodeList, thirdSubNodeList, fourthSubNodeList, fithSubNodeList;
+    private Node node, subNode, secondNode, thirdNode, fourthNode;
+    private Element element, subElement, secondSubElement, thirdSubElement;
+    private Translation translation;
 
 	public FileFormats importf(String textFile) throws Throwable {
 
@@ -61,7 +65,6 @@ public class KVTML2Parser implements ImportExportInterface {
                     importSearchSetEntries( subNodeList);
                 }
             }
-// current progress
             else if( qName == "lessons") {
                 if( subNodeList.getLength() > 0) {
                     importSearchSetLessons( subNodeList);
@@ -165,9 +168,6 @@ public class KVTML2Parser implements ImportExportInterface {
 	private void importSearchSetIdentifiers( NodeList nodeListIdentifiers) {
 		// the temp variable is the identifier id
 		Identifier identifier;
-        NodeList subNodeList, secondSubNodeList, thirdSubNodeList;
-        Node node, subNode;
-        Element element, subElement;
 		
 		out: for( int temp = 0; temp < nodeListIdentifiers.getLength(); temp++) {
 			identifier = new Identifier();
@@ -543,10 +543,6 @@ public class KVTML2Parser implements ImportExportInterface {
     private void importSearchSetEntries( NodeList nodeListEntries) {
         // the temp variable is the entry id
         Entry entry;
-        NodeList subNodeList, secondSubNodeList, thirdSubNodeList, fourthSubNodeList;
-        Node node, subNode, secondNode, thirdNode;
-        Element element, subElement, secondSubElement;
-        Translation translation;
 
         out: for( int temp = 0; temp < nodeListEntries.getLength(); temp++) {
             entry = new Entry();
@@ -664,13 +660,15 @@ public class KVTML2Parser implements ImportExportInterface {
                                                     if( thirdSubNodeList.getLength() > 0) {
                                                         secondNode = thirdSubNodeList.item(0);
                                                         if( secondNode != null) {
-                                                            secondSubElement = (Element) secondNode;
+                                                            if( secondNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                secondSubElement = (Element) secondNode;
 
-                                                            fourthSubNodeList = secondSubElement.getElementsByTagName("text");
-                                                            if( fourthSubNodeList.getLength() > 0) {
-                                                                thirdNode = fourthSubNodeList.item(0);
-                                                                if( thirdNode != null)
-                                                                    translation.conjugation.singular.firstPerson = thirdNode.getTextContent();
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("text");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null)
+                                                                        translation.conjugation.singular.firstPerson = thirdNode.getTextContent();
+                                                                }
                                                             }
                                                         }
                                                     }
@@ -680,13 +678,15 @@ public class KVTML2Parser implements ImportExportInterface {
                                                     if( thirdSubNodeList.getLength() > 0) {
                                                         secondNode = thirdSubNodeList.item(0);
                                                         if( secondNode != null) {
-                                                            secondSubElement = (Element) secondNode;
+                                                            if( secondNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                secondSubElement = (Element) secondNode;
 
-                                                            fourthSubNodeList = secondSubElement.getElementsByTagName("text");
-                                                            if( fourthSubNodeList.getLength() > 0) {
-                                                                thirdNode = fourthSubNodeList.item(0);
-                                                                if( thirdNode != null)
-                                                                    translation.conjugation.singular.secondPerson = thirdNode.getTextContent();
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("text");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null)
+                                                                        translation.conjugation.singular.secondPerson = thirdNode.getTextContent();
+                                                                }
                                                             }
                                                         }
                                                     }
@@ -696,13 +696,15 @@ public class KVTML2Parser implements ImportExportInterface {
                                                     if( thirdSubNodeList.getLength() > 0) {
                                                         secondNode = thirdSubNodeList.item(0);
                                                         if( secondNode != null) {
-                                                            secondSubElement = (Element) secondNode;
+                                                            if( secondNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                secondSubElement = (Element) secondNode;
 
-                                                            fourthSubNodeList = secondSubElement.getElementsByTagName("text");
-                                                            if( fourthSubNodeList.getLength() > 0) {
-                                                                thirdNode = fourthSubNodeList.item(0);
-                                                                if( thirdNode != null)
-                                                                    translation.conjugation.singular.thirdPersonNeutralCommon = thirdNode.getTextContent();
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("text");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null)
+                                                                        translation.conjugation.singular.thirdPersonNeutralCommon = thirdNode.getTextContent();
+                                                                }
                                                             }
                                                         }
                                                     }
@@ -723,13 +725,15 @@ public class KVTML2Parser implements ImportExportInterface {
                                                     if( thirdSubNodeList.getLength() > 0) {
                                                         secondNode = thirdSubNodeList.item(0);
                                                         if( secondNode != null) {
-                                                            secondSubElement = (Element) secondNode;
+                                                            if( secondNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                secondSubElement = (Element) secondNode;
 
-                                                            fourthSubNodeList = secondSubElement.getElementsByTagName("text");
-                                                            if( fourthSubNodeList.getLength() > 0) {
-                                                                thirdNode = fourthSubNodeList.item(0);
-                                                                if( thirdNode != null)
-                                                                    translation.conjugation.plural.firstPerson = thirdNode.getTextContent();
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("text");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null)
+                                                                        translation.conjugation.plural.firstPerson = thirdNode.getTextContent();
+                                                                }
                                                             }
                                                         }
                                                     }
@@ -739,13 +743,15 @@ public class KVTML2Parser implements ImportExportInterface {
                                                     if( thirdSubNodeList.getLength() > 0) {
                                                         secondNode = thirdSubNodeList.item(0);
                                                         if( secondNode != null) {
-                                                            secondSubElement = (Element) secondNode;
+                                                            if( secondNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                secondSubElement = (Element) secondNode;
 
-                                                            fourthSubNodeList = secondSubElement.getElementsByTagName("text");
-                                                            if( fourthSubNodeList.getLength() > 0) {
-                                                                thirdNode = fourthSubNodeList.item(0);
-                                                                if( thirdNode != null)
-                                                                    translation.conjugation.plural.secondPerson = thirdNode.getTextContent();
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("text");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null)
+                                                                        translation.conjugation.plural.secondPerson = thirdNode.getTextContent();
+                                                                }
                                                             }
                                                         }
                                                     }
@@ -755,13 +761,15 @@ public class KVTML2Parser implements ImportExportInterface {
                                                     if( thirdSubNodeList.getLength() > 0) {
                                                         secondNode = thirdSubNodeList.item(0);
                                                         if( secondNode != null) {
-                                                            secondSubElement = (Element) secondNode;
+                                                            if( secondNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                secondSubElement = (Element) secondNode;
 
-                                                            fourthSubNodeList = secondSubElement.getElementsByTagName("text");
-                                                            if( fourthSubNodeList.getLength() > 0) {
-                                                                thirdNode = fourthSubNodeList.item(0);
-                                                                if( thirdNode != null)
-                                                                    translation.conjugation.plural.thirdPersonNeutralCommon = thirdNode.getTextContent();
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("text");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null)
+                                                                        translation.conjugation.plural.thirdPersonNeutralCommon = thirdNode.getTextContent();
+                                                                }
                                                             }
                                                         }
                                                     }
@@ -773,24 +781,1282 @@ public class KVTML2Parser implements ImportExportInterface {
                             }
 
                             // declension
+                            subNodeList = element.getElementsByTagName("declension");
+                            if( subNodeList.getLength() > 0) {
+                                node = subNodeList.item(0);
+                                if( node != null) {
+                                    if( node.getNodeType() == Node.ELEMENT_NODE) {
+                                        subElement = (Element) node;
 
+                                        // female
+                                        secondSubNodeList = subElement.getElementsByTagName("female");
+                                        if( secondSubNodeList.getLength() > 0) {
+                                            subNode = secondSubNodeList.item(0);
+                                            if( subNode != null) {
+                                                if( subNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                    secondSubElement = (Element) subNode;
 
+                                                    // singular
+                                                    thirdSubNodeList = subElement.getElementsByTagName("singular");
+                                                    if( thirdSubNodeList.getLength() > 0) {
+                                                        secondNode = thirdSubNodeList.item(0);
+                                                        if( secondNode != null) {
+                                                            if( secondNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                secondSubElement = (Element) secondNode;
 
+                                                                // nominative
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("nominative");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
 
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.femaleList.singular.nominative = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
 
+                                                                // genitive
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("genitive");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
 
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.femaleList.singular.genitive = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
 
+                                                                // dative
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("dative");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
 
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.femaleList.singular.dative = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
 
+                                                                // accusative
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("accusative");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
 
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null) {
+                                                                                    translation.declension.femaleList.singular.accusative = fourthNode.getTextContent();
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
 
+                                                                // ablative
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("ablative");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
 
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.femaleList.singular.ablative = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
 
+                                                                // locative
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("locative");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
 
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.femaleList.singular.locative = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
 
+                                                                // vocative
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("vocative");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
 
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.femaleList.singular.vocative = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
 
+                                                    // dual
+                                                    thirdSubNodeList = subElement.getElementsByTagName("dual");
+                                                    if( thirdSubNodeList.getLength() > 0) {
+                                                        secondNode = thirdSubNodeList.item(0);
+                                                        if( secondNode != null) {
+                                                            if( secondNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                secondSubElement = (Element) secondNode;
 
+                                                                // nominative
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("nominative");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
+
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.femaleList.dual.nominative = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                // genitive
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("genitive");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
+
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.femaleList.dual.genitive = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                // dative
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("dative");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
+
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.femaleList.dual.dative = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                // accusative
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("accusative");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
+
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.femaleList.dual.accusative = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                // ablative
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("ablative");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
+
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.femaleList.dual.ablative = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                // locative
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("locative");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
+
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.femaleList.dual.locative = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                // vocative
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("vocative");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
+
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.femaleList.dual.vocative = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+
+                                                    // plural
+                                                    thirdSubNodeList = subElement.getElementsByTagName("plural");
+                                                    if( thirdSubNodeList.getLength() > 0) {
+                                                        secondNode = thirdSubNodeList.item(0);
+                                                        if( secondNode != null) {
+                                                            if( secondNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                secondSubElement = (Element) secondNode;
+
+                                                                // nominative
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("nominative");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
+
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.femaleList.plural.nominative = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                // genitive
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("genitive");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
+
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.femaleList.plural.genitive = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                // dative
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("dative");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
+
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.femaleList.plural.dative = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                // accusative
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("accusative");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
+
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.femaleList.plural.accusative = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                // ablative
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("ablative");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
+
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.femaleList.plural.ablative = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                // locative
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("locative");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
+
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.femaleList.plural.locative = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                // vocative
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("vocative");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
+
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.femaleList.plural.vocative = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                        // male
+                                        secondSubNodeList = subElement.getElementsByTagName("male");
+                                        if( secondSubNodeList.getLength() > 0) {
+                                            subNode = secondSubNodeList.item(0);
+                                            if( subNode != null) {
+                                                if( subNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                    secondSubElement = (Element) subNode;
+
+                                                    // singular
+                                                    thirdSubNodeList = subElement.getElementsByTagName("singular");
+                                                    if( thirdSubNodeList.getLength() > 0) {
+                                                        secondNode = thirdSubNodeList.item(0);
+                                                        if( secondNode != null) {
+                                                            if( secondNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                secondSubElement = (Element) secondNode;
+
+                                                                // nominative
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("nominative");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
+
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.maleList.singular.nominative = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                // genitive
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("genitive");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
+
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.maleList.singular.genitive = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                // dative
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("dative");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
+
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.maleList.singular.dative = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                // accusative
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("accusative");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
+
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.maleList.singular.accusative = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                // ablative
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("ablative");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
+
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.maleList.singular.ablative = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                // locative
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("locative");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
+
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.maleList.singular.locative = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                // vocative
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("vocative");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
+
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.maleList.singular.vocative = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+
+                                                    // dual
+                                                    thirdSubNodeList = subElement.getElementsByTagName("dual");
+                                                    if( thirdSubNodeList.getLength() > 0) {
+                                                        secondNode = thirdSubNodeList.item(0);
+                                                        if( secondNode != null) {
+                                                            if( secondNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                secondSubElement = (Element) secondNode;
+
+                                                                // nominative
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("nominative");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
+
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.maleList.dual.nominative = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                // genitive
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("genitive");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
+
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.maleList.dual.genitive = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                // dative
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("dative");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
+
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.maleList.dual.dative = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                // accusative
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("accusative");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
+
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.maleList.dual.accusative = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                // ablative
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("ablative");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
+
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.maleList.dual.ablative = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                // locative
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("locative");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
+
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.maleList.dual.locative = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                // vocative
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("vocative");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
+
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.maleList.dual.vocative = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+
+                                                    // plural
+                                                    thirdSubNodeList = subElement.getElementsByTagName("plural");
+                                                    if( thirdSubNodeList.getLength() > 0) {
+                                                        secondNode = thirdSubNodeList.item(0);
+                                                        if( secondNode != null) {
+                                                            if( secondNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                secondSubElement = (Element) secondNode;
+
+                                                                // nominative
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("nominative");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
+
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.maleList.plural.nominative = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                // genitive
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("genitive");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
+
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.maleList.plural.genitive = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                // dative
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("dative");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
+
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.maleList.plural.dative = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                // accusative
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("accusative");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
+
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.maleList.plural.accusative = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                // ablative
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("ablative");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
+
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.maleList.plural.ablative = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                // locative
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("locative");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
+
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.maleList.plural.locative = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                // vocative
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("vocative");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
+
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.maleList.plural.vocative = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                        // neutral
+                                        secondSubNodeList = subElement.getElementsByTagName("neutral");
+                                        if( secondSubNodeList.getLength() > 0) {
+                                            subNode = secondSubNodeList.item(0);
+                                            if( subNode != null) {
+                                                if( subNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                    secondSubElement = (Element) subNode;
+
+                                                    // singular
+                                                    thirdSubNodeList = subElement.getElementsByTagName("singular");
+                                                    if( thirdSubNodeList.getLength() > 0) {
+                                                        secondNode = thirdSubNodeList.item(0);
+                                                        if( secondNode != null) {
+                                                            if( secondNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                secondSubElement = (Element) secondNode;
+
+                                                                // nominative
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("nominative");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
+
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.neutralList.singular.nominative = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                // genitive
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("genitive");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
+
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.neutralList.singular.genitive = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                // dative
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("dative");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
+
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.neutralList.singular.dative = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                // accusative
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("accusative");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
+
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.neutralList.singular.accusative = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                // ablative
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("ablative");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
+
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.neutralList.singular.ablative = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                // locative
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("locative");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
+
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.neutralList.singular.locative = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                // vocative
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("vocative");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
+
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.neutralList.singular.vocative = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+
+                                                    // dual
+                                                    thirdSubNodeList = subElement.getElementsByTagName("dual");
+                                                    if( thirdSubNodeList.getLength() > 0) {
+                                                        secondNode = thirdSubNodeList.item(0);
+                                                        if( secondNode != null) {
+                                                            if( secondNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                secondSubElement = (Element) secondNode;
+
+                                                                // nominative
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("nominative");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
+
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.neutralList.dual.nominative = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                // genitive
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("genitive");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
+
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.neutralList.dual.genitive = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                // dative
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("dative");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
+
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.neutralList.dual.dative = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                // accusative
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("accusative");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
+
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.neutralList.dual.accusative = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                // ablative
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("ablative");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
+
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.neutralList.dual.ablative = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                // locative
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("locative");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
+
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.neutralList.dual.locative = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                // vocative
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("vocative");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
+
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.neutralList.dual.vocative = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+
+                                                    // plural
+                                                    thirdSubNodeList = subElement.getElementsByTagName("plural");
+                                                    if( thirdSubNodeList.getLength() > 0) {
+                                                        secondNode = thirdSubNodeList.item(0);
+                                                        if( secondNode != null) {
+                                                            if( secondNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                secondSubElement = (Element) secondNode;
+
+                                                                // nominative
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("nominative");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
+
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.neutralList.plural.nominative = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                // genitive
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("genitive");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
+
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.neutralList.plural.genitive = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                // dative
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("dative");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
+
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.neutralList.plural.dative = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                // accusative
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("accusative");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
+
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.neutralList.plural.accusative = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                // ablative
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("ablative");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
+
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.neutralList.plural.ablative = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                // locative
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("locative");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
+
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.neutralList.plural.locative = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                // vocative
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("vocative");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null) {
+                                                                        if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                            thirdSubElement = (Element) thirdNode;
+
+                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( fithSubNodeList.getLength() > 0) {
+                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                                if( fourthNode != null)
+                                                                                    translation.declension.neutralList.plural.vocative = fourthNode.getTextContent();
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
 
                             // comment
                             subNodeList = element.getElementsByTagName("comment");
@@ -856,9 +2122,6 @@ public class KVTML2Parser implements ImportExportInterface {
     // for branch lessons; contains lesson
     private void importSearchSetLessons( NodeList nodeListLessons) {
         // the temp variable is the lesson id
-        NodeList subNodeList, secondSubNodeList, thirdSubNodeList;
-        Node node, subNode;
-        Element element, subElement;
         Translation translation;
 
         for( int temp = 0; temp < nodeListLessons.getLength(); temp++) {
@@ -888,6 +2151,8 @@ public class KVTML2Parser implements ImportExportInterface {
                             lesson.inPractice = true;
                     }
                 }
+
+                fileFormats.lessonContainerList.add(lesson);
             }
             else {
                 error++; // not supported error message

@@ -1,5 +1,6 @@
 package at.rhomberg.fileformats;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.TreeMap;
 
@@ -12,7 +13,7 @@ public class FileFormats {
 	public Information info = new Information(); // information about the file
 	public TreeMap<Integer, Identifier> identifierList = new TreeMap<Integer, Identifier>();
 	public TreeMap<Integer, Entry> entryList = new TreeMap<Integer, Entry>(); // entries; contains the text which should be translated and the translated text in other languages
-	public TreeMap<Integer, LessonContainer> lessonContainerList = new TreeMap<Integer, LessonContainer>(); // contains lessons
+	public ArrayList<LessonContainer> lessonContainerList = new ArrayList<LessonContainer>(); // contains lessons
 	public TreeMap<Integer, WordTypesContainer> wordTypesContainerList = new TreeMap<Integer, WordTypesContainer>();
 	
 	// not supported by kvtml2; only for the program
@@ -22,7 +23,7 @@ public class FileFormats {
 }
 
 /*
-not supported
+not supported yet
 
 
 identifiertype

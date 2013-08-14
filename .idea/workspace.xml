@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/src/at/rhomberg/parser/KVTML2Parser.java" line="85" />
+    <bookmark url="file://$PROJECT_DIR$/src/at/rhomberg/parser/KVTML2Parser.java" line="88" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a1e4f627-3099-4b8d-ba7a-813981cefb4e" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ParleyDrone.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/android_support_v4.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/android_support_v4_6dc97c9da4a62d32984064d3835956fa.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/DeclensionFemaleMaleNeutralList.java" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/src/at/rhomberg/parleydrone/DatabaseManager.java" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/src/at/rhomberg/parleydrone/FileFormats.java" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/src/at/rhomberg/parleydrone/IOWrapper.java" afterPath="" />
@@ -15,9 +13,10 @@
       <change type="DELETED" beforePath="$PROJECT_DIR$/src/at/rhomberg/parleydrone/NetworkManager.java" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/src/iOWrapper/FileFormats.java" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/src/iOWrapper/IOWrapper.java" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gen/at/rhomberg/parleydrone/BuildConfig.java" afterPath="$PROJECT_DIR$/gen/at/rhomberg/parleydrone/BuildConfig.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/at/rhomberg/parleydrone/ParleyDrone.java" afterPath="$PROJECT_DIR$/src/at/rhomberg/parleydrone/ParleyDrone.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gen/at/rhomberg/parleydrone/R.java" afterPath="$PROJECT_DIR$/gen/at/rhomberg/parleydrone/R.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/at/rhomberg/fileformats/Declension.java" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/Declension.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/at/rhomberg/fileformats/FileFormats.java" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/FileFormats.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/at/rhomberg/parser/KVTML2Parser.java" afterPath="$PROJECT_DIR$/src/at/rhomberg/parser/KVTML2Parser.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="ParleyDrone.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -101,10 +100,30 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Translation.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/at/rhomberg/fileformats/Translation.java">
+      <file leaf-file-name="FileFormats.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/at/rhomberg/fileformats/FileFormats.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="11" column="34" selection-start="385" selection-end="396" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="360">
+            <state line="25" column="17" selection-start="1098" selection-end="1098" vertical-scroll-proportion="0.0" vertical-offset="270" max-vertical-offset="855">
+              <folding>
+                <element signature="e#640#657#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="WordTypesContainer.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/at/rhomberg/fileformats/WordTypesContainer.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="12" column="13" selection-start="291" selection-end="291" vertical-scroll-proportion="0.31141868" vertical-offset="0" max-vertical-offset="578">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="WordTypesContainerEntry.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/at/rhomberg/fileformats/WordTypesContainerEntry.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="8" column="22" selection-start="160" selection-end="231" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="255">
               <folding />
             </state>
           </provider>
@@ -113,46 +132,10 @@
       <file leaf-file-name="KVTML2Parser.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/at/rhomberg/parser/KVTML2Parser.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="773" column="0" selection-start="42943" selection-end="42943" vertical-scroll-proportion="0.0" vertical-offset="13042" max-vertical-offset="13620">
+            <state line="2087" column="59" selection-start="162184" selection-end="162184" vertical-scroll-proportion="0.0" vertical-offset="30969" max-vertical-offset="32595">
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="IOWrapper.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/at/rhomberg/iowrapper/IOWrapper.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="8" column="18" selection-start="196" selection-end="196" vertical-scroll-proportion="0.20304568" vertical-offset="0" max-vertical-offset="1995">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Declension.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/at/rhomberg/fileformats/Declension.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="9" column="13" selection-start="161" selection-end="161" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="300">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DeclensionBase.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/at/rhomberg/fileformats/DeclensionBase.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="9" column="28" selection-start="199" selection-end="209" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="345">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Conjugation.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/at/rhomberg/fileformats/Conjugation.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="7" column="13" selection-start="134" selection-end="134" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="270">
-              <folding />
             </state>
           </provider>
         </entry>
@@ -175,20 +158,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/at/rhomberg/fileformats/Information.java" />
-        <option value="$PROJECT_DIR$/src/at/rhomberg/fileformats/Article.java" />
         <option value="$PROJECT_DIR$/src/at/rhomberg/fileformats/PersonalPronouns.java" />
-        <option value="$PROJECT_DIR$/src/at/rhomberg/fileformats/Declension.java" />
         <option value="$PROJECT_DIR$/src/at/rhomberg/fileformats/Entry.java" />
         <option value="$PROJECT_DIR$/src/at/rhomberg/fileformats/Identifier.java" />
         <option value="$PROJECT_DIR$/src/at/rhomberg/fileformats/LessonContainer.java" />
         <option value="$PROJECT_DIR$/src/at/rhomberg/fileformats/PersonalPronounsBase.java" />
         <option value="$PROJECT_DIR$/src/at/rhomberg/fileformats/Translation.java" />
-        <option value="$PROJECT_DIR$/src/at/rhomberg/fileformats/FileFormats.java" />
         <option value="$PROJECT_DIR$/src/at/rhomberg/fileformats/WordTypesContainer.java" />
         <option value="$PROJECT_DIR$/src/at/rhomberg/fileformats/Grade.java" />
-        <option value="$PROJECT_DIR$/src/at/rhomberg/parser/KVTML2Parser.java" />
         <option value="$PROJECT_DIR$/src/at/rhomberg/iowrapper/IOWrapper.java" />
+        <option value="$PROJECT_DIR$/src/at/rhomberg/fileformats/DeclensionFemaleList.java" />
+        <option value="$PROJECT_DIR$/src/at/rhomberg/fileformats/DeclensionMaleList.java" />
+        <option value="$PROJECT_DIR$/src/at/rhomberg/fileformats/DeclensionNeutralList.java" />
+        <option value="$PROJECT_DIR$/src/at/rhomberg/fileformats/Declension.java" />
+        <option value="$PROJECT_DIR$/src/at/rhomberg/fileformats/DeclensionBase.java" />
+        <option value="$PROJECT_DIR$/src/at/rhomberg/parser/KVTML2Parser.java" />
+        <option value="$PROJECT_DIR$/src/at/rhomberg/fileformats/FileFormats.java" />
       </list>
     </option>
   </component>
@@ -224,7 +209,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
@@ -356,20 +340,39 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="GoToFile.includeJavaFiles" value="false" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
-    <property name="recentsLimit" value="5" />
     <property name="MemberChooser.sorted" value="false" />
+    <property name="recentsLimit" value="5" />
     <property name="restartRequiresConfirmation" value="true" />
-    <property name="FullScreen" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
+    <property name="FullScreen" value="false" />
     <property name="GoToClass.includeLibraries" value="false" />
     <property name="MemberChooser.copyJavadoc" value="false" />
   </component>
   <component name="RunManager" selected="Android Application.ParleyDrone">
+    <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Tests">
+      <module name="" />
+      <option name="TESTING_TYPE" value="0" />
+      <option name="INSTRUMENTATION_RUNNER_CLASS" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TARGET_SELECTION_MODE" value="EMULATOR" />
+      <option name="PREFERRED_AVD" value="" />
+      <option name="USE_COMMAND_LINE" value="true" />
+      <option name="COMMAND_LINE" value="" />
+      <option name="WIPE_USER_DATA" value="false" />
+      <option name="DISABLE_BOOT_ANIMATION" value="false" />
+      <option name="NETWORK_SPEED" value="full" />
+      <option name="NETWORK_LATENCY" value="none" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <method />
+    </configuration>
     <configuration default="true" type="Remote" factoryName="Remote">
       <option name="USE_SOCKET_TRANSPORT" value="true" />
       <option name="SERVER_MODE" value="false" />
@@ -504,7 +507,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-1" y="-4" width="1368" height="773" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32850242" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -592,29 +595,6 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/at/rhomberg/fileformats/WordTypesContainer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="17" selection-start="534" selection-end="534" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="330">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/at/rhomberg/fileformats/Information.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="27" selection-start="511" selection-end="511" vertical-scroll-proportion="0.40609136" vertical-offset="0" max-vertical-offset="591">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/at/rhomberg/fileformats/Identifier.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="13" selection-start="161" selection-end="161" vertical-scroll-proportion="0.2284264" vertical-offset="0" max-vertical-offset="591">
-          <folding>
-            <element signature="e#511#528#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/at/rhomberg/fileformats/Grade.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="13" column="33" selection-start="453" selection-end="453" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="315">
@@ -622,9 +602,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/at/rhomberg/fileformats/FileFormats.java">
+    <entry file="file://$PROJECT_DIR$/src/at/rhomberg/iowrapper/IOWrapper.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="13" selection-start="187" selection-end="187" vertical-scroll-proportion="0.23356402" vertical-offset="0" max-vertical-offset="855">
+        <state line="32" column="4" selection-start="565" selection-end="565" vertical-scroll-proportion="0.0" vertical-offset="105" max-vertical-offset="1995">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/at/rhomberg/fileformats/Conjugation.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="7" column="13" selection-start="134" selection-end="134" vertical-scroll-proportion="0.17766498" vertical-offset="0" max-vertical-offset="591">
           <folding />
         </state>
       </provider>
@@ -650,19 +639,19 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/at/rhomberg/fileformats/Translation.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="34" selection-start="385" selection-end="396" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="360">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/at/rhomberg/fileformats/Entry.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="11" column="56" selection-start="254" selection-end="254" vertical-scroll-proportion="0.28546712" vertical-offset="0" max-vertical-offset="578">
           <folding>
             <element signature="e#268#290#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/at/rhomberg/fileformats/DeclensionBase.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="11" column="30" selection-start="273" selection-end="273" vertical-scroll-proportion="0.27918783" vertical-offset="0" max-vertical-offset="591">
+          <folding />
         </state>
       </provider>
     </entry>
@@ -673,39 +662,55 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/at/rhomberg/fileformats/Translation.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="32" selection-start="437" selection-end="447" vertical-scroll-proportion="0.30456853" vertical-offset="0" max-vertical-offset="591">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/at/rhomberg/fileformats/DeclensionFemaleMaleNeutralList.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="7" column="13" selection-start="134" selection-end="134" vertical-scroll-proportion="0.17766498" vertical-offset="0" max-vertical-offset="591">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/at/rhomberg/fileformats/Declension.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="13" selection-start="161" selection-end="161" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="300">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/at/rhomberg/fileformats/Conjugation.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="13" selection-start="134" selection-end="134" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="270">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/at/rhomberg/fileformats/DeclensionBase.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="28" selection-start="199" selection-end="209" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="345">
+        <state line="12" column="92" selection-start="501" selection-end="501" vertical-scroll-proportion="0.30456853" vertical-offset="0" max-vertical-offset="591">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/at/rhomberg/parser/KVTML2Parser.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="773" column="0" selection-start="42943" selection-end="42943" vertical-scroll-proportion="0.0" vertical-offset="13042" max-vertical-offset="13620">
+        <state line="2087" column="59" selection-start="162184" selection-end="162184" vertical-scroll-proportion="0.0" vertical-offset="30969" max-vertical-offset="32595">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/at/rhomberg/iowrapper/IOWrapper.java">
+    <entry file="file://$PROJECT_DIR$/src/at/rhomberg/fileformats/WordTypesContainerEntry.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="18" selection-start="196" selection-end="196" vertical-scroll-proportion="0.20304568" vertical-offset="0" max-vertical-offset="1995">
+        <state line="8" column="22" selection-start="160" selection-end="231" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="255">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/at/rhomberg/fileformats/FileFormats.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="25" column="17" selection-start="1098" selection-end="1098" vertical-scroll-proportion="0.0" vertical-offset="270" max-vertical-offset="855">
+          <folding>
+            <element signature="e#640#657#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/at/rhomberg/fileformats/WordTypesContainer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="13" selection-start="291" selection-end="291" vertical-scroll-proportion="0.31141868" vertical-offset="0" max-vertical-offset="578">
           <folding />
         </state>
       </provider>
