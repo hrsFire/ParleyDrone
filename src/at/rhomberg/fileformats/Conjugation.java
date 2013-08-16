@@ -7,6 +7,7 @@ package at.rhomberg.fileformats;
 
 public class Conjugation {
 	public String tense = ""; // tense; user input
-	public TranslationSingularPlural singular = new TranslationSingularPlural();
-	public TranslationSingularPlural plural = new TranslationSingularPlural();
+	public TranslationSingularDualPlural singular = new TranslationSingularDualPlural();
+    public TranslationSingularDualPlural dual = new TranslationSingularDualPlural();
+	public TranslationSingularDualPlural plural = new TranslationSingularDualPlural();
 }

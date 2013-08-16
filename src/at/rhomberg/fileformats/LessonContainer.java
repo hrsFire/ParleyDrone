@@ -11,5 +11,6 @@ import java.util.TreeMap;
 public class LessonContainer {
 	public String name = ""; // title of the lesson
 	public boolean inPractice = false; // true: if a practice was interrupted
+    public ArrayList<LessonContainer> lessonContainerList = new ArrayList<LessonContainer>();
 	public ArrayList<Integer> entryList = new ArrayList<Integer>(); // entry ids of an item in a lesson
 }

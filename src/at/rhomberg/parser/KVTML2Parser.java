@@ -14,6 +14,7 @@ import at.rhomberg.fileformats.FileFormats;
 import at.rhomberg.fileformats.Identifier;
 import at.rhomberg.fileformats.LessonContainer;
 import at.rhomberg.fileformats.Translation;
+import at.rhomberg.fileformats.WordTypesContainer;
 
 
 public class KVTML2Parser implements ImportExportInterface {
@@ -25,7 +26,6 @@ public class KVTML2Parser implements ImportExportInterface {
     private NodeList subNodeList, secondSubNodeList, thirdSubNodeList, fourthSubNodeList, fithSubNodeList;
     private Node node, subNode, secondNode, thirdNode, fourthNode;
     private Element element, subElement, secondSubElement, thirdSubElement;
-    private Translation translation;
 
 	public FileFormats importf(String textFile) throws Throwable {
 
@@ -36,6 +36,9 @@ public class KVTML2Parser implements ImportExportInterface {
 		Document doc = dBuilder.parse( textFile);
 		
 		doc.getDocumentElement().normalize();
+
+        if( (doc.getDocumentElement().getNodeName() == "kvtml") || (doc.getDocumentElement().getAttribute("version") != "2.0"))
+            throw new IllegalArgumentException();
 
         NodeList nodeList = doc.getDocumentElement().getChildNodes();
 
@@ -71,12 +74,13 @@ public class KVTML2Parser implements ImportExportInterface {
                 }
             }
             else if( qName == "wordtypes") {
-
+                if( subNodeList.getLength() > 0) {
+                    importSearchSetWordTypes( subNodeList);
+                }
             }
             else {
-                error++;
+                error++; // not required
             }
-            //importSearchSetList( nNode.getChildNodes());
         }
 
         // examples
@@ -90,8 +94,6 @@ public class KVTML2Parser implements ImportExportInterface {
 	
 	// for branch information
 	private void importSearchSetInformation( Element element) {
-        NodeList subNodeList;
-        Node node;
 
 		// generator
         subNodeList = element.getElementsByTagName("generator");
@@ -178,6 +180,15 @@ public class KVTML2Parser implements ImportExportInterface {
                 if( nodeListIdentifiers.item(temp).getNodeType() == Node.ELEMENT_NODE) {
                     element = (Element) nodeListIdentifiers.item(temp);
 
+                    // id of identifier
+                    try {
+                        idResult = Integer.parseInt(nodeListIdentifiers.item(temp).getAttributes().getNamedItem("id").getTextContent());
+                    }
+                    catch( Exception e) {
+                        error++;
+                        continue out;
+                    }
+
                     // name
                     subNodeList = element.getElementsByTagName("name");
                     if( subNodeList.getLength() > 0) {
@@ -194,22 +205,36 @@ public class KVTML2Parser implements ImportExportInterface {
                             identifier.locale = node.getTextContent();
                     }
 
+                    // comment
+                    subNodeList = element.getElementsByTagName("comment");
+                    if( subNodeList.getLength() > 0) {
+                        node = subNodeList.item(0);
+                        if( node != null)
+                            identifier.comment = node.getTextContent();
+                    }
+
+                    // sizehint
+                    subNodeList = element.getElementsByTagName("sizehint");
+                    if( subNodeList.getLength() > 0) {
+                        node = subNodeList.item(0);
+                        if( node != null) {
+                            try {
+                                identifier.sizeHint = Integer.parseInt(node.getTextContent());
+
+                            }
+                            catch( Exception e) {
+                                error++;
+                            }
+                        }
+                    }
+
                     // tense
                     secondSubNodeList = element.getElementsByTagName("tense");
 
                     for( int i = 0; i < secondSubNodeList.getLength(); i++) {
                         node = secondSubNodeList.item(i);
 
-                        result = node.getTextContent();
-
-                        try {
-                            idResult = Integer.parseInt(node.getAttributes().getNamedItem("id").getTextContent());
-                            identifier.tenseList.put(idResult, result);
-                        }
-                        catch( Exception e) {
-                            error++;
-                            continue out;
-                        }
+                        identifier.tenseList.add(node.getTextContent());
                     }
 
                     // article
@@ -521,20 +546,11 @@ public class KVTML2Parser implements ImportExportInterface {
                             }
                         }
                     }
-
-                    // id of identifier
-                    try {
-                        idResult = Integer.parseInt(nodeListIdentifiers.item(temp).getAttributes().getNamedItem("id").getTextContent());
-                        fileFormats.identifierList.put(idResult, identifier);
-                    }
-                    catch( Exception e) {
-                        error++;
-                        // continue out;
-                    }
+                    fileFormats.identifierList.put(idResult, identifier);
                 }
 			}
             else {
-                error++; // not supported error message
+                error++;
             }
 		}
 	}
@@ -543,6 +559,8 @@ public class KVTML2Parser implements ImportExportInterface {
     private void importSearchSetEntries( NodeList nodeListEntries) {
         // the temp variable is the entry id
         Entry entry;
+        Translation translation;
+
 
         out: for( int temp = 0; temp < nodeListEntries.getLength(); temp++) {
             entry = new Entry();
@@ -551,9 +569,29 @@ public class KVTML2Parser implements ImportExportInterface {
             if( nodeListEntries.item(temp).getNodeName() == "entry") {
                 secondSubNodeList = nodeListEntries.item(temp).getChildNodes();
 
+                // id of entry
+                try {
+                    idResult = Integer.parseInt(secondSubNodeList.item(temp).getAttributes().getNamedItem("id").getTextContent());
+
+                }
+                catch( Exception e) {
+                    error++;
+                    continue out;
+                }
+
                 second: for( int i = 0; i < secondSubNodeList.getLength(); i++) {
                     if( secondSubNodeList.item(i).getNodeName() == "translation") {
                         if( secondSubNodeList.item(i).getNodeType() == Node.ELEMENT_NODE) {
+
+                            // id of translation
+                            try {
+                                idResult = Integer.parseInt(secondSubNodeList.item(i).getAttributes().getNamedItem("id").getTextContent());
+                            }
+                            catch( Exception e) {
+                                error++;
+                                continue second;
+                            }
+
                             translation = new Translation();
                             element = (Element) secondSubNodeList.item(i);
 
@@ -704,6 +742,71 @@ public class KVTML2Parser implements ImportExportInterface {
                                                                     thirdNode = fourthSubNodeList.item(0);
                                                                     if( thirdNode != null)
                                                                         translation.conjugation.singular.thirdPersonNeutralCommon = thirdNode.getTextContent();
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                        // dual
+                                        secondSubNodeList = subElement.getElementsByTagName("dual");
+                                        if( secondSubNodeList.getLength() > 0) {
+                                            subNode = secondSubNodeList.item(0);
+                                            if( subNode != null) {
+                                                if( subNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                    secondSubElement = (Element) subNode;
+
+                                                    // firstperson
+                                                    thirdSubNodeList = subElement.getElementsByTagName("firstperson");
+                                                    if( thirdSubNodeList.getLength() > 0) {
+                                                        secondNode = thirdSubNodeList.item(0);
+                                                        if( secondNode != null) {
+                                                            if( secondNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                secondSubElement = (Element) secondNode;
+
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("text");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null)
+                                                                        translation.conjugation.dual.firstPerson = thirdNode.getTextContent();
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+
+                                                    // secondperson
+                                                    thirdSubNodeList = subElement.getElementsByTagName("secondperson");
+                                                    if( thirdSubNodeList.getLength() > 0) {
+                                                        secondNode = thirdSubNodeList.item(0);
+                                                        if( secondNode != null) {
+                                                            if( secondNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                secondSubElement = (Element) secondNode;
+
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("text");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null)
+                                                                        translation.conjugation.dual.secondPerson = thirdNode.getTextContent();
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+
+                                                    // thirdpersonneutralcommon
+                                                    thirdSubNodeList = subElement.getElementsByTagName("thirdpersonneutralcommon");
+                                                    if( thirdSubNodeList.getLength() > 0) {
+                                                        secondNode = thirdSubNodeList.item(0);
+                                                        if( secondNode != null) {
+                                                            if( secondNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                                secondSubElement = (Element) secondNode;
+
+                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("text");
+                                                                if( fourthSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                    if( thirdNode != null)
+                                                                        translation.conjugation.dual.thirdPersonNeutralCommon = thirdNode.getTextContent();
                                                                 }
                                                             }
                                                         }
@@ -2090,74 +2193,168 @@ public class KVTML2Parser implements ImportExportInterface {
                                     translation.paraphrase = node.getTextContent();
                             }
 
-                            // id of translation
-                            try {
-                                idResult = Integer.parseInt(secondSubNodeList.item(i).getAttributes().getNamedItem("id").getTextContent());
-                                entry.translationList.put(idResult, translation);
+                            entry.translationList.put(idResult, translation);
+                        }
+                    }
+                    // deactivated
+                    else if( secondSubNodeList.item(i).getNodeName() == "deactivated") {
+                        if( secondSubNodeList.getLength() > 0) {
+                            node = secondSubNodeList.item(0);
+                            if( node != null) {
+                                result = node.getTextContent();
+
+                                if( result == "true")
+                                    entry.deactivated = true;
                             }
-                            catch( Exception e) {
-                                error++;
-                                // continue second;
+                        }
+                    }
+                    // sizehint
+                    else if( secondSubNodeList.item(i).getNodeName() == "sizehint") {
+                        if( secondSubNodeList.getLength() > 0) {
+                            node = secondSubNodeList.item(0);
+                            if( node != null) {
+                                try {
+                                    entry.sizeHint = Integer.parseInt(node.getTextContent());
+                                }
+                                catch( Exception e) {
+                                    error++;
+                                }
                             }
                         }
                     }
                 }
 
-                // id of entry
-                try {
-                    idResult = Integer.parseInt(secondSubNodeList.item(temp).getAttributes().getNamedItem("id").getTextContent());
-                    fileFormats.entryList.put(idResult, entry);
-                }
-                catch( Exception e) {
-                    error++;
-                    // continue out;
-                }
+                fileFormats.entryList.put(idResult, entry);
             }
             else {
-                error++; // not supported error message
+                error++;
             }
         }
     }
 
-    // for branch lessons; contains lesson
+    // for branch lessons; contains container
     private void importSearchSetLessons( NodeList nodeListLessons) {
-        // the temp variable is the lesson id
-        Translation translation;
+        LessonContainer resultLessonContainer;
 
         for( int temp = 0; temp < nodeListLessons.getLength(); temp++) {
-            LessonContainer lesson = new LessonContainer();
 
-            // lesson
+            // lesson container
             if( nodeListLessons.item(temp).getNodeName() == "container") {
-                secondSubNodeList = nodeListLessons.item(temp).getChildNodes();
-
-                for( int i = 0; i < secondSubNodeList.getLength(); i++) {
-                    // entry
-                    if( secondSubNodeList.item(i).getNodeName() == "entry") {
-                        try {
-                            lesson.entryList.add( Integer.parseInt(secondSubNodeList.item(i).getAttributes().getNamedItem("id").getTextContent()));
-                        }
-                        catch( Exception e) {
-                            error++;
-                        }
-                    }
-                    // name
-                    else if( secondSubNodeList.item(i).getNodeName() == "name") {
-                        lesson.name = secondSubNodeList.item(i).getTextContent();
-                    }
-                    // inpractice
-                    else if( secondSubNodeList.item(i).getNodeName() == "inpractice") {
-                        if( secondSubNodeList.item(i).getTextContent() == "true")
-                            lesson.inPractice = true;
-                    }
+                resultLessonContainer = SearchSetLessonContainer(nodeListLessons.item(temp));
+                if( resultLessonContainer != null) {
+                    fileFormats.lessonContainerList.add(resultLessonContainer);
                 }
-
-                fileFormats.lessonContainerList.add(lesson);
             }
             else {
-                error++; // not supported error message
+                error++;
             }
         }
+    }
+
+    // for sub branch container; lesson
+    private LessonContainer SearchSetLessonContainer( Node nodeContainer) {
+        LessonContainer lessonContainer = new LessonContainer();
+        LessonContainer resultLessonContainer;
+        NodeList secondSubNodeList;
+
+        secondSubNodeList = nodeContainer.getChildNodes();
+
+        for( int i = 0; i < secondSubNodeList.getLength(); i++) {
+            // entry
+            if( secondSubNodeList.item(i).getNodeName() == "entry") {
+                try {
+                    lessonContainer.entryList.add( Integer.parseInt(secondSubNodeList.item(i).getAttributes().getNamedItem("id").getTextContent()));
+                }
+                catch( Exception e) {
+                    error++;
+                }
+            }
+
+            // container
+            else if( secondSubNodeList.item(i).getNodeName() == "container") {
+                resultLessonContainer = SearchSetLessonContainer(secondSubNodeList.item(i));
+                if( resultLessonContainer != null) {
+                    lessonContainer.lessonContainerList.add(resultLessonContainer);
+                }
+            }
+
+            // name
+            else if( secondSubNodeList.item(i).getNodeName() == "name") {
+                lessonContainer.name = secondSubNodeList.item(i).getTextContent();
+            }
+
+            // inpractice
+            else if( secondSubNodeList.item(i).getNodeName() == "inpractice") {
+                if( secondSubNodeList.item(i).getTextContent() == "true")
+                    lessonContainer.inPractice = true;
+            }
+        }
+        return lessonContainer;
+    }
+
+
+
+
+    // for branch wordtypes; contains container
+    private void importSearchSetWordTypes( NodeList nodeListWordTypes) {
+        WordTypesContainer resultWordTypesContainer;
+
+        for( int temp = 0; temp < nodeListWordTypes.getLength(); temp++) {
+
+            // lesson container
+            if( nodeListWordTypes.item(temp).getNodeName() == "container") {
+                resultWordTypesContainer = SearchSetWordTypesContainer(nodeListWordTypes.item(temp));
+                if( resultWordTypesContainer != null) {
+                    fileFormats.wordTypesContainerList.add(resultWordTypesContainer);
+                }
+            }
+            else {
+                error++;
+            }
+        }
+
+    }
+
+    // for sub branch container; wordtypes
+    private WordTypesContainer SearchSetWordTypesContainer( Node nodeContainer) {
+        WordTypesContainer wordTypesContainer = new WordTypesContainer();
+        WordTypesContainer resultWordTypesContainer;
+        NodeList secondSubNodeList;
+        String result = "";
+
+        secondSubNodeList = nodeContainer.getChildNodes();
+
+        for( int i = 0; i < secondSubNodeList.getLength(); i++) {
+            // name
+            if( secondSubNodeList.item(i).getNodeName() == "name") {
+                wordTypesContainer.name = secondSubNodeList.item(i).getTextContent();
+            }
+            // specialwordtype
+            else if( secondSubNodeList.item(i).getNodeName() == "specialwordtype") {
+                result = secondSubNodeList.item(i).getTextContent();
+
+                if( (result == WordTypesContainer.NOUN) || (result == WordTypesContainer.NOUN_MALE) || (result == WordTypesContainer.NOUN_FEMALE)
+                    || (result == WordTypesContainer.NOUN_NEUTRAL) || (result == WordTypesContainer.VERB) || (result == WordTypesContainer.ADJECTIVE)
+                    || (result == WordTypesContainer.ADVERB))
+                    wordTypesContainer.specialWordType = result;
+            }
+            // inpractice
+            else if( secondSubNodeList.item(i).getNodeName() == "inpractice") {
+                result = secondSubNodeList.item(i).getTextContent();
+
+                if( result == "true")
+                    wordTypesContainer.inPractice = true;
+
+            }
+            // container
+            else if( secondSubNodeList.item(i).getNodeName() == "container") {
+                resultWordTypesContainer = SearchSetWordTypesContainer(secondSubNodeList.item(i));
+                if( resultWordTypesContainer != null) {
+                    wordTypesContainer.wordTypeContainerList.add(resultWordTypesContainer);
+                }
+            }
+        }
+        return wordTypesContainer;
     }
 
 	public String export(FileFormats fileFormats) throws Throwable{

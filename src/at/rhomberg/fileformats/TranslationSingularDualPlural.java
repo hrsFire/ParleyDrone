@@ -5,7 +5,7 @@ package at.rhomberg.fileformats;
 //for more information
 //http://edu.kde.org/kvtml/kvtml2.dtd
 
-public class TranslationSingularPlural {
+public class TranslationSingularDualPlural {
 	public String firstPerson = "";
 	public String secondPerson = "";
 	public String thirdPersonNeutralCommon = "";

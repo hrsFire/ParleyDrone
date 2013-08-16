@@ -14,7 +14,7 @@ public class FileFormats {
 	public TreeMap<Integer, Identifier> identifierList = new TreeMap<Integer, Identifier>();
 	public TreeMap<Integer, Entry> entryList = new TreeMap<Integer, Entry>(); // entries; contains the text which should be translated and the translated text in other languages
 	public ArrayList<LessonContainer> lessonContainerList = new ArrayList<LessonContainer>(); // contains lessons
-	public TreeMap<Integer, WordTypesContainer> wordTypesContainerList = new TreeMap<Integer, WordTypesContainer>();
+	public ArrayList<WordTypesContainer> wordTypesContainerList = new ArrayList<WordTypesContainer>();
 	
 	// not supported by kvtml2; only for the program
 	public String objectType = ""; // type of the data e.g. kvtml2
