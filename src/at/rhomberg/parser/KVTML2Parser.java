@@ -12,9 +12,9 @@ import org.w3c.dom.NodeList;
 import at.rhomberg.fileformats.Entry;
 import at.rhomberg.fileformats.FileFormats;
 import at.rhomberg.fileformats.Identifier;
-import at.rhomberg.fileformats.LessonContainer;
+import at.rhomberg.fileformats.Container;
 import at.rhomberg.fileformats.Translation;
-import at.rhomberg.fileformats.WordTypesContainer;
+import at.rhomberg.fileformats.Container;
 
 
 public class KVTML2Parser implements ImportExportInterface {
@@ -37,7 +37,7 @@ public class KVTML2Parser implements ImportExportInterface {
 		
 		doc.getDocumentElement().normalize();
 
-        if( (doc.getDocumentElement().getNodeName() == "kvtml") || (doc.getDocumentElement().getAttribute("version") != "2.0"))
+        if( (doc.getDocumentElement().getNodeName() != "kvtml") || (doc.getDocumentElement().getAttribute("version") != "2.0"))
             throw new IllegalArgumentException();
 
         NodeList nodeList = doc.getDocumentElement().getChildNodes();
@@ -76,6 +76,11 @@ public class KVTML2Parser implements ImportExportInterface {
             else if( qName == "wordtypes") {
                 if( subNodeList.getLength() > 0) {
                     importSearchSetWordTypes( subNodeList);
+                }
+            }
+			else if( qName == "leitnerboxes") {
+                if( subNodeList.getLength() > 0) {
+                    importSearchSetLeitnerboxes( subNodeList);
                 }
             }
             else {
@@ -384,7 +389,7 @@ public class KVTML2Parser implements ImportExportInterface {
                     }
 
                     // personalpronouns
-                    secondSubNodeList = element.getElementsByTagName( "personalpronouns");
+                    secondSubNodeList = element.getElementsByTagName("personalpronouns");
 
                     for( int i = 0; i < secondSubNodeList.getLength(); i++) {
                         node = secondSubNodeList.item(i);
@@ -608,6 +613,22 @@ public class KVTML2Parser implements ImportExportInterface {
                             if( subNodeList.getLength() > 0) {
                                 node = subNodeList.item(0);
                                 if( node != null) {
+								
+								
+								
+								// fromid
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
                                     if( node.getNodeType() == Node.ELEMENT_NODE) {
                                         subElement = (Element) node;
 
@@ -2184,7 +2205,7 @@ public class KVTML2Parser implements ImportExportInterface {
                                 if( node != null)
                                     translation.example = node.getTextContent();
                             }
-
+							
                             // paraphrase
                             subNodeList = element.getElementsByTagName("paraphrase");
                             if( subNodeList.getLength() > 0) {
@@ -2192,10 +2213,134 @@ public class KVTML2Parser implements ImportExportInterface {
                                 if( node != null)
                                     translation.paraphrase = node.getTextContent();
                             }
+							
+							// falsefriend
+							subNodeList = element.getElementsByTagName("falsefriend");
+							if( subNodeList.getLength() > 0) {
+								node = subNodeList.item(0);
+							}
+							
+							
+							
+							
+							
+							
+							
+							// antonym
+                            subNodeList = element.getElementsByTagName("antonym");
+                            if( subNodeList.getLength() > 0) {
+                                node = subNodeList.item(0);
+                                if( node != null)
+                                    translation.antonym = node.getTextContent();
+                            }
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							// synonym
+                            subNodeList = element.getElementsByTagName("synonym");
+                            if( subNodeList.getLength() > 0) {
+                                node = subNodeList.item(0);
+                                if( node != null)
+                                    translation.synonym = node.getTextContent();
+                            }
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							// comparison
+							subNodeList = element.getElementsByTagName("comparison");
+							if( subNodeList.getLength() > 0) {
+								node = subNodeList.item(0);
+								if( node != null) {
+									if( node.getNodeType() == Node.ELEMENT_NODE) {
+                                        subElement = (Element) node;
+										
+										// absolute
+										secondSubNodeList = subElement.getElementsByTagName("absolute");
+										if( secondSubNodeList.getLength() > 0) {
+											secondNode = secondSubNodeList.item(0);
+											if( secondNode != null)
+												translation.comparison.absolute = secondNode.getTextContent();
+										}
+										
+										// comparative
+										secondSubNodeList = subElement.getElementsByTagName("comparative");
+										if( secondSubNodeList.getLength() > 0) {
+											secondNode = secondSubNodeList.item(0);
+											if( secondNode != null)
+												translation.comparison.comparative = secondNode.getTextContent();
+										}
+										
+										// superlative
+										secondSubNodeList = subElement.getElementsByTagName("superlative");
+										if( secondSubNodeList.getLength() > 0) {
+											secondNode = secondSubNodeList.item(0);
+											if( secondNode != null)
+												translation.comparison.superlative = secondNode.getTextContent();
+										}
+									}
+								}
+							}
 
+							// multipleChoice
+							subNodeList = element.getElementsByTagName("multiplechoice");
+                            if( subNodeList.getLength() > 0) {
+                                node = subNodeList.item(0);
+                                if( node != null) {
+									secondSubNodeList = node.getChildNodes();
+									
+									for( int t = 0; secondSubNodeList.getLength() > 0; t++) {
+										if( secondSubNodeList.item(t).getNodeName() == "choice") {
+											if( secondSubNodeList.getLength() > 0) {
+												secondNode = secondSubNodeList.item(0);
+													if( secondNode != null) {
+														translation.multipleChoice.choice.add(secondNode.getTextContent());
+												}
+											}
+										}
+										else {
+											error++;
+										}
+									}	
+								}
+							}
+
+							// image
+							subNodeList = element.getElementsByTagName("image");
+                            if( subNodeList.getLength() > 0) {
+                                node = subNodeList.item(0);
+                                if( node != null)
+                                    translation.image = node.getTextContent();
+                            }
+							
+							// sound
+							subNodeList = element.getElementsByTagName("sound");
+                            if( subNodeList.getLength() > 0) {
+                                node = subNodeList.item(0);
+                                if( node != null)
+                                    translation.sound = node.getTextContent();
+                            }
+							
                             entry.translationList.put(idResult, translation);
                         }
                     }
+					
                     // deactivated
                     else if( secondSubNodeList.item(i).getNodeName() == "deactivated") {
                         if( secondSubNodeList.getLength() > 0) {
@@ -2203,11 +2348,12 @@ public class KVTML2Parser implements ImportExportInterface {
                             if( node != null) {
                                 result = node.getTextContent();
 
-                                if( result == "true")
+                                if( (result == "true") || (result == "1"))
                                     entry.deactivated = true;
                             }
                         }
                     }
+					
                     // sizehint
                     else if( secondSubNodeList.item(i).getNodeName() == "sizehint") {
                         if( secondSubNodeList.getLength() > 0) {
@@ -2234,13 +2380,12 @@ public class KVTML2Parser implements ImportExportInterface {
 
     // for branch lessons; contains container
     private void importSearchSetLessons( NodeList nodeListLessons) {
-        LessonContainer resultLessonContainer;
+        Container resultLessonContainer;
 
         for( int temp = 0; temp < nodeListLessons.getLength(); temp++) {
-
             // lesson container
             if( nodeListLessons.item(temp).getNodeName() == "container") {
-                resultLessonContainer = SearchSetLessonContainer(nodeListLessons.item(temp));
+                resultLessonContainer = SearchSetContainer(nodeListLessons.item(temp));
                 if( resultLessonContainer != null) {
                     fileFormats.lessonContainerList.add(resultLessonContainer);
                 }
@@ -2251,59 +2396,14 @@ public class KVTML2Parser implements ImportExportInterface {
         }
     }
 
-    // for sub branch container; lesson
-    private LessonContainer SearchSetLessonContainer( Node nodeContainer) {
-        LessonContainer lessonContainer = new LessonContainer();
-        LessonContainer resultLessonContainer;
-        NodeList secondSubNodeList;
-
-        secondSubNodeList = nodeContainer.getChildNodes();
-
-        for( int i = 0; i < secondSubNodeList.getLength(); i++) {
-            // entry
-            if( secondSubNodeList.item(i).getNodeName() == "entry") {
-                try {
-                    lessonContainer.entryList.add( Integer.parseInt(secondSubNodeList.item(i).getAttributes().getNamedItem("id").getTextContent()));
-                }
-                catch( Exception e) {
-                    error++;
-                }
-            }
-
-            // container
-            else if( secondSubNodeList.item(i).getNodeName() == "container") {
-                resultLessonContainer = SearchSetLessonContainer(secondSubNodeList.item(i));
-                if( resultLessonContainer != null) {
-                    lessonContainer.lessonContainerList.add(resultLessonContainer);
-                }
-            }
-
-            // name
-            else if( secondSubNodeList.item(i).getNodeName() == "name") {
-                lessonContainer.name = secondSubNodeList.item(i).getTextContent();
-            }
-
-            // inpractice
-            else if( secondSubNodeList.item(i).getNodeName() == "inpractice") {
-                if( secondSubNodeList.item(i).getTextContent() == "true")
-                    lessonContainer.inPractice = true;
-            }
-        }
-        return lessonContainer;
-    }
-
-
-
-
     // for branch wordtypes; contains container
     private void importSearchSetWordTypes( NodeList nodeListWordTypes) {
-        WordTypesContainer resultWordTypesContainer;
+        Container resultWordTypesContainer;
 
         for( int temp = 0; temp < nodeListWordTypes.getLength(); temp++) {
-
             // lesson container
             if( nodeListWordTypes.item(temp).getNodeName() == "container") {
-                resultWordTypesContainer = SearchSetWordTypesContainer(nodeListWordTypes.item(temp));
+                resultWordTypesContainer = SearchSetContainer(nodeListWordTypes.item(temp));
                 if( resultWordTypesContainer != null) {
                     fileFormats.wordTypesContainerList.add(resultWordTypesContainer);
                 }
@@ -2312,49 +2412,78 @@ public class KVTML2Parser implements ImportExportInterface {
                 error++;
             }
         }
+    }
+	
+	// for branch leitnerboxes; contains container
+    private void importSearchSetLeitnerboxes( NodeList nodeListWordTypes) {
+        Container resultWordTypesContainer;
 
+        for( int temp = 0; temp < nodeListWordTypes.getLength(); temp++) {
+            // lesson container
+            if( nodeListWordTypes.item(temp).getNodeName() == "container") {
+                resultWordTypesContainer = SearchSetContainer(nodeListWordTypes.item(temp));
+                if( resultWordTypesContainer != null) {
+                    fileFormats.wordTypesContainerList.add(resultWordTypesContainer);
+                }
+            }
+            else {
+                error++;
+            }
+        }
     }
 
-    // for sub branch container; wordtypes
-    private WordTypesContainer SearchSetWordTypesContainer( Node nodeContainer) {
-        WordTypesContainer wordTypesContainer = new WordTypesContainer();
-        WordTypesContainer resultWordTypesContainer;
+    // for sub branch container; lessons, wordtypes, leitnerboxes
+    private Container SearchSetContainer( Node nodeContainer) {
+        Container container = new Container();
+        Container resultWordTypesContainer;
         NodeList secondSubNodeList;
         String result = "";
 
         secondSubNodeList = nodeContainer.getChildNodes();
 
         for( int i = 0; i < secondSubNodeList.getLength(); i++) {
-            // name
-            if( secondSubNodeList.item(i).getNodeName() == "name") {
-                wordTypesContainer.name = secondSubNodeList.item(i).getTextContent();
+			// entry
+            if( secondSubNodeList.item(i).getNodeName() == "entry") {
+                try {
+                    container.entryList.add( Integer.parseInt(secondSubNodeList.item(i).getAttributes().getNamedItem("id").getTextContent()));
+                }
+                catch( Exception e) {
+                    error++;
+                }
             }
-            // specialwordtype
+			// container
+            else if( secondSubNodeList.item(i).getNodeName() == "container") {
+                resultWordTypesContainer = SearchSetContainer(secondSubNodeList.item(i));
+                if( resultWordTypesContainer != null) {
+                    container.container.add(resultWordTypesContainer);
+                }
+            }
+			// specialwordtype
             else if( secondSubNodeList.item(i).getNodeName() == "specialwordtype") {
                 result = secondSubNodeList.item(i).getTextContent();
 
-                if( (result == WordTypesContainer.NOUN) || (result == WordTypesContainer.NOUN_MALE) || (result == WordTypesContainer.NOUN_FEMALE)
-                    || (result == WordTypesContainer.NOUN_NEUTRAL) || (result == WordTypesContainer.VERB) || (result == WordTypesContainer.ADJECTIVE)
-                    || (result == WordTypesContainer.ADVERB))
-                    wordTypesContainer.specialWordType = result;
+                if( (result == Container.NOUN) || (result == Container.NOUN_MALE) || (result == Container.NOUN_FEMALE)
+                    || (result == Container.NOUN_NEUTRAL) || (result == Container.VERB) || (result == Container.ADJECTIVE)
+                    || (result == Container.ADVERB))
+                    container.specialWordType = result;
+            }
+			// name
+            else if( secondSubNodeList.item(i).getNodeName() == "name") {
+                container.name = secondSubNodeList.item(i).getTextContent();
             }
             // inpractice
             else if( secondSubNodeList.item(i).getNodeName() == "inpractice") {
                 result = secondSubNodeList.item(i).getTextContent();
 
-                if( result == "true")
-                    wordTypesContainer.inPractice = true;
-
+                if( (result == "true") || (result == "1"))
+                    container.inPractice = true;
             }
-            // container
-            else if( secondSubNodeList.item(i).getNodeName() == "container") {
-                resultWordTypesContainer = SearchSetWordTypesContainer(secondSubNodeList.item(i));
-                if( resultWordTypesContainer != null) {
-                    wordTypesContainer.wordTypeContainerList.add(resultWordTypesContainer);
-                }
+			// image
+			else if( secondSubNodeList.item(i).getNodeName() == "image") {
+                container.image = secondSubNodeList.item(i).getTextContent();	
             }
         }
-        return wordTypesContainer;
+        return container;
     }
 
 	public String export(FileFormats fileFormats) throws Throwable{

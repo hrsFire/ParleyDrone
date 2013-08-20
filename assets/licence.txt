@@ -631,7 +631,8 @@ to attach them to the start of each source file to most effectively
 state the exclusion of warranty; and each file should have at least
 the "copyright" line and a pointer to where the full notice is found.
 
-    This programm is a vocabulary trainer for Android with fully support for editing and customizing your vocabulary collections. It aims to support popular formats like kvtml, csv, xhtml, html and some others.
+	This program is a vocabulary trainer for Android with fully support for editing and customizing your vocabulary collections.
+	It aims to support popular formats like KVTML2, CSV, X(HTML) and some others.
     Copyright (C) 2013  Helmut Rhomberg
 
     This program is free software: you can redistribute it and/or modify

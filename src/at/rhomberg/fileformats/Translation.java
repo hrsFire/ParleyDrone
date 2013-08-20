@@ -15,4 +15,12 @@ public class Translation {
 	public String pronunciation = ""; // with phonetic symbols
 	public String example = "";
 	public String paraphrase = "";
+	//
+	//public String falseFriend = ""; with attr id, id is unique
+	public String antonym = "";
+	public String synonym = "";
+	public Comparison comparison = new Comparison();
+	public MultipleChoice multipleChoice = new MultipleChoice();
+	public String image = ""; // path to the sound file, relative paths are recommend
+	public String sound = ""; // path to the sound file, relative paths are recommend
 }
