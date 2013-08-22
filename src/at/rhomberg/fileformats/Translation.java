@@ -5,6 +5,8 @@ package at.rhomberg.fileformats;
 //for more information
 //http://edu.kde.org/kvtml/kvtml2.dtd
 
+import java.util.ArrayList;
+
 public class Translation {
     // translation id is the TreeMap key; id of the translated text
 	public String text = "";	// text which should be translated or translated text

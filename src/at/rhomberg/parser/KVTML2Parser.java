@@ -10,6 +10,8 @@ import java.sql.Date;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import at.rhomberg.fileformats.AntonymSynonymPair;
+import at.rhomberg.fileformats.Container;
 import at.rhomberg.fileformats.Entry;
 import at.rhomberg.fileformats.FileFormats;
 import at.rhomberg.fileformats.Identifier;
@@ -2249,40 +2251,37 @@ public class KVTML2Parser implements ImportExportInterface {
 											if( secondSubNodeList.getLength() > 0) {
 												secondNode = secondSubNodeList.item(0);
 												if( secondNode != null) {
-													for( int t = 0; secondSubNodeList.getLength() > 0; t++) {
+													for( int f = 0; secondSubNodeList.getLength() > 0; f++) {
 														
 														// entry; there must be two entries
-														if( secondSubNodeList.item(t).getNodeName() == "entry") {
+														if( secondSubNodeList.item(f).getNodeName() == "entry") {
 															if( secondSubNodeList.getLength() > 0) {
 																secondNode = secondSubNodeList.item(0);
 																if( secondNode != null) {
 																	if( secondNode.getNodeType() == Node.ELEMENT_NODE) {
 																		subElement = (Element) secondNode;
-																		
-																		if( translateCount == 0) {
+
+																		if( translationCount == 0) {
 																			pair.first.entryId = Integer.parseInt(secondNode.getTextContent());
-																			translateCount++;
 																		}
 																		else {
 																			pair.second.entryId = Integer.parseInt(secondNode.getTextContent());
-																			nslate.antonymPair.add( pair);
-																			continue;
 																		}				
 																		
 																		// translation; only 1
 																		secondSubNodeList = subElement.getElementsByTagName("translation");
-																		if( secondSubNodeList.getLength() > 0)
+																		if( secondSubNodeList.getLength() > 0) {
 																			secondNode = secondSubNodeList.item(0);
 																			
 																			if( secondNode != null) {
 																				try {
-																					if( translateCount == 0) {
-																						pair.firstEntry.translationId = Integer.parseInt(secondNode.getTextContent());
-																						translateCount++;
+																					if( translationCount == 0) {
+																						pair.first.translationId = Integer.parseInt(secondNode.getTextContent());
+                                                                                        translationCount++;
 																					}
 																					else {
-																						pair.secondEntry.translateionId = Integer.parseInt(secondNode.getTextContent());
-																						translate.antonymPair.add( pair);
+																						pair.second.translationId = Integer.parseInt(secondNode.getTextContent());
+																						translation.antonymPair.add( pair);
 																						continue;
 																					}
 																				}
@@ -2293,17 +2292,17 @@ public class KVTML2Parser implements ImportExportInterface {
 																		}
 																	}
 																}
+                                                                else {
+                                                                    error++;
+                                                                }
 															}
-														}
-														else {
-															error++;
 														}
 													}
 												}
 											}
-										}
-										else {
-											error++;
+                                            else {
+                                                error++;
+                                            }
 										}
 									}
 								}
@@ -2325,40 +2324,38 @@ public class KVTML2Parser implements ImportExportInterface {
 											if( secondSubNodeList.getLength() > 0) {
 												secondNode = secondSubNodeList.item(0);
 												if( secondNode != null) {
-													for( int t = 0; secondSubNodeList.getLength() > 0; t++) {
+													for( int f = 0; secondSubNodeList.getLength() > 0; f++) {
 														
 														// entry; there must be two entries
-														if( secondSubNodeList.item(t).getNodeName() == "entry") {
+														if( secondSubNodeList.item(f).getNodeName() == "entry") {
 															if( secondSubNodeList.getLength() > 0) {
 																secondNode = secondSubNodeList.item(0);
 																if( secondNode != null) {
 																	if( secondNode.getNodeType() == Node.ELEMENT_NODE) {
 																		subElement = (Element) secondNode;
 																		
-																		if( translateCount == 0) {
+																		if( translationCount == 0) {
 																			pair.first.entryId = Integer.parseInt(secondNode.getTextContent());
-																			translateCount++;
 																		}
 																		else {
 																			pair.second.entryId = Integer.parseInt(secondNode.getTextContent());
-																			nslate.antonymPair.add( pair);
-																			continue;
 																		}				
 																		
 																		// translation; only 1
 																		secondSubNodeList = subElement.getElementsByTagName("translation");
-																		if( secondSubNodeList.getLength() > 0)
+																		if( secondSubNodeList.getLength() > 0) {
 																			secondNode = secondSubNodeList.item(0);
 																			
 																			if( secondNode != null) {
 																				try {
-																					if( translateCount == 0) {
-																						pair.firstEntry.translationId = Integer.parseInt(secondNode.getTextContent());
-																						translateCount++;
+																					if( translationCount == 0) {
+																						pair.first.translationId = Integer.parseInt(secondNode.getTextContent());
+                                                                                        translationCount++;
 																					}
 																					else {
-																						pair.secondEntry.translateionId = Integer.parseInt(secondNode.getTextContent());
-																						translate.synonymPair.add( pair);
+																						pair.second.translationId = Integer.parseInt(secondNode.getTextContent());
+
+                                                                                        translation.synonymPair.add( pair);
 																						continue;
 																					}
 																				}
@@ -2370,16 +2367,16 @@ public class KVTML2Parser implements ImportExportInterface {
 																	}
 																}
 															}
-														}
-														else {
-															error++;
+                                                            else {
+                                                                error++;
+                                                            }
 														}
 													}
 												}
 											}
-										}
-										else {
-											error++;
+                                            else {
+                                                error++;
+                                            }
 										}
 									}
 								}
@@ -2461,39 +2458,44 @@ public class KVTML2Parser implements ImportExportInterface {
 							
                             entry.translationList.put(idResult, translation);
                         }
-                    }
-					
-                    // deactivated
-                    else if( secondSubNodeList.item(i).getNodeName() == "deactivated") {
-                        if( secondSubNodeList.getLength() > 0) {
-                            node = secondSubNodeList.item(0);
-                            if( node != null) {
-                                result = node.getTextContent();
 
-                                if( (result == "true") || (result == "1"))
-                                    entry.deactivated = true;
-                            }
-                        }
-                    }
-					
-                    // sizehint
-                    else if( secondSubNodeList.item(i).getNodeName() == "sizehint") {
-                        if( secondSubNodeList.getLength() > 0) {
-                            node = secondSubNodeList.item(0);
-                            if( node != null) {
-                                try {
-                                    entry.sizeHint = Integer.parseInt(node.getTextContent());
-                                }
-                                catch( Exception e) {
-                                    error++;
+                        // deactivated
+                        else if( secondSubNodeList.item(i).getNodeName() == "deactivated") {
+                            if( secondSubNodeList.getLength() > 0) {
+                                node = secondSubNodeList.item(0);
+                                if( node != null) {
+                                    result = node.getTextContent();
+
+                                    if( (result == "true") || (result == "1"))
+                                        entry.deactivated = true;
                                 }
                             }
                         }
+
+                        // sizehint
+                        else if( secondSubNodeList.item(i).getNodeName() == "sizehint") {
+                            if( secondSubNodeList.getLength() > 0) {
+                                node = secondSubNodeList.item(0);
+                                if( node != null) {
+                                    try {
+                                        entry.sizeHint = Integer.parseInt(node.getTextContent());
+                                    }
+                                    catch( Exception e) {
+                                        error++;
+                                    }
+                                }
+                            }
+                        }
+
+                        else {
+                            error++;
+                        }
                     }
+
+                    fileFormats.entryList.put(idResult, entry);
                 }
-
-                fileFormats.entryList.put(idResult, entry);
             }
+
             else {
                 error++;
             }
