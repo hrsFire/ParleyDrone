@@ -2218,51 +2218,174 @@ public class KVTML2Parser implements ImportExportInterface {
 							subNodeList = element.getElementsByTagName("falsefriend");
 							if( subNodeList.getLength() > 0) {
 								node = subNodeList.item(0);
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
+								
 							}
-							
-							
-							
-							
-							
-							
-							
+
 							// antonym
                             subNodeList = element.getElementsByTagName("antonym");
                             if( subNodeList.getLength() > 0) {
                                 node = subNodeList.item(0);
-                                if( node != null)
-                                    translation.antonym = node.getTextContent();
+                                if( node != null) {	
+									secondSubNodeList = node.getChildNodes();
+
+									for( int t = 0; secondSubNodeList.getLength() > 0; t++) {
+										AntonymSynonymPair pair = new AntonymSynonymPair();
+										Byte translationCount = 0;
+				
+										// pair
+										if( secondSubNodeList.item(t).getNodeName() == "pair") {
+											if( secondSubNodeList.getLength() > 0) {
+												secondNode = secondSubNodeList.item(0);
+												if( secondNode != null) {
+													for( int t = 0; secondSubNodeList.getLength() > 0; t++) {
+														
+														// entry; there must be two entries
+														if( secondSubNodeList.item(t).getNodeName() == "entry") {
+															if( secondSubNodeList.getLength() > 0) {
+																secondNode = secondSubNodeList.item(0);
+																if( secondNode != null) {
+																	if( secondNode.getNodeType() == Node.ELEMENT_NODE) {
+																		subElement = (Element) secondNode;
+																		
+																		if( translateCount == 0) {
+																			pair.first.entryId = Integer.parseInt(secondNode.getTextContent());
+																			translateCount++;
+																		}
+																		else {
+																			pair.second.entryId = Integer.parseInt(secondNode.getTextContent());
+																			nslate.antonymPair.add( pair);
+																			continue;
+																		}				
+																		
+																		// translation; only 1
+																		secondSubNodeList = subElement.getElementsByTagName("translation");
+																		if( secondSubNodeList.getLength() > 0)
+																			secondNode = secondSubNodeList.item(0);
+																			
+																			if( secondNode != null) {
+																				try {
+																					if( translateCount == 0) {
+																						pair.firstEntry.translationId = Integer.parseInt(secondNode.getTextContent());
+																						translateCount++;
+																					}
+																					else {
+																						pair.secondEntry.translateionId = Integer.parseInt(secondNode.getTextContent());
+																						translate.antonymPair.add( pair);
+																						continue;
+																					}
+																				}
+																				catch( Exception e) {
+																					error++;
+																				}
+																			}
+																		}
+																	}
+																}
+															}
+														}
+														else {
+															error++;
+														}
+													}
+												}
+											}
+										}
+										else {
+											error++;
+										}
+									}
+								}
                             }
-							
-							
-							
-							
-							
-							
-							
-							
-							
-							
+
 							// synonym
                             subNodeList = element.getElementsByTagName("synonym");
                             if( subNodeList.getLength() > 0) {
                                 node = subNodeList.item(0);
-                                if( node != null)
-                                    translation.synonym = node.getTextContent();
+                                if( node != null) {	
+									secondSubNodeList = node.getChildNodes();
+
+									for( int t = 0; secondSubNodeList.getLength() > 0; t++) {
+										AntonymSynonymPair pair = new AntonymSynonymPair();
+										Byte translationCount = 0;
+				
+										// pair
+										if( secondSubNodeList.item(t).getNodeName() == "pair") {
+											if( secondSubNodeList.getLength() > 0) {
+												secondNode = secondSubNodeList.item(0);
+												if( secondNode != null) {
+													for( int t = 0; secondSubNodeList.getLength() > 0; t++) {
+														
+														// entry; there must be two entries
+														if( secondSubNodeList.item(t).getNodeName() == "entry") {
+															if( secondSubNodeList.getLength() > 0) {
+																secondNode = secondSubNodeList.item(0);
+																if( secondNode != null) {
+																	if( secondNode.getNodeType() == Node.ELEMENT_NODE) {
+																		subElement = (Element) secondNode;
+																		
+																		if( translateCount == 0) {
+																			pair.first.entryId = Integer.parseInt(secondNode.getTextContent());
+																			translateCount++;
+																		}
+																		else {
+																			pair.second.entryId = Integer.parseInt(secondNode.getTextContent());
+																			nslate.antonymPair.add( pair);
+																			continue;
+																		}				
+																		
+																		// translation; only 1
+																		secondSubNodeList = subElement.getElementsByTagName("translation");
+																		if( secondSubNodeList.getLength() > 0)
+																			secondNode = secondSubNodeList.item(0);
+																			
+																			if( secondNode != null) {
+																				try {
+																					if( translateCount == 0) {
+																						pair.firstEntry.translationId = Integer.parseInt(secondNode.getTextContent());
+																						translateCount++;
+																					}
+																					else {
+																						pair.secondEntry.translateionId = Integer.parseInt(secondNode.getTextContent());
+																						translate.synonymPair.add( pair);
+																						continue;
+																					}
+																				}
+																				catch( Exception e) {
+																					error++;
+																				}
+																			}
+																		}
+																	}
+																}
+															}
+														}
+														else {
+															error++;
+														}
+													}
+												}
+											}
+										}
+										else {
+											error++;
+										}
+									}
+								}
                             }
-							
-							
-							
-							
-							
-							
-							
-							
-							
-							
-							
-							
-							
+
 							// comparison
 							subNodeList = element.getElementsByTagName("comparison");
 							if( subNodeList.getLength() > 0) {
@@ -2306,12 +2429,12 @@ public class KVTML2Parser implements ImportExportInterface {
 									secondSubNodeList = node.getChildNodes();
 									
 									for( int t = 0; secondSubNodeList.getLength() > 0; t++) {
+										// choice
 										if( secondSubNodeList.item(t).getNodeName() == "choice") {
 											if( secondSubNodeList.getLength() > 0) {
 												secondNode = secondSubNodeList.item(0);
-													if( secondNode != null) {
-														translation.multipleChoice.choice.add(secondNode.getTextContent());
-												}
+												if( secondNode != null)
+													translation.multipleChoice.choice.add(secondNode.getTextContent());
 											}
 										}
 										else {

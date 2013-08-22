@@ -6,9 +6,64 @@
   <component name="ChangeListManager">
     <list default="true" id="a1e4f627-3099-4b8d-ba7a-813981cefb4e" name="Default" comment="">
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/AntonymSynonymPair.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/rhomberg/fileformats/AntonymSynonymPair.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/rhomberg/fileformats/fileformats/AntonymSynonymPair.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/rhomberg/fileformats/Article.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/rhomberg/fileformats/fileformats/Article.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/rhomberg/fileformats/ArticleDefinite.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/rhomberg/fileformats/fileformats/ArticleDefinite.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/rhomberg/fileformats/ArticleSingularPlural.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/rhomberg/fileformats/fileformats/ArticleSingularPlural.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/rhomberg/parser/CSVParser.java" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/Comparison.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/rhomberg/fileformats/Comparison.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/rhomberg/fileformats/fileformats/Comparison.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/rhomberg/fileformats/Conjugation.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/rhomberg/fileformats/fileformats/Conjugation.java" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/Container.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/rhomberg/fileformats/Container.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/rhomberg/fileformats/fileformats/Container.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/rhomberg/manager/DatabaseManager.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/rhomberg/fileformats/Declension.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/rhomberg/fileformats/fileformats/Declension.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/rhomberg/fileformats/DeclensionBase.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/rhomberg/fileformats/fileformats/DeclensionBase.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/rhomberg/fileformats/DeclensionFemaleMaleNeutralList.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/rhomberg/fileformats/fileformats/DeclensionFemaleMaleNeutralList.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/rhomberg/fileformats/Entry.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/rhomberg/fileformats/fileformats/Entry.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/rhomberg/fileformats/FileFormats.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/rhomberg/fileformats/fileformats/FileFormats.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/rhomberg/manager/FileManager.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/rhomberg/fileformats/Grade.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/rhomberg/fileformats/fileformats/Grade.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/rhomberg/parser/HTMLParser.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/rhomberg/iowrapper/IOWrapper.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/rhomberg/fileformats/Identifier.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/rhomberg/fileformats/fileformats/Identifier.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/rhomberg/parser/ImportExportInterface.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/rhomberg/fileformats/Information.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/rhomberg/fileformats/fileformats/Information.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/rhomberg/parser/KVTML2Parser.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/rhomberg/fileformats/LessonContainer.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/rhomberg/parleydrone/LicenceActivity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/rhomberg/manager/LocalStorageManager.java" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/MultipleChoice.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/rhomberg/fileformats/MultipleChoice.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/rhomberg/fileformats/fileformats/MultipleChoice.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/rhomberg/manager/NetworkManager.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/rhomberg/parleydrone/ParleyDrone.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/rhomberg/fileformats/PersonalPronouns.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/rhomberg/fileformats/fileformats/PersonalPronouns.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/rhomberg/fileformats/PersonalPronounsBase.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/rhomberg/fileformats/fileformats/PersonalPronounsBase.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/rhomberg/parleydrone/SettingsPreference.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/rhomberg/fileformats/Translation.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/rhomberg/fileformats/fileformats/Translation.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/rhomberg/fileformats/TranslationSingularDualPlural.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/rhomberg/fileformats/fileformats/TranslationSingularDualPlural.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/rhomberg/fileformats/WordTypesContainer.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/at/rhomberg/fileformats/rhomberg/parser/XHTMLParser.java" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/src/at/rhomberg/fileformats/LessonContainer.java" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/src/at/rhomberg/fileformats/WordTypesContainer.java" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/src/at/rhomberg/parleydrone/DatabaseManager.java" afterPath="" />
@@ -633,7 +688,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-1" y="-4" width="1368" height="773" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32850242" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -652,7 +707,7 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32978722" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24963397" sideWeight="0.6718266" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32817337" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32817337" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />

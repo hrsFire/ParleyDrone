@@ -6,6 +6,6 @@ package at.rhomberg.fileformats;
 //http://edu.kde.org/kvtml/kvtml2.dtd
 
 public class AntonymSynonymPair {
-	public Integer[] first = new Integer[2];	// 1: entry id, 2: translation id
-	public Integer[] second = new Integer[2];	// 1: entry id, 2: translation id
+	public EntryTranslationId first = new EntryTranslationId();
+	public EntryTranslationId second = new EntryTranslationId();
 }
