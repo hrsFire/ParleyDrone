@@ -1,7 +1,5 @@
 package at.rhomberg.fileformats;
 
-import java.util.TreeMap;
-
 //kvtml2 format objects
 
 //for more information

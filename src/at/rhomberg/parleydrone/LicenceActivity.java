@@ -1,15 +1,14 @@
 package at.rhomberg.parleydrone;
 
+import android.app.Activity;
+import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
+import android.widget.TextView;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-
-import android.os.Bundle;
-import android.app.Activity;
-import android.text.method.ScrollingMovementMethod;
-import android.widget.EditText;
-import android.widget.TextView;
 
 public class LicenceActivity extends Activity {
 

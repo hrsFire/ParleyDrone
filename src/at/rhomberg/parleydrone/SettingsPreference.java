@@ -1,27 +1,20 @@
 package at.rhomberg.parleydrone;
 
-import java.util.Locale;
-
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.preference.DialogPreference;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
-import android.preference.PreferenceScreen;
-import android.text.TextUtils.StringSplitter;
-import android.util.Log;
-import android.widget.Toast;
+
+import java.util.Locale;
 
 public class SettingsPreference extends PreferenceActivity implements OnSharedPreferenceChangeListener, OnPreferenceClickListener {
 			

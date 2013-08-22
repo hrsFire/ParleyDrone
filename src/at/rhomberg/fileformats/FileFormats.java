@@ -1,7 +1,6 @@
 package at.rhomberg.fileformats;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.TreeMap;
 
 // kvtml2 format objects

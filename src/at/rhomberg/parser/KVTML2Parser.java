@@ -1,20 +1,19 @@
 package at.rhomberg.parser;
 
-import java.sql.Date;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import java.sql.Date;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
 import at.rhomberg.fileformats.Entry;
 import at.rhomberg.fileformats.FileFormats;
 import at.rhomberg.fileformats.Identifier;
-import at.rhomberg.fileformats.Container;
 import at.rhomberg.fileformats.Translation;
-import at.rhomberg.fileformats.Container;
 
 
 public class KVTML2Parser implements ImportExportInterface {
