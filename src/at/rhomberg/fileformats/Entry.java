@@ -2,10 +2,10 @@ package at.rhomberg.fileformats;
 
 import java.util.TreeMap;
 
-//kvtml2 format objects
+// kvtml2 format objects
 
-//for more information
-//http://edu.kde.org/kvtml/kvtml2.dtd
+// for more information
+// http://edu.kde.org/kvtml/kvtml2.dtd
 
 public class Entry {
 	// entry id is the TreeMap key

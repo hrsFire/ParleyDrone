@@ -1,12 +1,12 @@
 
 package at.rhomberg.fileformats;
 
-//kvtml2 format objects
+// kvtml2 format objects
 
-//for more information
-//http://edu.kde.org/kvtml/kvtml2.dtd
+// for more information
+// http://edu.kde.org/kvtml/kvtml2.dtd
 
-public class DeclensionBase { // for female, male and neutral
+public class DeclensionBase {   // for female, male and neutral
 	public String nominative = "";
 	public String genitive = "";
 	public String dative = "";

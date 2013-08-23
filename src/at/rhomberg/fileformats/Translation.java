@@ -1,11 +1,11 @@
 package at.rhomberg.fileformats;
 
-//kvtml2 format objects
-
-//for more information
-//http://edu.kde.org/kvtml/kvtml2.dtd
-
 import java.util.ArrayList;
+
+// kvtml2 format objects
+
+// for more information
+// http://edu.kde.org/kvtml/kvtml2.dtd
 
 public class Translation {
     // translation id is the TreeMap key; id of the translated text
