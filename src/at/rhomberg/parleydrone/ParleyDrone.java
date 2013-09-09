@@ -44,8 +44,8 @@ public class ParleyDrone extends Activity {
 		
 		openAviableCollectionButton.setOnClickListener( new OnClickListener() {
 			public void onClick( View arg) {
-                //Intent intent = new Intent( ParleyDrone.this, OpenCollection.class);
-                //startActivity( intent);
+                Intent intent = new Intent( ParleyDrone.this, CollectionSummary.class);
+                startActivity( intent);
 				Toast.makeText( ParleyDrone.this, R.string.not, Toast.LENGTH_SHORT).show();
 			}
 		});

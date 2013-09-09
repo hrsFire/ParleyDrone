@@ -1,10 +1,13 @@
 package at.rhomberg.parser;
 
+import android.util.Log;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import java.io.File;
 import java.sql.Date;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -23,29 +26,31 @@ public class KVTML2Parser implements ImportExportInterface {
 	private FileFormats fileFormats;
 	private int error = 0;
 	private String result = "";
-    private int idResult;
-    private NodeList subNodeList, secondSubNodeList, thirdSubNodeList, fourthSubNodeList, fithSubNodeList;
+    private int idResult, idSubResult;
+    private NodeList subNodeList, secondSubNodeList, thirdSubNodeList, fourthSubNodeList, fithSubNodeList, sixthSubNodeList;
     private Node node, subNode, secondNode, thirdNode, fourthNode;
     private Element element, subElement, secondSubElement, thirdSubElement;
 
-	public FileFormats importf(String textFile) throws Throwable {
+	public FileFormats importf(String fileLocation) throws Throwable {
 
 		fileFormats = new FileFormats();
 
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-		Document doc = dBuilder.parse( textFile);
-		
-		doc.getDocumentElement().normalize();
+        DocumentBuilder dBuilder = null;
+        Document doc = null;
 
-        if( (doc.getDocumentElement().getNodeName() != "kvtml") || (doc.getDocumentElement().getAttribute("version") != "2.0"))
+        dBuilder = dbFactory.newDocumentBuilder();
+        File file = new File(fileLocation);
+        doc = dBuilder.parse(file);
+        doc.getDocumentElement().normalize();
+
+        if( !(doc.getDocumentElement().getNodeName().equals( "kvtml") && doc.getDocumentElement().getAttribute("version").equals( "2.0")))
             throw new IllegalArgumentException();
 
         NodeList nodeList = doc.getDocumentElement().getChildNodes();
 
         // search the main branches
         for( int temp = 0; temp < nodeList.getLength(); temp++) {
-
             Node nNode = nodeList.item( temp);
             NodeList subNodeList;
             Element eElement;
@@ -53,38 +58,51 @@ public class KVTML2Parser implements ImportExportInterface {
             String qName = nNode.getNodeName();
             subNodeList = nNode.getChildNodes();
 
-            if( qName == "information") {
+            if( qName.equals( "information")) {
                 if( nNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Log.d( "ParleyDrone info", "start parsing information");
                     eElement = (Element) nNode;
                     importSearchSetInformation( eElement);
+                    Log.d( "ParleyDrone info", "finished parsing information");
                 }
             }
-            else if( qName == "identifiers") {
+            else if( qName.equals( "identifiers")) {
                 if( subNodeList.getLength() > 0) {
+                    Log.d( "ParleyDrone info", "start parsing identifiers");
                     importSearchSetIdentifiers( subNodeList);
+                    Log.d( "ParleyDrone info", "finished parsing identifiers");
                 }
             }
-            else if( qName == "entries") {
+            else if( qName.equals( "entries")) {
                 if( subNodeList.getLength() > 0) {
+                    Log.d( "ParleyDrone info", "start parsing entries");
                     importSearchSetEntries( subNodeList);
+                    Log.d( "ParleyDrone info", "finished parsing entries");
                 }
             }
-            else if( qName == "lessons") {
+            else if( qName.equals( "lessons")) {
                 if( subNodeList.getLength() > 0) {
+                    Log.d( "ParleyDrone info", "start parsing lessons");
                     importSearchSetLessons( subNodeList);
+                    Log.d( "ParleyDrone info", "finished parsing lessons");
                 }
             }
-            else if( qName == "wordtypes") {
+            else if( qName.equals( "wordtypes")) {
                 if( subNodeList.getLength() > 0) {
+                    Log.d( "ParleyDrone info", "start parsing wordtypes");
                     importSearchSetWordTypes( subNodeList);
+                    Log.d( "ParleyDrone info", "finished parsing wordtypes");
                 }
             }
-			else if( qName == "leitnerboxes") {
+			else if( qName.equals( "leitnerboxes")) {
                 if( subNodeList.getLength() > 0) {
+                    Log.d( "ParleyDrone info", "start parsing leitnerboxes");
                     importSearchSetLeitnerboxes( subNodeList);
+                    Log.d( "ParleyDrone info", "finished parsing leitnerboxes");
                 }
             }
             else {
+                Log.d( "ParleyDrone info", "an error occured");
                 error++; // not required
             }
         }
@@ -97,7 +115,7 @@ public class KVTML2Parser implements ImportExportInterface {
 
 		return fileFormats;
    }
-	
+
 	// for branch information
 	private void importSearchSetInformation( Element element) {
 
@@ -181,7 +199,7 @@ public class KVTML2Parser implements ImportExportInterface {
 			identifier = new Identifier();
 
             // identifier
-			if( nodeListIdentifiers.item(temp).getNodeName() == "identifier") {
+			if( nodeListIdentifiers.item(temp).getNodeName().equals( "identifier")) {
 
                 if( nodeListIdentifiers.item(temp).getNodeType() == Node.ELEMENT_NODE) {
                     element = (Element) nodeListIdentifiers.item(temp);
@@ -250,14 +268,14 @@ public class KVTML2Parser implements ImportExportInterface {
                         node = secondSubNodeList.item(i);
 
                         // singular
-                        if( node.getNodeName() == "singular") {
+                        if( node.getNodeName().equals( "singular")) {
                             thirdSubNodeList = node.getChildNodes();
 
                             for( int t = 0; t < thirdSubNodeList.getLength(); t++) {
                                 subNode = thirdSubNodeList.item(t);
 
                                 // definite
-                                if( subNode.getNodeName() == "definite") {
+                                if( subNode.getNodeName().equals( "definite")) {
                                     if( subNode.getNodeType() == Node.ELEMENT_NODE) {
                                         subElement = (Element) subNode;
 
@@ -287,7 +305,7 @@ public class KVTML2Parser implements ImportExportInterface {
                                     }
                                 }
                                 // indefinite
-                                else if( subNode.getNodeName() == "indefinite") {
+                                else if( subNode.getNodeName().equals( "indefinite")) {
                                     if( subNode.getNodeType() == Node.ELEMENT_NODE) {
                                         subElement = (Element) subNode;
 
@@ -319,14 +337,14 @@ public class KVTML2Parser implements ImportExportInterface {
                             }
                         }
                         // plural
-                        else if( node.getNodeName() == "plural") {
+                        else if( node.getNodeName().equals( "plural")) {
                             thirdSubNodeList = node.getChildNodes();
 
                             for( int t = 0; t < thirdSubNodeList.getLength(); t++) {
                                 subNode = thirdSubNodeList.item(t);
 
                                 // definite
-                                if( subNode.getNodeName() == "definite") {
+                                if( subNode.getNodeName().equals( "definite")) {
                                     if( subNode.getNodeType() == Node.ELEMENT_NODE) {
                                         subElement = (Element) subNode;
 
@@ -356,7 +374,7 @@ public class KVTML2Parser implements ImportExportInterface {
                                     }
                                 }
                                 // indefinite
-                                else if( subNode.getNodeName() == "indefinite") {
+                                else if( subNode.getNodeName().equals( "indefinite")) {
                                     if( subNode.getNodeType() == Node.ELEMENT_NODE) {
                                         subElement = (Element) subNode;
 
@@ -399,20 +417,20 @@ public class KVTML2Parser implements ImportExportInterface {
                             thirdSubNodeList = node.getChildNodes();
 
                             // malefemaledifferent
-                            if( node.getNodeName() == "malefemaledifferent")
+                            if( node.getNodeName().equals( "malefemaledifferent"))
                                 identifier.personalPronouns.maleFemaleDifferent = true;
 
                             // neutralexists
-                            if( node.getNodeName() == "neutralexists")
+                            if( node.getNodeName().equals( "neutralexists"))
                                 identifier.personalPronouns.neutralExists = true;
 
                             // dualexists
-                            if( node.getNodeName() == "dualexists")
+                            if( node.getNodeName().equals( "dualexists"))
                                 identifier.personalPronouns.dualExists = true;
 
                             for( int t = 0; t < thirdSubNodeList.getLength(); t++) {
                                 // singular
-                                if( thirdSubNodeList.item(t).getNodeName() == "singular") {
+                                if( thirdSubNodeList.item(t).getNodeName().equals( "singular")) {
                                     if( thirdSubNodeList.item(t).getNodeType() == Node.ELEMENT_NODE) {
                                         subElement = (Element) thirdSubNodeList.item(t);
 
@@ -458,7 +476,7 @@ public class KVTML2Parser implements ImportExportInterface {
                                     }
                                 }
                                 // dual
-                                else if( thirdSubNodeList.item(t).getNodeName() == "dual") {
+                                else if( thirdSubNodeList.item(t).getNodeName().equals( "dual")) {
                                     if( thirdSubNodeList.item(t).getNodeType() == Node.ELEMENT_NODE) {
                                         subElement = (Element) thirdSubNodeList.item(t);
 
@@ -504,7 +522,7 @@ public class KVTML2Parser implements ImportExportInterface {
                                     }
                                 }
                                 // plural
-                                else if( thirdSubNodeList.item(t).getNodeName() == "plural") {
+                                else if( thirdSubNodeList.item(t).getNodeName().equals( "plural")) {
                                     if( thirdSubNodeList.item(t).getNodeType() == Node.ELEMENT_NODE) {
                                         subElement = (Element) thirdSubNodeList.item(t);
 
@@ -572,26 +590,25 @@ public class KVTML2Parser implements ImportExportInterface {
             entry = new Entry();
 
             // entry
-            if( nodeListEntries.item(temp).getNodeName() == "entry") {
-                secondSubNodeList = nodeListEntries.item(temp).getChildNodes();
+            if( nodeListEntries.item(temp).getNodeName().equals( "entry")) {
+                subNodeList = nodeListEntries.item(temp).getChildNodes();
 
                 // id of entry
                 try {
-                    idResult = Integer.parseInt(secondSubNodeList.item(temp).getAttributes().getNamedItem("id").getTextContent());
-
+                    idResult = Integer.parseInt(nodeListEntries.item(temp).getAttributes().getNamedItem("id").getTextContent());
                 }
                 catch( Exception e) {
                     error++;
                     continue out;
                 }
 
-                second: for( int i = 0; i < secondSubNodeList.getLength(); i++) {
-                    if( secondSubNodeList.item(i).getNodeName() == "translation") {
-                        if( secondSubNodeList.item(i).getNodeType() == Node.ELEMENT_NODE) {
+                second: for( int i = 0; i < subNodeList.getLength(); i++) {
+                    if( subNodeList.item(i).getNodeName().equals( "translation")) {
+                        if( subNodeList.item(i).getNodeType() == Node.ELEMENT_NODE) {
 
                             // id of translation
                             try {
-                                idResult = Integer.parseInt(secondSubNodeList.item(i).getAttributes().getNamedItem("id").getTextContent());
+                                idSubResult = Integer.parseInt(subNodeList.item(i).getAttributes().getNamedItem("id").getTextContent());
                             }
                             catch( Exception e) {
                                 error++;
@@ -599,20 +616,21 @@ public class KVTML2Parser implements ImportExportInterface {
                             }
 
                             translation = new Translation();
-                            element = (Element) secondSubNodeList.item(i);
+                            element = (Element) subNodeList.item(i);
 
                             // text
-                            subNodeList = element.getElementsByTagName("text");
-                            if( subNodeList.getLength() > 0) {
-                                node = subNodeList.item(0);
-                                if( node != null)
+                            secondSubNodeList = element.getElementsByTagName("text");
+                            if( secondSubNodeList.getLength() > 0) {
+                                node = secondSubNodeList.item(0);
+                                if( node != null) {
                                     translation.text = node.getTextContent();
+                                }
                             }
 
                             // grade
-                            subNodeList = element.getElementsByTagName("grade");
-                            if( subNodeList.getLength() > 0) {
-                                node = subNodeList.item(0);
+                            secondSubNodeList = element.getElementsByTagName("grade");
+                            if( secondSubNodeList.getLength() > 0) {
+                                node = secondSubNodeList.item(0);
                                 if( node != null) {
 								
 								
@@ -629,14 +647,14 @@ public class KVTML2Parser implements ImportExportInterface {
 								
 								
 								
-								
+
                                     if( node.getNodeType() == Node.ELEMENT_NODE) {
                                         subElement = (Element) node;
 
                                         // currentgrade
-                                        secondSubNodeList = subElement.getElementsByTagName("currentgrade");
-                                        if( secondSubNodeList.getLength() > 0) {
-                                            subNode = secondSubNodeList.item(0);
+                                        thirdSubNodeList = subElement.getElementsByTagName("currentgrade");
+                                        if( thirdSubNodeList.getLength() > 0) {
+                                            subNode = thirdSubNodeList.item(0);
                                             if( subNode != null) {
                                                 try {
                                                     translation.grade.currentGrade = Integer.parseInt(subNode.getTextContent());
@@ -648,9 +666,9 @@ public class KVTML2Parser implements ImportExportInterface {
                                         }
 
                                         // count
-                                        secondSubNodeList = subElement.getElementsByTagName("count");
-                                        if( secondSubNodeList.getLength() > 0) {
-                                            subNode = secondSubNodeList.item(0);
+                                        thirdSubNodeList = subElement.getElementsByTagName("count");
+                                        if( thirdSubNodeList.getLength() > 0) {
+                                            subNode = thirdSubNodeList.item(0);
                                             if( subNode != null) {
                                                 try {
                                                     translation.grade.count = Integer.parseInt(subNode.getTextContent());
@@ -662,9 +680,9 @@ public class KVTML2Parser implements ImportExportInterface {
                                         }
 
                                         // errorcount
-                                        secondSubNodeList = subElement.getElementsByTagName("errorcount");
-                                        if( secondSubNodeList.getLength() > 0) {
-                                            subNode = secondSubNodeList.item(0);
+                                        thirdSubNodeList = subElement.getElementsByTagName("errorcount");
+                                        if( thirdSubNodeList.getLength() > 0) {
+                                            subNode = thirdSubNodeList.item(0);
                                             if( subNode != null) {
                                                 try {
                                                     translation.grade.errorCount = Integer.parseInt(subNode.getTextContent());
@@ -675,9 +693,9 @@ public class KVTML2Parser implements ImportExportInterface {
                                             }
                                         }
                                         // date
-                                        secondSubNodeList = subElement.getElementsByTagName("date");
-                                        if( secondSubNodeList.getLength() > 0) {
-                                            subNode = secondSubNodeList.item(0);
+                                        thirdSubNodeList = subElement.getElementsByTagName("date");
+                                        if( thirdSubNodeList.getLength() > 0) {
+                                            subNode = thirdSubNodeList.item(0);
                                             if( subNode != null) {
                                                 try {
                                                     translation.grade.date = Date.valueOf(subNode.getTextContent());
@@ -692,40 +710,40 @@ public class KVTML2Parser implements ImportExportInterface {
                             }
 
                             // conjugation
-                            subNodeList = element.getElementsByTagName("conjugation");
-                            if( subNodeList.getLength() > 0) {
-                                node = subNodeList.item(0);
+                            secondSubNodeList = element.getElementsByTagName("conjugation");
+                            if( secondSubNodeList.getLength() > 0) {
+                                node = secondSubNodeList.item(0);
                                 if( node != null) {
                                     if( node.getNodeType() == Node.ELEMENT_NODE) {
                                         subElement = (Element) node;
 
                                         // tense
-                                        secondSubNodeList = subElement.getElementsByTagName("tense");
-                                        if( secondSubNodeList.getLength() > 0) {
-                                            subNode = secondSubNodeList.item(0);
+                                        thirdSubNodeList = subElement.getElementsByTagName("tense");
+                                        if( thirdSubNodeList.getLength() > 0) {
+                                            subNode = thirdSubNodeList.item(0);
                                             if( subNode != null)
                                                 translation.conjugation.tense = subNode.getTextContent();
                                         }
 
                                         // singular
-                                        secondSubNodeList = subElement.getElementsByTagName("singular");
-                                        if( secondSubNodeList.getLength() > 0) {
-                                            subNode = secondSubNodeList.item(0);
+                                        thirdSubNodeList = subElement.getElementsByTagName("singular");
+                                        if( thirdSubNodeList.getLength() > 0) {
+                                            subNode = thirdSubNodeList.item(0);
                                             if( subNode != null) {
                                                 if( subNode.getNodeType() == Node.ELEMENT_NODE) {
                                                     secondSubElement = (Element) subNode;
 
                                                     // firstperson
-                                                    thirdSubNodeList = subElement.getElementsByTagName("firstperson");
-                                                    if( thirdSubNodeList.getLength() > 0) {
-                                                        secondNode = thirdSubNodeList.item(0);
+                                                    fourthSubNodeList = subElement.getElementsByTagName("firstperson");
+                                                    if( fourthSubNodeList.getLength() > 0) {
+                                                        secondNode = fourthSubNodeList.item(0);
                                                         if( secondNode != null) {
                                                             if( secondNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                 secondSubElement = (Element) secondNode;
 
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("text");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("text");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null)
                                                                         translation.conjugation.singular.firstPerson = thirdNode.getTextContent();
                                                                 }
@@ -734,16 +752,16 @@ public class KVTML2Parser implements ImportExportInterface {
                                                     }
 
                                                     // secondperson
-                                                    thirdSubNodeList = subElement.getElementsByTagName("secondperson");
-                                                    if( thirdSubNodeList.getLength() > 0) {
-                                                        secondNode = thirdSubNodeList.item(0);
+                                                    fourthSubNodeList = subElement.getElementsByTagName("secondperson");
+                                                    if( fourthSubNodeList.getLength() > 0) {
+                                                        secondNode = fourthSubNodeList.item(0);
                                                         if( secondNode != null) {
                                                             if( secondNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                 secondSubElement = (Element) secondNode;
 
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("text");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("text");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null)
                                                                         translation.conjugation.singular.secondPerson = thirdNode.getTextContent();
                                                                 }
@@ -752,16 +770,16 @@ public class KVTML2Parser implements ImportExportInterface {
                                                     }
 
                                                     // thirdpersonneutralcommon
-                                                    thirdSubNodeList = subElement.getElementsByTagName("thirdpersonneutralcommon");
-                                                    if( thirdSubNodeList.getLength() > 0) {
-                                                        secondNode = thirdSubNodeList.item(0);
+                                                    fourthSubNodeList = subElement.getElementsByTagName("thirdpersonneutralcommon");
+                                                    if( fourthSubNodeList.getLength() > 0) {
+                                                        secondNode = fourthSubNodeList.item(0);
                                                         if( secondNode != null) {
                                                             if( secondNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                 secondSubElement = (Element) secondNode;
 
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("text");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("text");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null)
                                                                         translation.conjugation.singular.thirdPersonNeutralCommon = thirdNode.getTextContent();
                                                                 }
@@ -773,24 +791,24 @@ public class KVTML2Parser implements ImportExportInterface {
                                         }
 
                                         // dual
-                                        secondSubNodeList = subElement.getElementsByTagName("dual");
-                                        if( secondSubNodeList.getLength() > 0) {
-                                            subNode = secondSubNodeList.item(0);
+                                        thirdSubNodeList = subElement.getElementsByTagName("dual");
+                                        if( thirdSubNodeList.getLength() > 0) {
+                                            subNode = thirdSubNodeList.item(0);
                                             if( subNode != null) {
                                                 if( subNode.getNodeType() == Node.ELEMENT_NODE) {
                                                     secondSubElement = (Element) subNode;
 
                                                     // firstperson
-                                                    thirdSubNodeList = subElement.getElementsByTagName("firstperson");
-                                                    if( thirdSubNodeList.getLength() > 0) {
-                                                        secondNode = thirdSubNodeList.item(0);
+                                                    fourthSubNodeList = subElement.getElementsByTagName("firstperson");
+                                                    if( fourthSubNodeList.getLength() > 0) {
+                                                        secondNode = fourthSubNodeList.item(0);
                                                         if( secondNode != null) {
                                                             if( secondNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                 secondSubElement = (Element) secondNode;
 
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("text");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("text");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null)
                                                                         translation.conjugation.dual.firstPerson = thirdNode.getTextContent();
                                                                 }
@@ -799,16 +817,16 @@ public class KVTML2Parser implements ImportExportInterface {
                                                     }
 
                                                     // secondperson
-                                                    thirdSubNodeList = subElement.getElementsByTagName("secondperson");
-                                                    if( thirdSubNodeList.getLength() > 0) {
-                                                        secondNode = thirdSubNodeList.item(0);
+                                                    fourthSubNodeList = subElement.getElementsByTagName("secondperson");
+                                                    if( fourthSubNodeList.getLength() > 0) {
+                                                        secondNode = fourthSubNodeList.item(0);
                                                         if( secondNode != null) {
                                                             if( secondNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                 secondSubElement = (Element) secondNode;
 
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("text");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("text");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null)
                                                                         translation.conjugation.dual.secondPerson = thirdNode.getTextContent();
                                                                 }
@@ -817,16 +835,16 @@ public class KVTML2Parser implements ImportExportInterface {
                                                     }
 
                                                     // thirdpersonneutralcommon
-                                                    thirdSubNodeList = subElement.getElementsByTagName("thirdpersonneutralcommon");
-                                                    if( thirdSubNodeList.getLength() > 0) {
-                                                        secondNode = thirdSubNodeList.item(0);
+                                                    fourthSubNodeList = subElement.getElementsByTagName("thirdpersonneutralcommon");
+                                                    if( fourthSubNodeList.getLength() > 0) {
+                                                        secondNode = fourthSubNodeList.item(0);
                                                         if( secondNode != null) {
                                                             if( secondNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                 secondSubElement = (Element) secondNode;
 
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("text");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("text");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null)
                                                                         translation.conjugation.dual.thirdPersonNeutralCommon = thirdNode.getTextContent();
                                                                 }
@@ -838,24 +856,24 @@ public class KVTML2Parser implements ImportExportInterface {
                                         }
 
                                         // plural
-                                        secondSubNodeList = subElement.getElementsByTagName("plural");
-                                        if( secondSubNodeList.getLength() > 0) {
-                                            subNode = secondSubNodeList.item(0);
+                                        thirdSubNodeList = subElement.getElementsByTagName("plural");
+                                        if( thirdSubNodeList.getLength() > 0) {
+                                            subNode = thirdSubNodeList.item(0);
                                             if( subNode != null) {
                                                 if( subNode.getNodeType() == Node.ELEMENT_NODE) {
                                                     secondSubElement = (Element) subNode;
 
                                                     // firstperson
-                                                    thirdSubNodeList = subElement.getElementsByTagName("firstperson");
-                                                    if( thirdSubNodeList.getLength() > 0) {
-                                                        secondNode = thirdSubNodeList.item(0);
+                                                    fourthSubNodeList = subElement.getElementsByTagName("firstperson");
+                                                    if( fourthSubNodeList.getLength() > 0) {
+                                                        secondNode = fourthSubNodeList.item(0);
                                                         if( secondNode != null) {
                                                             if( secondNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                 secondSubElement = (Element) secondNode;
 
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("text");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("text");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null)
                                                                         translation.conjugation.plural.firstPerson = thirdNode.getTextContent();
                                                                 }
@@ -864,16 +882,16 @@ public class KVTML2Parser implements ImportExportInterface {
                                                     }
 
                                                     // secondperson
-                                                    thirdSubNodeList = subElement.getElementsByTagName("secondperson");
-                                                    if( thirdSubNodeList.getLength() > 0) {
-                                                        secondNode = thirdSubNodeList.item(0);
+                                                    fourthSubNodeList = subElement.getElementsByTagName("secondperson");
+                                                    if( fourthSubNodeList.getLength() > 0) {
+                                                        secondNode = fourthSubNodeList.item(0);
                                                         if( secondNode != null) {
                                                             if( secondNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                 secondSubElement = (Element) secondNode;
 
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("text");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("text");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null)
                                                                         translation.conjugation.plural.secondPerson = thirdNode.getTextContent();
                                                                 }
@@ -882,16 +900,16 @@ public class KVTML2Parser implements ImportExportInterface {
                                                     }
 
                                                     // thirdpersonneutralcommon
-                                                    thirdSubNodeList = subElement.getElementsByTagName("thirdpersonneutralcommon");
-                                                    if( thirdSubNodeList.getLength() > 0) {
-                                                        secondNode = thirdSubNodeList.item(0);
+                                                    fourthSubNodeList = subElement.getElementsByTagName("thirdpersonneutralcommon");
+                                                    if( fourthSubNodeList.getLength() > 0) {
+                                                        secondNode = fourthSubNodeList.item(0);
                                                         if( secondNode != null) {
                                                             if( secondNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                 secondSubElement = (Element) secondNode;
 
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("text");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("text");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null)
                                                                         translation.conjugation.plural.thirdPersonNeutralCommon = thirdNode.getTextContent();
                                                                 }
@@ -906,40 +924,40 @@ public class KVTML2Parser implements ImportExportInterface {
                             }
 
                             // declension
-                            subNodeList = element.getElementsByTagName("declension");
-                            if( subNodeList.getLength() > 0) {
-                                node = subNodeList.item(0);
+                            secondSubNodeList = element.getElementsByTagName("declension");
+                            if( secondSubNodeList.getLength() > 0) {
+                                node = secondSubNodeList.item(0);
                                 if( node != null) {
                                     if( node.getNodeType() == Node.ELEMENT_NODE) {
                                         subElement = (Element) node;
 
                                         // female
-                                        secondSubNodeList = subElement.getElementsByTagName("female");
-                                        if( secondSubNodeList.getLength() > 0) {
-                                            subNode = secondSubNodeList.item(0);
+                                        thirdSubNodeList = subElement.getElementsByTagName("female");
+                                        if( thirdSubNodeList.getLength() > 0) {
+                                            subNode = thirdSubNodeList.item(0);
                                             if( subNode != null) {
                                                 if( subNode.getNodeType() == Node.ELEMENT_NODE) {
                                                     secondSubElement = (Element) subNode;
 
                                                     // singular
-                                                    thirdSubNodeList = subElement.getElementsByTagName("singular");
-                                                    if( thirdSubNodeList.getLength() > 0) {
-                                                        secondNode = thirdSubNodeList.item(0);
+                                                    fourthSubNodeList = subElement.getElementsByTagName("singular");
+                                                    if( fourthSubNodeList.getLength() > 0) {
+                                                        secondNode = fourthSubNodeList.item(0);
                                                         if( secondNode != null) {
                                                             if( secondNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                 secondSubElement = (Element) secondNode;
 
                                                                 // nominative
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("nominative");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("nominative");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null) {
                                                                         if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                             thirdSubElement = (Element) thirdNode;
 
-                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
-                                                                            if( fithSubNodeList.getLength() > 0) {
-                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                            sixthSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( sixthSubNodeList.getLength() > 0) {
+                                                                                fourthNode = sixthSubNodeList.item(0);
                                                                                 if( fourthNode != null)
                                                                                     translation.declension.femaleList.singular.nominative = fourthNode.getTextContent();
                                                                             }
@@ -948,16 +966,16 @@ public class KVTML2Parser implements ImportExportInterface {
                                                                 }
 
                                                                 // genitive
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("genitive");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("genitive");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null) {
                                                                         if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                             thirdSubElement = (Element) thirdNode;
 
-                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
-                                                                            if( fithSubNodeList.getLength() > 0) {
-                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                            sixthSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( sixthSubNodeList.getLength() > 0) {
+                                                                                fourthNode = sixthSubNodeList.item(0);
                                                                                 if( fourthNode != null)
                                                                                     translation.declension.femaleList.singular.genitive = fourthNode.getTextContent();
                                                                             }
@@ -966,16 +984,16 @@ public class KVTML2Parser implements ImportExportInterface {
                                                                 }
 
                                                                 // dative
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("dative");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("dative");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null) {
                                                                         if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                             thirdSubElement = (Element) thirdNode;
 
-                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
-                                                                            if( fithSubNodeList.getLength() > 0) {
-                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                            sixthSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( sixthSubNodeList.getLength() > 0) {
+                                                                                fourthNode = sixthSubNodeList.item(0);
                                                                                 if( fourthNode != null)
                                                                                     translation.declension.femaleList.singular.dative = fourthNode.getTextContent();
                                                                             }
@@ -984,16 +1002,16 @@ public class KVTML2Parser implements ImportExportInterface {
                                                                 }
 
                                                                 // accusative
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("accusative");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("accusative");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null) {
                                                                         if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                             thirdSubElement = (Element) thirdNode;
 
-                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
-                                                                            if( fithSubNodeList.getLength() > 0) {
-                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                            sixthSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( sixthSubNodeList.getLength() > 0) {
+                                                                                fourthNode = sixthSubNodeList.item(0);
                                                                                 if( fourthNode != null) {
                                                                                     translation.declension.femaleList.singular.accusative = fourthNode.getTextContent();
                                                                                 }
@@ -1003,16 +1021,16 @@ public class KVTML2Parser implements ImportExportInterface {
                                                                 }
 
                                                                 // ablative
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("ablative");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("ablative");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null) {
                                                                         if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                             thirdSubElement = (Element) thirdNode;
 
-                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
-                                                                            if( fithSubNodeList.getLength() > 0) {
-                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                            sixthSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( sixthSubNodeList.getLength() > 0) {
+                                                                                fourthNode = sixthSubNodeList.item(0);
                                                                                 if( fourthNode != null)
                                                                                     translation.declension.femaleList.singular.ablative = fourthNode.getTextContent();
                                                                             }
@@ -1021,16 +1039,16 @@ public class KVTML2Parser implements ImportExportInterface {
                                                                 }
 
                                                                 // locative
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("locative");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("locative");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null) {
                                                                         if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                             thirdSubElement = (Element) thirdNode;
 
-                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
-                                                                            if( fithSubNodeList.getLength() > 0) {
-                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                            sixthSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( sixthSubNodeList.getLength() > 0) {
+                                                                                fourthNode = sixthSubNodeList.item(0);
                                                                                 if( fourthNode != null)
                                                                                     translation.declension.femaleList.singular.locative = fourthNode.getTextContent();
                                                                             }
@@ -1039,16 +1057,16 @@ public class KVTML2Parser implements ImportExportInterface {
                                                                 }
 
                                                                 // vocative
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("vocative");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("vocative");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null) {
                                                                         if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                             thirdSubElement = (Element) thirdNode;
 
-                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
-                                                                            if( fithSubNodeList.getLength() > 0) {
-                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                            sixthSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( sixthSubNodeList.getLength() > 0) {
+                                                                                fourthNode = sixthSubNodeList.item(0);
                                                                                 if( fourthNode != null)
                                                                                     translation.declension.femaleList.singular.vocative = fourthNode.getTextContent();
                                                                             }
@@ -1060,24 +1078,24 @@ public class KVTML2Parser implements ImportExportInterface {
                                                     }
 
                                                     // dual
-                                                    thirdSubNodeList = subElement.getElementsByTagName("dual");
-                                                    if( thirdSubNodeList.getLength() > 0) {
-                                                        secondNode = thirdSubNodeList.item(0);
+                                                    fourthSubNodeList = subElement.getElementsByTagName("dual");
+                                                    if( fourthSubNodeList.getLength() > 0) {
+                                                        secondNode = fourthSubNodeList.item(0);
                                                         if( secondNode != null) {
                                                             if( secondNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                 secondSubElement = (Element) secondNode;
 
                                                                 // nominative
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("nominative");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("nominative");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null) {
                                                                         if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                             thirdSubElement = (Element) thirdNode;
 
-                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
-                                                                            if( fithSubNodeList.getLength() > 0) {
-                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                            sixthSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( sixthSubNodeList.getLength() > 0) {
+                                                                                fourthNode = sixthSubNodeList.item(0);
                                                                                 if( fourthNode != null)
                                                                                     translation.declension.femaleList.dual.nominative = fourthNode.getTextContent();
                                                                             }
@@ -1086,16 +1104,16 @@ public class KVTML2Parser implements ImportExportInterface {
                                                                 }
 
                                                                 // genitive
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("genitive");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("genitive");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null) {
                                                                         if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                             thirdSubElement = (Element) thirdNode;
 
-                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
-                                                                            if( fithSubNodeList.getLength() > 0) {
-                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                            sixthSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( sixthSubNodeList.getLength() > 0) {
+                                                                                fourthNode = sixthSubNodeList.item(0);
                                                                                 if( fourthNode != null)
                                                                                     translation.declension.femaleList.dual.genitive = fourthNode.getTextContent();
                                                                             }
@@ -1104,16 +1122,16 @@ public class KVTML2Parser implements ImportExportInterface {
                                                                 }
 
                                                                 // dative
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("dative");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("dative");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null) {
                                                                         if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                             thirdSubElement = (Element) thirdNode;
 
-                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
-                                                                            if( fithSubNodeList.getLength() > 0) {
-                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                            sixthSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( sixthSubNodeList.getLength() > 0) {
+                                                                                fourthNode = sixthSubNodeList.item(0);
                                                                                 if( fourthNode != null)
                                                                                     translation.declension.femaleList.dual.dative = fourthNode.getTextContent();
                                                                             }
@@ -1122,16 +1140,16 @@ public class KVTML2Parser implements ImportExportInterface {
                                                                 }
 
                                                                 // accusative
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("accusative");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("accusative");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null) {
                                                                         if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                             thirdSubElement = (Element) thirdNode;
 
-                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
-                                                                            if( fithSubNodeList.getLength() > 0) {
-                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                            sixthSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( sixthSubNodeList.getLength() > 0) {
+                                                                                fourthNode = sixthSubNodeList.item(0);
                                                                                 if( fourthNode != null)
                                                                                     translation.declension.femaleList.dual.accusative = fourthNode.getTextContent();
                                                                             }
@@ -1140,16 +1158,16 @@ public class KVTML2Parser implements ImportExportInterface {
                                                                 }
 
                                                                 // ablative
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("ablative");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("ablative");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null) {
                                                                         if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                             thirdSubElement = (Element) thirdNode;
 
-                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
-                                                                            if( fithSubNodeList.getLength() > 0) {
-                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                            sixthSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( sixthSubNodeList.getLength() > 0) {
+                                                                                fourthNode = sixthSubNodeList.item(0);
                                                                                 if( fourthNode != null)
                                                                                     translation.declension.femaleList.dual.ablative = fourthNode.getTextContent();
                                                                             }
@@ -1158,16 +1176,16 @@ public class KVTML2Parser implements ImportExportInterface {
                                                                 }
 
                                                                 // locative
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("locative");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("locative");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null) {
                                                                         if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                             thirdSubElement = (Element) thirdNode;
 
-                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
-                                                                            if( fithSubNodeList.getLength() > 0) {
-                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                            sixthSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( sixthSubNodeList.getLength() > 0) {
+                                                                                fourthNode = sixthSubNodeList.item(0);
                                                                                 if( fourthNode != null)
                                                                                     translation.declension.femaleList.dual.locative = fourthNode.getTextContent();
                                                                             }
@@ -1176,16 +1194,16 @@ public class KVTML2Parser implements ImportExportInterface {
                                                                 }
 
                                                                 // vocative
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("vocative");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("vocative");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null) {
                                                                         if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                             thirdSubElement = (Element) thirdNode;
 
-                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
-                                                                            if( fithSubNodeList.getLength() > 0) {
-                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                            sixthSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( sixthSubNodeList.getLength() > 0) {
+                                                                                fourthNode = sixthSubNodeList.item(0);
                                                                                 if( fourthNode != null)
                                                                                     translation.declension.femaleList.dual.vocative = fourthNode.getTextContent();
                                                                             }
@@ -1197,24 +1215,24 @@ public class KVTML2Parser implements ImportExportInterface {
                                                     }
 
                                                     // plural
-                                                    thirdSubNodeList = subElement.getElementsByTagName("plural");
-                                                    if( thirdSubNodeList.getLength() > 0) {
-                                                        secondNode = thirdSubNodeList.item(0);
+                                                    fourthSubNodeList = subElement.getElementsByTagName("plural");
+                                                    if( fourthSubNodeList.getLength() > 0) {
+                                                        secondNode = fourthSubNodeList.item(0);
                                                         if( secondNode != null) {
                                                             if( secondNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                 secondSubElement = (Element) secondNode;
 
                                                                 // nominative
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("nominative");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("nominative");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null) {
                                                                         if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                             thirdSubElement = (Element) thirdNode;
 
-                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
-                                                                            if( fithSubNodeList.getLength() > 0) {
-                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                            sixthSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( sixthSubNodeList.getLength() > 0) {
+                                                                                fourthNode = sixthSubNodeList.item(0);
                                                                                 if( fourthNode != null)
                                                                                     translation.declension.femaleList.plural.nominative = fourthNode.getTextContent();
                                                                             }
@@ -1223,16 +1241,16 @@ public class KVTML2Parser implements ImportExportInterface {
                                                                 }
 
                                                                 // genitive
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("genitive");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("genitive");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null) {
                                                                         if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                             thirdSubElement = (Element) thirdNode;
 
-                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
-                                                                            if( fithSubNodeList.getLength() > 0) {
-                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                            sixthSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( sixthSubNodeList.getLength() > 0) {
+                                                                                fourthNode = sixthSubNodeList.item(0);
                                                                                 if( fourthNode != null)
                                                                                     translation.declension.femaleList.plural.genitive = fourthNode.getTextContent();
                                                                             }
@@ -1241,16 +1259,16 @@ public class KVTML2Parser implements ImportExportInterface {
                                                                 }
 
                                                                 // dative
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("dative");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("dative");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null) {
                                                                         if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                             thirdSubElement = (Element) thirdNode;
 
-                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
-                                                                            if( fithSubNodeList.getLength() > 0) {
-                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                            sixthSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( sixthSubNodeList.getLength() > 0) {
+                                                                                fourthNode = sixthSubNodeList.item(0);
                                                                                 if( fourthNode != null)
                                                                                     translation.declension.femaleList.plural.dative = fourthNode.getTextContent();
                                                                             }
@@ -1259,16 +1277,16 @@ public class KVTML2Parser implements ImportExportInterface {
                                                                 }
 
                                                                 // accusative
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("accusative");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("accusative");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null) {
                                                                         if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                             thirdSubElement = (Element) thirdNode;
 
-                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
-                                                                            if( fithSubNodeList.getLength() > 0) {
-                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                            sixthSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( sixthSubNodeList.getLength() > 0) {
+                                                                                fourthNode = sixthSubNodeList.item(0);
                                                                                 if( fourthNode != null)
                                                                                     translation.declension.femaleList.plural.accusative = fourthNode.getTextContent();
                                                                             }
@@ -1277,16 +1295,16 @@ public class KVTML2Parser implements ImportExportInterface {
                                                                 }
 
                                                                 // ablative
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("ablative");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("ablative");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null) {
                                                                         if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                             thirdSubElement = (Element) thirdNode;
 
-                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
-                                                                            if( fithSubNodeList.getLength() > 0) {
-                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                            sixthSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( sixthSubNodeList.getLength() > 0) {
+                                                                                fourthNode = sixthSubNodeList.item(0);
                                                                                 if( fourthNode != null)
                                                                                     translation.declension.femaleList.plural.ablative = fourthNode.getTextContent();
                                                                             }
@@ -1295,16 +1313,16 @@ public class KVTML2Parser implements ImportExportInterface {
                                                                 }
 
                                                                 // locative
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("locative");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("locative");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null) {
                                                                         if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                             thirdSubElement = (Element) thirdNode;
 
-                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
-                                                                            if( fithSubNodeList.getLength() > 0) {
-                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                            sixthSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( sixthSubNodeList.getLength() > 0) {
+                                                                                fourthNode = sixthSubNodeList.item(0);
                                                                                 if( fourthNode != null)
                                                                                     translation.declension.femaleList.plural.locative = fourthNode.getTextContent();
                                                                             }
@@ -1313,16 +1331,16 @@ public class KVTML2Parser implements ImportExportInterface {
                                                                 }
 
                                                                 // vocative
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("vocative");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("vocative");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null) {
                                                                         if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                             thirdSubElement = (Element) thirdNode;
 
-                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
-                                                                            if( fithSubNodeList.getLength() > 0) {
-                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                            sixthSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( sixthSubNodeList.getLength() > 0) {
+                                                                                fourthNode = sixthSubNodeList.item(0);
                                                                                 if( fourthNode != null)
                                                                                     translation.declension.femaleList.plural.vocative = fourthNode.getTextContent();
                                                                             }
@@ -1337,32 +1355,32 @@ public class KVTML2Parser implements ImportExportInterface {
                                         }
 
                                         // male
-                                        secondSubNodeList = subElement.getElementsByTagName("male");
-                                        if( secondSubNodeList.getLength() > 0) {
-                                            subNode = secondSubNodeList.item(0);
+                                        thirdSubNodeList = subElement.getElementsByTagName("male");
+                                        if( thirdSubNodeList.getLength() > 0) {
+                                            subNode = thirdSubNodeList.item(0);
                                             if( subNode != null) {
                                                 if( subNode.getNodeType() == Node.ELEMENT_NODE) {
                                                     secondSubElement = (Element) subNode;
 
                                                     // singular
-                                                    thirdSubNodeList = subElement.getElementsByTagName("singular");
-                                                    if( thirdSubNodeList.getLength() > 0) {
-                                                        secondNode = thirdSubNodeList.item(0);
+                                                    fourthSubNodeList = subElement.getElementsByTagName("singular");
+                                                    if( fourthSubNodeList.getLength() > 0) {
+                                                        secondNode = fourthSubNodeList.item(0);
                                                         if( secondNode != null) {
                                                             if( secondNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                 secondSubElement = (Element) secondNode;
 
                                                                 // nominative
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("nominative");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("nominative");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null) {
                                                                         if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                             thirdSubElement = (Element) thirdNode;
 
-                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
-                                                                            if( fithSubNodeList.getLength() > 0) {
-                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                            sixthSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( sixthSubNodeList.getLength() > 0) {
+                                                                                fourthNode = sixthSubNodeList.item(0);
                                                                                 if( fourthNode != null)
                                                                                     translation.declension.maleList.singular.nominative = fourthNode.getTextContent();
                                                                             }
@@ -1371,16 +1389,16 @@ public class KVTML2Parser implements ImportExportInterface {
                                                                 }
 
                                                                 // genitive
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("genitive");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("genitive");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null) {
                                                                         if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                             thirdSubElement = (Element) thirdNode;
 
-                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
-                                                                            if( fithSubNodeList.getLength() > 0) {
-                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                            sixthSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( sixthSubNodeList.getLength() > 0) {
+                                                                                fourthNode = sixthSubNodeList.item(0);
                                                                                 if( fourthNode != null)
                                                                                     translation.declension.maleList.singular.genitive = fourthNode.getTextContent();
                                                                             }
@@ -1389,16 +1407,16 @@ public class KVTML2Parser implements ImportExportInterface {
                                                                 }
 
                                                                 // dative
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("dative");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("dative");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null) {
                                                                         if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                             thirdSubElement = (Element) thirdNode;
 
-                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
-                                                                            if( fithSubNodeList.getLength() > 0) {
-                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                            sixthSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( sixthSubNodeList.getLength() > 0) {
+                                                                                fourthNode = sixthSubNodeList.item(0);
                                                                                 if( fourthNode != null)
                                                                                     translation.declension.maleList.singular.dative = fourthNode.getTextContent();
                                                                             }
@@ -1407,16 +1425,16 @@ public class KVTML2Parser implements ImportExportInterface {
                                                                 }
 
                                                                 // accusative
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("accusative");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("accusative");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null) {
                                                                         if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                             thirdSubElement = (Element) thirdNode;
 
-                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
-                                                                            if( fithSubNodeList.getLength() > 0) {
-                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                            sixthSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( sixthSubNodeList.getLength() > 0) {
+                                                                                fourthNode = sixthSubNodeList.item(0);
                                                                                 if( fourthNode != null)
                                                                                     translation.declension.maleList.singular.accusative = fourthNode.getTextContent();
                                                                             }
@@ -1425,16 +1443,16 @@ public class KVTML2Parser implements ImportExportInterface {
                                                                 }
 
                                                                 // ablative
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("ablative");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("ablative");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null) {
                                                                         if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                             thirdSubElement = (Element) thirdNode;
 
-                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
-                                                                            if( fithSubNodeList.getLength() > 0) {
-                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                            sixthSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( sixthSubNodeList.getLength() > 0) {
+                                                                                fourthNode = sixthSubNodeList.item(0);
                                                                                 if( fourthNode != null)
                                                                                     translation.declension.maleList.singular.ablative = fourthNode.getTextContent();
                                                                             }
@@ -1443,16 +1461,16 @@ public class KVTML2Parser implements ImportExportInterface {
                                                                 }
 
                                                                 // locative
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("locative");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("locative");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null) {
                                                                         if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                             thirdSubElement = (Element) thirdNode;
 
-                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
-                                                                            if( fithSubNodeList.getLength() > 0) {
-                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                            sixthSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( sixthSubNodeList.getLength() > 0) {
+                                                                                fourthNode = sixthSubNodeList.item(0);
                                                                                 if( fourthNode != null)
                                                                                     translation.declension.maleList.singular.locative = fourthNode.getTextContent();
                                                                             }
@@ -1461,16 +1479,16 @@ public class KVTML2Parser implements ImportExportInterface {
                                                                 }
 
                                                                 // vocative
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("vocative");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("vocative");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null) {
                                                                         if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                             thirdSubElement = (Element) thirdNode;
 
-                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
-                                                                            if( fithSubNodeList.getLength() > 0) {
-                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                            sixthSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( sixthSubNodeList.getLength() > 0) {
+                                                                                fourthNode = sixthSubNodeList.item(0);
                                                                                 if( fourthNode != null)
                                                                                     translation.declension.maleList.singular.vocative = fourthNode.getTextContent();
                                                                             }
@@ -1759,32 +1777,32 @@ public class KVTML2Parser implements ImportExportInterface {
                                         }
 
                                         // neutral
-                                        secondSubNodeList = subElement.getElementsByTagName("neutral");
-                                        if( secondSubNodeList.getLength() > 0) {
-                                            subNode = secondSubNodeList.item(0);
+                                        thirdSubNodeList = subElement.getElementsByTagName("neutral");
+                                        if( thirdSubNodeList.getLength() > 0) {
+                                            subNode = thirdSubNodeList.item(0);
                                             if( subNode != null) {
                                                 if( subNode.getNodeType() == Node.ELEMENT_NODE) {
                                                     secondSubElement = (Element) subNode;
 
                                                     // singular
-                                                    thirdSubNodeList = subElement.getElementsByTagName("singular");
-                                                    if( thirdSubNodeList.getLength() > 0) {
-                                                        secondNode = thirdSubNodeList.item(0);
+                                                    fourthSubNodeList = subElement.getElementsByTagName("singular");
+                                                    if( fourthSubNodeList.getLength() > 0) {
+                                                        secondNode = fourthSubNodeList.item(0);
                                                         if( secondNode != null) {
                                                             if( secondNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                 secondSubElement = (Element) secondNode;
 
                                                                 // nominative
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("nominative");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("nominative");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null) {
                                                                         if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                             thirdSubElement = (Element) thirdNode;
 
-                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
-                                                                            if( fithSubNodeList.getLength() > 0) {
-                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                            sixthSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( sixthSubNodeList.getLength() > 0) {
+                                                                                fourthNode = sixthSubNodeList.item(0);
                                                                                 if( fourthNode != null)
                                                                                     translation.declension.neutralList.singular.nominative = fourthNode.getTextContent();
                                                                             }
@@ -1793,16 +1811,16 @@ public class KVTML2Parser implements ImportExportInterface {
                                                                 }
 
                                                                 // genitive
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("genitive");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("genitive");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null) {
                                                                         if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                             thirdSubElement = (Element) thirdNode;
 
-                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
-                                                                            if( fithSubNodeList.getLength() > 0) {
-                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                            sixthSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( sixthSubNodeList.getLength() > 0) {
+                                                                                fourthNode = sixthSubNodeList.item(0);
                                                                                 if( fourthNode != null)
                                                                                     translation.declension.neutralList.singular.genitive = fourthNode.getTextContent();
                                                                             }
@@ -1811,16 +1829,16 @@ public class KVTML2Parser implements ImportExportInterface {
                                                                 }
 
                                                                 // dative
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("dative");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("dative");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null) {
                                                                         if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                             thirdSubElement = (Element) thirdNode;
 
-                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
-                                                                            if( fithSubNodeList.getLength() > 0) {
-                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                            sixthSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( sixthSubNodeList.getLength() > 0) {
+                                                                                fourthNode = sixthSubNodeList.item(0);
                                                                                 if( fourthNode != null)
                                                                                     translation.declension.neutralList.singular.dative = fourthNode.getTextContent();
                                                                             }
@@ -1829,16 +1847,16 @@ public class KVTML2Parser implements ImportExportInterface {
                                                                 }
 
                                                                 // accusative
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("accusative");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("accusative");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null) {
                                                                         if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                             thirdSubElement = (Element) thirdNode;
 
-                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
-                                                                            if( fithSubNodeList.getLength() > 0) {
-                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                            sixthSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( sixthSubNodeList.getLength() > 0) {
+                                                                                fourthNode = sixthSubNodeList.item(0);
                                                                                 if( fourthNode != null)
                                                                                     translation.declension.neutralList.singular.accusative = fourthNode.getTextContent();
                                                                             }
@@ -1847,16 +1865,16 @@ public class KVTML2Parser implements ImportExportInterface {
                                                                 }
 
                                                                 // ablative
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("ablative");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("ablative");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null) {
                                                                         if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                             thirdSubElement = (Element) thirdNode;
 
-                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
-                                                                            if( fithSubNodeList.getLength() > 0) {
-                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                            sixthSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( sixthSubNodeList.getLength() > 0) {
+                                                                                fourthNode = sixthSubNodeList.item(0);
                                                                                 if( fourthNode != null)
                                                                                     translation.declension.neutralList.singular.ablative = fourthNode.getTextContent();
                                                                             }
@@ -1865,16 +1883,16 @@ public class KVTML2Parser implements ImportExportInterface {
                                                                 }
 
                                                                 // locative
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("locative");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("locative");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null) {
                                                                         if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                             thirdSubElement = (Element) thirdNode;
 
-                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
-                                                                            if( fithSubNodeList.getLength() > 0) {
-                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                            sixthSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( sixthSubNodeList.getLength() > 0) {
+                                                                                fourthNode = sixthSubNodeList.item(0);
                                                                                 if( fourthNode != null)
                                                                                     translation.declension.neutralList.singular.locative = fourthNode.getTextContent();
                                                                             }
@@ -1883,16 +1901,16 @@ public class KVTML2Parser implements ImportExportInterface {
                                                                 }
 
                                                                 // vocative
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("vocative");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("vocative");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null) {
                                                                         if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                             thirdSubElement = (Element) thirdNode;
 
-                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
-                                                                            if( fithSubNodeList.getLength() > 0) {
-                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                            sixthSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( sixthSubNodeList.getLength() > 0) {
+                                                                                fourthNode = sixthSubNodeList.item(0);
                                                                                 if( fourthNode != null)
                                                                                     translation.declension.neutralList.singular.vocative = fourthNode.getTextContent();
                                                                             }
@@ -1904,24 +1922,24 @@ public class KVTML2Parser implements ImportExportInterface {
                                                     }
 
                                                     // dual
-                                                    thirdSubNodeList = subElement.getElementsByTagName("dual");
-                                                    if( thirdSubNodeList.getLength() > 0) {
-                                                        secondNode = thirdSubNodeList.item(0);
+                                                    fourthSubNodeList = subElement.getElementsByTagName("dual");
+                                                    if( fourthSubNodeList.getLength() > 0) {
+                                                        secondNode = fourthSubNodeList.item(0);
                                                         if( secondNode != null) {
                                                             if( secondNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                 secondSubElement = (Element) secondNode;
 
                                                                 // nominative
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("nominative");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("nominative");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null) {
                                                                         if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                             thirdSubElement = (Element) thirdNode;
 
-                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
-                                                                            if( fithSubNodeList.getLength() > 0) {
-                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                            sixthSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( sixthSubNodeList.getLength() > 0) {
+                                                                                fourthNode = sixthSubNodeList.item(0);
                                                                                 if( fourthNode != null)
                                                                                     translation.declension.neutralList.dual.nominative = fourthNode.getTextContent();
                                                                             }
@@ -1930,16 +1948,16 @@ public class KVTML2Parser implements ImportExportInterface {
                                                                 }
 
                                                                 // genitive
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("genitive");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("genitive");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null) {
                                                                         if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                             thirdSubElement = (Element) thirdNode;
 
-                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
-                                                                            if( fithSubNodeList.getLength() > 0) {
-                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                            sixthSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( sixthSubNodeList.getLength() > 0) {
+                                                                                fourthNode = sixthSubNodeList.item(0);
                                                                                 if( fourthNode != null)
                                                                                     translation.declension.neutralList.dual.genitive = fourthNode.getTextContent();
                                                                             }
@@ -1948,16 +1966,16 @@ public class KVTML2Parser implements ImportExportInterface {
                                                                 }
 
                                                                 // dative
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("dative");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("dative");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null) {
                                                                         if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                             thirdSubElement = (Element) thirdNode;
 
-                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
-                                                                            if( fithSubNodeList.getLength() > 0) {
-                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                            sixthSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( sixthSubNodeList.getLength() > 0) {
+                                                                                fourthNode = sixthSubNodeList.item(0);
                                                                                 if( fourthNode != null)
                                                                                     translation.declension.neutralList.dual.dative = fourthNode.getTextContent();
                                                                             }
@@ -1966,16 +1984,16 @@ public class KVTML2Parser implements ImportExportInterface {
                                                                 }
 
                                                                 // accusative
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("accusative");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("accusative");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null) {
                                                                         if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                             thirdSubElement = (Element) thirdNode;
 
-                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
-                                                                            if( fithSubNodeList.getLength() > 0) {
-                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                            sixthSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( sixthSubNodeList.getLength() > 0) {
+                                                                                fourthNode = sixthSubNodeList.item(0);
                                                                                 if( fourthNode != null)
                                                                                     translation.declension.neutralList.dual.accusative = fourthNode.getTextContent();
                                                                             }
@@ -1984,16 +2002,16 @@ public class KVTML2Parser implements ImportExportInterface {
                                                                 }
 
                                                                 // ablative
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("ablative");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("ablative");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null) {
                                                                         if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                             thirdSubElement = (Element) thirdNode;
 
-                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
-                                                                            if( fithSubNodeList.getLength() > 0) {
-                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                            sixthSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( sixthSubNodeList.getLength() > 0) {
+                                                                                fourthNode = sixthSubNodeList.item(0);
                                                                                 if( fourthNode != null)
                                                                                     translation.declension.neutralList.dual.ablative = fourthNode.getTextContent();
                                                                             }
@@ -2002,16 +2020,16 @@ public class KVTML2Parser implements ImportExportInterface {
                                                                 }
 
                                                                 // locative
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("locative");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("locative");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null) {
                                                                         if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                             thirdSubElement = (Element) thirdNode;
 
-                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
-                                                                            if( fithSubNodeList.getLength() > 0) {
-                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                            sixthSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( sixthSubNodeList.getLength() > 0) {
+                                                                                fourthNode = sixthSubNodeList.item(0);
                                                                                 if( fourthNode != null)
                                                                                     translation.declension.neutralList.dual.locative = fourthNode.getTextContent();
                                                                             }
@@ -2020,16 +2038,16 @@ public class KVTML2Parser implements ImportExportInterface {
                                                                 }
 
                                                                 // vocative
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("vocative");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("vocative");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null) {
                                                                         if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                             thirdSubElement = (Element) thirdNode;
 
-                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
-                                                                            if( fithSubNodeList.getLength() > 0) {
-                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                            sixthSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( sixthSubNodeList.getLength() > 0) {
+                                                                                fourthNode = sixthSubNodeList.item(0);
                                                                                 if( fourthNode != null)
                                                                                     translation.declension.neutralList.dual.vocative = fourthNode.getTextContent();
                                                                             }
@@ -2041,24 +2059,24 @@ public class KVTML2Parser implements ImportExportInterface {
                                                     }
 
                                                     // plural
-                                                    thirdSubNodeList = subElement.getElementsByTagName("plural");
-                                                    if( thirdSubNodeList.getLength() > 0) {
-                                                        secondNode = thirdSubNodeList.item(0);
+                                                    fourthSubNodeList = subElement.getElementsByTagName("plural");
+                                                    if( fourthSubNodeList.getLength() > 0) {
+                                                        secondNode = fourthSubNodeList.item(0);
                                                         if( secondNode != null) {
                                                             if( secondNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                 secondSubElement = (Element) secondNode;
 
                                                                 // nominative
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("nominative");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("nominative");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null) {
                                                                         if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                             thirdSubElement = (Element) thirdNode;
 
-                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
-                                                                            if( fithSubNodeList.getLength() > 0) {
-                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                            sixthSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( sixthSubNodeList.getLength() > 0) {
+                                                                                fourthNode = sixthSubNodeList.item(0);
                                                                                 if( fourthNode != null)
                                                                                     translation.declension.neutralList.plural.nominative = fourthNode.getTextContent();
                                                                             }
@@ -2067,16 +2085,16 @@ public class KVTML2Parser implements ImportExportInterface {
                                                                 }
 
                                                                 // genitive
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("genitive");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("genitive");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null) {
                                                                         if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                             thirdSubElement = (Element) thirdNode;
 
-                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
-                                                                            if( fithSubNodeList.getLength() > 0) {
-                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                            sixthSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( sixthSubNodeList.getLength() > 0) {
+                                                                                fourthNode = sixthSubNodeList.item(0);
                                                                                 if( fourthNode != null)
                                                                                     translation.declension.neutralList.plural.genitive = fourthNode.getTextContent();
                                                                             }
@@ -2085,16 +2103,16 @@ public class KVTML2Parser implements ImportExportInterface {
                                                                 }
 
                                                                 // dative
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("dative");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("dative");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null) {
                                                                         if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                             thirdSubElement = (Element) thirdNode;
 
-                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
-                                                                            if( fithSubNodeList.getLength() > 0) {
-                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                            sixthSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( sixthSubNodeList.getLength() > 0) {
+                                                                                fourthNode = sixthSubNodeList.item(0);
                                                                                 if( fourthNode != null)
                                                                                     translation.declension.neutralList.plural.dative = fourthNode.getTextContent();
                                                                             }
@@ -2103,16 +2121,16 @@ public class KVTML2Parser implements ImportExportInterface {
                                                                 }
 
                                                                 // accusative
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("accusative");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("accusative");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null) {
                                                                         if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                             thirdSubElement = (Element) thirdNode;
 
-                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
-                                                                            if( fithSubNodeList.getLength() > 0) {
-                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                            sixthSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( sixthSubNodeList.getLength() > 0) {
+                                                                                fourthNode = sixthSubNodeList.item(0);
                                                                                 if( fourthNode != null)
                                                                                     translation.declension.neutralList.plural.accusative = fourthNode.getTextContent();
                                                                             }
@@ -2121,16 +2139,16 @@ public class KVTML2Parser implements ImportExportInterface {
                                                                 }
 
                                                                 // ablative
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("ablative");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("ablative");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null) {
                                                                         if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                             thirdSubElement = (Element) thirdNode;
 
-                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
-                                                                            if( fithSubNodeList.getLength() > 0) {
-                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                            sixthSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( sixthSubNodeList.getLength() > 0) {
+                                                                                fourthNode = sixthSubNodeList.item(0);
                                                                                 if( fourthNode != null)
                                                                                     translation.declension.neutralList.plural.ablative = fourthNode.getTextContent();
                                                                             }
@@ -2139,16 +2157,16 @@ public class KVTML2Parser implements ImportExportInterface {
                                                                 }
 
                                                                 // locative
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("locative");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("locative");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null) {
                                                                         if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                             thirdSubElement = (Element) thirdNode;
 
-                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
-                                                                            if( fithSubNodeList.getLength() > 0) {
-                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                            sixthSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( sixthSubNodeList.getLength() > 0) {
+                                                                                fourthNode = sixthSubNodeList.item(0);
                                                                                 if( fourthNode != null)
                                                                                     translation.declension.neutralList.plural.locative = fourthNode.getTextContent();
                                                                             }
@@ -2157,16 +2175,16 @@ public class KVTML2Parser implements ImportExportInterface {
                                                                 }
 
                                                                 // vocative
-                                                                fourthSubNodeList = secondSubElement.getElementsByTagName("vocative");
-                                                                if( fourthSubNodeList.getLength() > 0) {
-                                                                    thirdNode = fourthSubNodeList.item(0);
+                                                                fithSubNodeList = secondSubElement.getElementsByTagName("vocative");
+                                                                if( fithSubNodeList.getLength() > 0) {
+                                                                    thirdNode = fithSubNodeList.item(0);
                                                                     if( thirdNode != null) {
                                                                         if( thirdNode.getNodeType() == Node.ELEMENT_NODE) {
                                                                             thirdSubElement = (Element) thirdNode;
 
-                                                                            fithSubNodeList = thirdSubElement.getElementsByTagName("text");
-                                                                            if( fithSubNodeList.getLength() > 0) {
-                                                                                fourthNode = fithSubNodeList.item(0);
+                                                                            sixthSubNodeList = thirdSubElement.getElementsByTagName("text");
+                                                                            if( sixthSubNodeList.getLength() > 0) {
+                                                                                fourthNode = sixthSubNodeList.item(0);
                                                                                 if( fourthNode != null)
                                                                                     translation.declension.neutralList.plural.vocative = fourthNode.getTextContent();
                                                                             }
@@ -2184,41 +2202,41 @@ public class KVTML2Parser implements ImportExportInterface {
                             }
 
                             // comment
-                            subNodeList = element.getElementsByTagName("comment");
-                            if( subNodeList.getLength() > 0) {
-                                node = subNodeList.item(0);
+                            secondSubNodeList = element.getElementsByTagName("comment");
+                            if( secondSubNodeList.getLength() > 0) {
+                                node = secondSubNodeList.item(0);
                                 if( node != null)
                                     translation.comment = node.getTextContent();
                             }
 
                             // pronunciation
-                            subNodeList = element.getElementsByTagName("pronunciation");
-                            if( subNodeList.getLength() > 0) {
-                                node = subNodeList.item(0);
+                            secondSubNodeList = element.getElementsByTagName("pronunciation");
+                            if( secondSubNodeList.getLength() > 0) {
+                                node = secondSubNodeList.item(0);
                                 if( node != null)
                                     translation.pronunciation = node.getTextContent();
                             }
 
                             // example
-                            subNodeList = element.getElementsByTagName("example");
-                            if( subNodeList.getLength() > 0) {
-                                node = subNodeList.item(0);
+                            secondSubNodeList = element.getElementsByTagName("example");
+                            if( secondSubNodeList.getLength() > 0) {
+                                node = secondSubNodeList.item(0);
                                 if( node != null)
                                     translation.example = node.getTextContent();
                             }
 							
                             // paraphrase
-                            subNodeList = element.getElementsByTagName("paraphrase");
-                            if( subNodeList.getLength() > 0) {
-                                node = subNodeList.item(0);
+                            secondSubNodeList = element.getElementsByTagName("paraphrase");
+                            if( secondSubNodeList.getLength() > 0) {
+                                node = secondSubNodeList.item(0);
                                 if( node != null)
                                     translation.paraphrase = node.getTextContent();
                             }
 							
 							// falsefriend
-							subNodeList = element.getElementsByTagName("falsefriend");
-							if( subNodeList.getLength() > 0) {
-								node = subNodeList.item(0);
+                            secondSubNodeList = element.getElementsByTagName("falsefriend");
+							if( secondSubNodeList.getLength() > 0) {
+								node = secondSubNodeList.item(0);
 								
 								
 								
@@ -2236,27 +2254,27 @@ public class KVTML2Parser implements ImportExportInterface {
 							}
 
 							// antonym
-                            subNodeList = element.getElementsByTagName("antonym");
-                            if( subNodeList.getLength() > 0) {
-                                node = subNodeList.item(0);
+                            secondSubNodeList = element.getElementsByTagName("antonym");
+                            if( secondSubNodeList.getLength() > 0) {
+                                node = secondSubNodeList.item(0);
                                 if( node != null) {	
-									secondSubNodeList = node.getChildNodes();
+									thirdSubNodeList = node.getChildNodes();
 
-									for( int t = 0; secondSubNodeList.getLength() > 0; t++) {
+									for( int t = 0; thirdSubNodeList.getLength() > 0; t++) {
 										AntonymSynonymPair pair = new AntonymSynonymPair();
 										Byte translationCount = 0;
 				
 										// pair
-										if( secondSubNodeList.item(t).getNodeName() == "pair") {
-											if( secondSubNodeList.getLength() > 0) {
-												secondNode = secondSubNodeList.item(0);
+										if( thirdSubNodeList.item(t).getNodeName().equals( "pair")) {
+											if( thirdSubNodeList.getLength() > 0) {
+												secondNode = thirdSubNodeList.item(0);
 												if( secondNode != null) {
-													for( int f = 0; secondSubNodeList.getLength() > 0; f++) {
+													for( int f = 0; thirdSubNodeList.getLength() > 0; f++) {
 														
 														// entry; there must be two entries
-														if( secondSubNodeList.item(f).getNodeName() == "entry") {
-															if( secondSubNodeList.getLength() > 0) {
-																secondNode = secondSubNodeList.item(0);
+														if( thirdSubNodeList.item(f).getNodeName().equals( "entry")) {
+															if( thirdSubNodeList.getLength() > 0) {
+																secondNode = thirdSubNodeList.item(0);
 																if( secondNode != null) {
 																	if( secondNode.getNodeType() == Node.ELEMENT_NODE) {
 																		subElement = (Element) secondNode;
@@ -2269,9 +2287,9 @@ public class KVTML2Parser implements ImportExportInterface {
 																		}				
 																		
 																		// translation; only 1
-																		secondSubNodeList = subElement.getElementsByTagName("translation");
-																		if( secondSubNodeList.getLength() > 0) {
-																			secondNode = secondSubNodeList.item(0);
+																		fourthSubNodeList = subElement.getElementsByTagName("translation");
+																		if( fourthSubNodeList.getLength() > 0) {
+																			secondNode = fourthSubNodeList.item(0);
 																			
 																			if( secondNode != null) {
 																				try {
@@ -2309,27 +2327,27 @@ public class KVTML2Parser implements ImportExportInterface {
                             }
 
 							// synonym
-                            subNodeList = element.getElementsByTagName("synonym");
-                            if( subNodeList.getLength() > 0) {
-                                node = subNodeList.item(0);
+                            secondSubNodeList = element.getElementsByTagName("synonym");
+                            if( secondSubNodeList.getLength() > 0) {
+                                node = secondSubNodeList.item(0);
                                 if( node != null) {	
-									secondSubNodeList = node.getChildNodes();
+									thirdSubNodeList = node.getChildNodes();
 
-									for( int t = 0; secondSubNodeList.getLength() > 0; t++) {
+									for( int t = 0; thirdSubNodeList.getLength() > 0; t++) {
 										AntonymSynonymPair pair = new AntonymSynonymPair();
 										Byte translationCount = 0;
 				
 										// pair
-										if( secondSubNodeList.item(t).getNodeName() == "pair") {
-											if( secondSubNodeList.getLength() > 0) {
-												secondNode = secondSubNodeList.item(0);
+										if( thirdSubNodeList.item(t).getNodeName().equals( "pair")) {
+											if( thirdSubNodeList.getLength() > 0) {
+												secondNode = thirdSubNodeList.item(0);
 												if( secondNode != null) {
-													for( int f = 0; secondSubNodeList.getLength() > 0; f++) {
+													for( int f = 0; thirdSubNodeList.getLength() > 0; f++) {
 														
 														// entry; there must be two entries
-														if( secondSubNodeList.item(f).getNodeName() == "entry") {
-															if( secondSubNodeList.getLength() > 0) {
-																secondNode = secondSubNodeList.item(0);
+														if( thirdSubNodeList.item(f).getNodeName().equals( "entry")) {
+															if( thirdSubNodeList.getLength() > 0) {
+																secondNode = thirdSubNodeList.item(0);
 																if( secondNode != null) {
 																	if( secondNode.getNodeType() == Node.ELEMENT_NODE) {
 																		subElement = (Element) secondNode;
@@ -2342,9 +2360,9 @@ public class KVTML2Parser implements ImportExportInterface {
 																		}				
 																		
 																		// translation; only 1
-																		secondSubNodeList = subElement.getElementsByTagName("translation");
-																		if( secondSubNodeList.getLength() > 0) {
-																			secondNode = secondSubNodeList.item(0);
+																		fourthSubNodeList = subElement.getElementsByTagName("translation");
+																		if( fourthSubNodeList.getLength() > 0) {
+																			secondNode = fourthSubNodeList.item(0);
 																			
 																			if( secondNode != null) {
 																				try {
@@ -2383,33 +2401,33 @@ public class KVTML2Parser implements ImportExportInterface {
                             }
 
 							// comparison
-							subNodeList = element.getElementsByTagName("comparison");
-							if( subNodeList.getLength() > 0) {
-								node = subNodeList.item(0);
+                            secondSubNodeList = element.getElementsByTagName("comparison");
+							if( secondSubNodeList.getLength() > 0) {
+								node = secondSubNodeList.item(0);
 								if( node != null) {
 									if( node.getNodeType() == Node.ELEMENT_NODE) {
                                         subElement = (Element) node;
 										
 										// absolute
-										secondSubNodeList = subElement.getElementsByTagName("absolute");
-										if( secondSubNodeList.getLength() > 0) {
-											secondNode = secondSubNodeList.item(0);
+										thirdSubNodeList = subElement.getElementsByTagName("absolute");
+										if( thirdSubNodeList.getLength() > 0) {
+											secondNode = thirdSubNodeList.item(0);
 											if( secondNode != null)
 												translation.comparison.absolute = secondNode.getTextContent();
 										}
 										
 										// comparative
-										secondSubNodeList = subElement.getElementsByTagName("comparative");
-										if( secondSubNodeList.getLength() > 0) {
-											secondNode = secondSubNodeList.item(0);
+                                        thirdSubNodeList = subElement.getElementsByTagName("comparative");
+										if( thirdSubNodeList.getLength() > 0) {
+											secondNode = thirdSubNodeList.item(0);
 											if( secondNode != null)
 												translation.comparison.comparative = secondNode.getTextContent();
 										}
 										
 										// superlative
-										secondSubNodeList = subElement.getElementsByTagName("superlative");
-										if( secondSubNodeList.getLength() > 0) {
-											secondNode = secondSubNodeList.item(0);
+                                        thirdSubNodeList = subElement.getElementsByTagName("superlative");
+										if( thirdSubNodeList.getLength() > 0) {
+											secondNode = thirdSubNodeList.item(0);
 											if( secondNode != null)
 												translation.comparison.superlative = secondNode.getTextContent();
 										}
@@ -2418,17 +2436,17 @@ public class KVTML2Parser implements ImportExportInterface {
 							}
 
 							// multipleChoice
-							subNodeList = element.getElementsByTagName("multiplechoice");
-                            if( subNodeList.getLength() > 0) {
-                                node = subNodeList.item(0);
+                            secondSubNodeList = element.getElementsByTagName("multiplechoice");
+                            if( secondSubNodeList.getLength() > 0) {
+                                node = secondSubNodeList.item(0);
                                 if( node != null) {
-									secondSubNodeList = node.getChildNodes();
+									thirdSubNodeList = node.getChildNodes();
 									
-									for( int t = 0; secondSubNodeList.getLength() > 0; t++) {
+									for( int t = 0; thirdSubNodeList.getLength() > 0; t++) {
 										// choice
-										if( secondSubNodeList.item(t).getNodeName() == "choice") {
-											if( secondSubNodeList.getLength() > 0) {
-												secondNode = secondSubNodeList.item(0);
+										if( thirdSubNodeList.item(t).getNodeName().equals( "choice")) {
+											if( thirdSubNodeList.getLength() > 0) {
+												secondNode = thirdSubNodeList.item(0);
 												if( secondNode != null)
 													translation.multipleChoice.choice.add(secondNode.getTextContent());
 											}
@@ -2441,41 +2459,42 @@ public class KVTML2Parser implements ImportExportInterface {
 							}
 
 							// image
-							subNodeList = element.getElementsByTagName("image");
-                            if( subNodeList.getLength() > 0) {
-                                node = subNodeList.item(0);
+                            secondSubNodeList = element.getElementsByTagName("image");
+                            if( secondSubNodeList.getLength() > 0) {
+                                node = secondSubNodeList.item(0);
                                 if( node != null)
                                     translation.image = node.getTextContent();
                             }
 							
 							// sound
-							subNodeList = element.getElementsByTagName("sound");
-                            if( subNodeList.getLength() > 0) {
-                                node = subNodeList.item(0);
+                            secondSubNodeList = element.getElementsByTagName("sound");
+                            if( secondSubNodeList.getLength() > 0) {
+                                node = secondSubNodeList.item(0);
                                 if( node != null)
                                     translation.sound = node.getTextContent();
                             }
-							
-                            entry.translationList.put(idResult, translation);
+
+                            entry.translationList.put(idSubResult, translation);
+                            Log.d("ParleyDrone info", "translation list added" + idSubResult + translation.text);
                         }
 
                         // deactivated
-                        else if( secondSubNodeList.item(i).getNodeName() == "deactivated") {
-                            if( secondSubNodeList.getLength() > 0) {
-                                node = secondSubNodeList.item(0);
+                        else if( subNodeList.item(i).getNodeName().equals( "deactivated")) {
+                            if( subNodeList.getLength() > 0) {
+                                node = subNodeList.item(0);
                                 if( node != null) {
                                     result = node.getTextContent();
 
-                                    if( (result == "true") || (result == "1"))
+                                    if( (result.equals( "true")) || (result.equals( "1")))
                                         entry.deactivated = true;
                                 }
                             }
                         }
 
                         // sizehint
-                        else if( secondSubNodeList.item(i).getNodeName() == "sizehint") {
-                            if( secondSubNodeList.getLength() > 0) {
-                                node = secondSubNodeList.item(0);
+                        else if( subNodeList.item(i).getNodeName().equals( "sizehint")) {
+                            if( subNodeList.getLength() > 0) {
+                                node = subNodeList.item(0);
                                 if( node != null) {
                                     try {
                                         entry.sizeHint = Integer.parseInt(node.getTextContent());
@@ -2490,12 +2509,10 @@ public class KVTML2Parser implements ImportExportInterface {
                         else {
                             error++;
                         }
+                        fileFormats.entryList.put(idResult, entry);
                     }
-
-                    fileFormats.entryList.put(idResult, entry);
                 }
             }
-
             else {
                 error++;
             }
@@ -2508,8 +2525,8 @@ public class KVTML2Parser implements ImportExportInterface {
 
         for( int temp = 0; temp < nodeListLessons.getLength(); temp++) {
             // lesson container
-            if( nodeListLessons.item(temp).getNodeName() == "container") {
-                resultLessonContainer = SearchSetContainer(nodeListLessons.item(temp));
+            if( nodeListLessons.item(temp).getNodeName().equals( "container")) {
+                resultLessonContainer = searchSetContainer(nodeListLessons.item(temp));
                 if( resultLessonContainer != null) {
                     fileFormats.lessonContainerList.add(resultLessonContainer);
                 }
@@ -2526,8 +2543,8 @@ public class KVTML2Parser implements ImportExportInterface {
 
         for( int temp = 0; temp < nodeListWordTypes.getLength(); temp++) {
             // lesson container
-            if( nodeListWordTypes.item(temp).getNodeName() == "container") {
-                resultWordTypesContainer = SearchSetContainer(nodeListWordTypes.item(temp));
+            if( nodeListWordTypes.item(temp).getNodeName().equals( "container")) {
+                resultWordTypesContainer = searchSetContainer(nodeListWordTypes.item(temp));
                 if( resultWordTypesContainer != null) {
                     fileFormats.wordTypesContainerList.add(resultWordTypesContainer);
                 }
@@ -2544,8 +2561,8 @@ public class KVTML2Parser implements ImportExportInterface {
 
         for( int temp = 0; temp < nodeListWordTypes.getLength(); temp++) {
             // lesson container
-            if( nodeListWordTypes.item(temp).getNodeName() == "container") {
-                resultWordTypesContainer = SearchSetContainer(nodeListWordTypes.item(temp));
+            if( nodeListWordTypes.item(temp).getNodeName().equals( "container")) {
+                resultWordTypesContainer = searchSetContainer(nodeListWordTypes.item(temp));
                 if( resultWordTypesContainer != null) {
                     fileFormats.wordTypesContainerList.add(resultWordTypesContainer);
                 }
@@ -2557,7 +2574,7 @@ public class KVTML2Parser implements ImportExportInterface {
     }
 
     // for sub branch container; lessons, wordtypes, leitnerboxes
-    private Container SearchSetContainer( Node nodeContainer) {
+    private Container searchSetContainer( Node nodeContainer) {
         Container container = new Container();
         Container resultWordTypesContainer;
         NodeList secondSubNodeList;
@@ -2567,7 +2584,7 @@ public class KVTML2Parser implements ImportExportInterface {
 
         for( int i = 0; i < secondSubNodeList.getLength(); i++) {
 			// entry
-            if( secondSubNodeList.item(i).getNodeName() == "entry") {
+            if( secondSubNodeList.item(i).getNodeName().equals( "entry")) {
                 try {
                     container.entryList.add( Integer.parseInt(secondSubNodeList.item(i).getAttributes().getNamedItem("id").getTextContent()));
                 }
@@ -2576,34 +2593,34 @@ public class KVTML2Parser implements ImportExportInterface {
                 }
             }
 			// container
-            else if( secondSubNodeList.item(i).getNodeName() == "container") {
-                resultWordTypesContainer = SearchSetContainer(secondSubNodeList.item(i));
+            else if( secondSubNodeList.item(i).getNodeName().equals( "container")) {
+                resultWordTypesContainer = searchSetContainer(secondSubNodeList.item(i));
                 if( resultWordTypesContainer != null) {
                     container.container.add(resultWordTypesContainer);
                 }
             }
 			// specialwordtype
-            else if( secondSubNodeList.item(i).getNodeName() == "specialwordtype") {
+            else if( secondSubNodeList.item(i).getNodeName().equals( "specialwordtype")) {
                 result = secondSubNodeList.item(i).getTextContent();
 
-                if( (result == Container.NOUN) || (result == Container.NOUN_MALE) || (result == Container.NOUN_FEMALE)
-                    || (result == Container.NOUN_NEUTRAL) || (result == Container.VERB) || (result == Container.ADJECTIVE)
-                    || (result == Container.ADVERB))
+                if( result.equals( Container.NOUN) || result.equals( Container.NOUN_MALE) || result.equals( Container.NOUN_FEMALE)
+                    || result.equals( Container.NOUN_NEUTRAL) || result.equals( Container.VERB) || result.equals( Container.ADJECTIVE)
+                    || result.equals( Container.ADVERB) || result.equals( Container.CONJUNCTION))
                     container.specialWordType = result;
             }
 			// name
-            else if( secondSubNodeList.item(i).getNodeName() == "name") {
+            else if( secondSubNodeList.item(i).getNodeName().equals( "name")) {
                 container.name = secondSubNodeList.item(i).getTextContent();
             }
             // inpractice
-            else if( secondSubNodeList.item(i).getNodeName() == "inpractice") {
+            else if( secondSubNodeList.item(i).getNodeName().equals( "inpractice")) {
                 result = secondSubNodeList.item(i).getTextContent();
 
-                if( (result == "true") || (result == "1"))
+                if( result.equals( "true") || result.equals( "1"))
                     container.inPractice = true;
             }
 			// image
-			else if( secondSubNodeList.item(i).getNodeName() == "image") {
+			else if( secondSubNodeList.item(i).getNodeName().equals( "image")) {
                 container.image = secondSubNodeList.item(i).getTextContent();	
             }
         }

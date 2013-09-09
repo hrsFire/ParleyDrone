@@ -12,8 +12,7 @@ import java.io.InputStreamReader;
 
 public class LicenceActivity extends Activity {
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_licence);
 		

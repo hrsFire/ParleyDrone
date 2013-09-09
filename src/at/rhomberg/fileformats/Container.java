@@ -15,6 +15,7 @@ public class Container {
     public final static String VERB = "verb";
     public final static String ADJECTIVE = "adjective";
     public final static String ADVERB = "adverb";
+    public final static String CONJUNCTION = "conjunction";
 
     public String name = "";    // e.g. Nomen, title of the lesson
 	public String specialWordType = ""; // e.g. noun,  noun/male

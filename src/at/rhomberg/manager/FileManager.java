@@ -1,6 +1,7 @@
 package at.rhomberg.manager;
 
 import android.os.Environment;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -20,13 +21,16 @@ public class FileManager {
             return null;
         }
 
-        String output = "";
+        StringBuilder output = new StringBuilder();
+        Log.d("ParleyDrone info", "get the full text");
         if( fr != null) {
             BufferedReader br = new BufferedReader( fr);
 
             try {
-                while( (output += br.readLine()) != null) {
-                    output += "\n";
+                String cache;
+
+                while( (cache = br.readLine()) != null) {
+                    output.append( cache + "\n");
                 }
                 br.close();
                 fr.close();
@@ -39,8 +43,9 @@ public class FileManager {
                 return null;
             }
         }
+        Log.d("ParleyDrone info", "finished");
 
-        return output;
+        return output.toString();
     }
 
     public boolean saveFile( String string, String fileName, String fileLocation) {

@@ -1,9 +1,14 @@
 package at.rhomberg.iowrapper;
 
-import android.os.Environment;
+import android.util.Log;
 
+import org.xml.sax.SAXException;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.TreeMap;
+
+import javax.xml.parsers.ParserConfigurationException;
 
 import at.rhomberg.fileformats.Entry;
 import at.rhomberg.fileformats.FileFormats;
@@ -56,24 +61,46 @@ public class IOWrapper extends FileFormats{
         String string;
         String type;
 
+        Log.d("ParleyDrone info", "start getStringFromFile");
         string = fileManager.getStringFromFile(fileLocation + "/" + fileName);
-        if( (string != null) || (string != "")) {
+        Log.d("ParleyDrone info", "finished parsing");
+
+        if( (string != null) && (string != "")) {
+            Log.d("ParleyDrone info", "start getFileType");
             type = getFileType( string);
+            Log.d("ParleyDrone info", "finished getFileType");
+
             if( type == KVTML2) {
                 KVTML2Parser parser = new KVTML2Parser();
                 FileFormats ff;
 
                 try {
-                    ff = parser.importf( string);
+                    Log.d("ParleyDrone info", "start parsing kvtml2");
+                    ff = parser.importf( fileLocation + "/" + fileName);
+                    Log.d("ParleyDrone info", "finished parsing kvtml2");
                     if( ff != null) {
                         ff.objectType = KVTML2;
                         if( fileFormatsList.add( ff))
                             return fileFormatsList.size() - 1;
                     }
-                } catch (Throwable throwable) {
+                } catch (ParserConfigurationException e) {
+                    Log.d( "ParleyDrone errors", "ParserConfigurationException: " + e.getStackTrace());
+                    return -1;
+                } catch (SAXException e) {
+                    Log.d( "ParleyDrone errors", "SAXException: " + e.getStackTrace());
+                    return -1;
+                } catch (IOException e) {
+                    Log.d( "ParleyDrone errors", "IOException: " + e.getStackTrace());
+                    return -1;
+                } catch (Exception e) {
+                    Log.d( "ParleyDrone errors", "Exception: " + e.getStackTrace());
+                    return -1;
+                }  catch (Throwable e) {
+                    Log.d( "ParleyDrone errors", "Throwable: " + e.getStackTrace());
                     return -1;
                 }
             }
+            Log.d("ParleyDrone info", "couldn't load the file");
         }
 		return -1;
 	}
@@ -113,42 +140,62 @@ public class IOWrapper extends FileFormats{
 
     private boolean checkXML(String string, String typeString) {
         int typeAt = 0;
+        int pos = 0;
+        String stringCache = "";
         boolean quotationOpen = false;
         boolean angleBracketOpen = false;
+        String verification = "";
 
         // remove multiple space characters
-        String text = removeMultipleSpaceCharacters( string);
+        Log.d("ParleyDrone info", "start removeMultipleSpaceCharacters");
+        pos = string.indexOf(string.indexOf(">") + 1);
+        if( pos > 0)
+            stringCache = string.substring( 0, pos);
+        String text = removeMultipleSpaceCharacters( stringCache);
+        Log.d("ParleyDrone info", "finished removeMultipleSpaceCharacters");
+        Log.d("ParleyDrone info", "start removeMultipleSpaceCharacters");
         String type = removeMultipleSpaceCharacters( typeString);
+        Log.d("ParleyDrone info", "finished removeMultipleSpaceCharacters");
 
-        if( text.length() >= type.length()) {
-            for( int i = 0; (i < text.length()) || (typeAt < type.length()); i++) {
+        Log.d("ParleyDrone info", "start to check for errors in the xml file");
+        if( string.length() >= type.length()) {// text
+            for( int i = 0; (i < string.length()) && (typeAt < type.length()); i++) {
                 // before or after a angle bracket are new lines or space characters
-                if( ((text.charAt(i) == ' ') || (text.charAt(i) == '\n')) && !quotationOpen) {
-                    typeAt++;
-                }
-                else if( (text.charAt(i) == '<') && (type.charAt(typeAt) == '<')) {
-                    angleBracketOpen = true;
-                    typeAt++;
-                }
-                else if( (text.charAt(i) == '>') && (type.charAt(typeAt) == '>') && angleBracketOpen) {
-                    angleBracketOpen = false;
-                    typeAt++;
-                }
-                else if( (text.charAt(i) == type.charAt(typeAt)))
-                {
-                    if( text.charAt(i) == '"') {
+
+                if( (string.charAt(i) == type.charAt(typeAt))) {
+                    if( string.charAt(i) == '<') {
+                        angleBracketOpen = true;
+                        typeAt++;
+                        verification += string.charAt(i);
+                    }
+                    else if( (string.charAt(i) == '>') && angleBracketOpen) {
+                        angleBracketOpen = false;
+                        typeAt++;
+                        verification += string.charAt(i);
+                    }
+                    else if( string.charAt(i) == '"') {
                         quotationOpen = !quotationOpen;
                         typeAt++;
+                        verification += string.charAt(i);
                     }
-                    else if( (text.charAt(i) == ' ') && quotationOpen) {
+                    else if( (string.charAt(i) == ' ') && quotationOpen) {
                         typeAt++;
+                        verification += string.charAt(i);
                     }
+                    else {
+                        typeAt++;
+                        verification += string.charAt(i);
+                    }
+                }
+                else if( (string.charAt(i) == ' ') || (string.charAt(i) == '\n')) {
                 }
                 else {
                     typeAt = 0;
+                    verification = "";
                 }
             }
-            if( typeAt == (type.length()-1)) {
+            Log.d("ParleyDrone info", "finished checkXML");
+            if( type.equals(verification)) {
                 return true;
             }
         }
@@ -180,7 +227,7 @@ public class IOWrapper extends FileFormats{
 
 
     // save functions
-	
+
 	public boolean saveFile( FileFormats fileFormats, String fileName, String fileLocation) {
         String fullFileLocation;
         String export;
