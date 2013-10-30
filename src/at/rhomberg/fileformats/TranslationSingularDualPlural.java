@@ -8,5 +8,7 @@ package at.rhomberg.fileformats;
 public class TranslationSingularDualPlural {
 	public String firstPerson = "";
 	public String secondPerson = "";
+    //public String thirdPersonMale = ""; ??
+    //public String thirdPersonFemale = ""; ??
 	public String thirdPersonNeutralCommon = "";
 }

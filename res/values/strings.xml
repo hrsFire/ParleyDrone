@@ -6,11 +6,11 @@
     <string name="lesson">Lektion</string>
     <string name="about">Über</string>
     <string name="createNewCollection">Neue Sammlung erstellen</string>
-    <string name="openAviableCollection">Vorhandene Sammlung öffnen</string>
+    <string name="openAvailableCollection">Vorhandene Sammlung öffnen</string>
     <string name="loadCollectionsFromNetwork">Neue Sammlungen herunterladen</string>
     <string name="lastOpenedCollections">Zuletzt geöffnete Sammlungen</string>
     <string name="edit">Bearbeiten</string>
-    <string name="preferedFileExtension">bevorzugte Dateiendung</string>
+    <string name="preferredFileExtension">bevorzugte Dateiendung</string>
     <string name="newEntry">neuer Eintrag</string>
     <string name="deleteEntry">Eintrag löschen</string>
     <string name="deleteCollection">Sammlung löschen</string>
@@ -23,11 +23,10 @@
     <string name="settings_defaultBackup">true</string>
     <string name="settings_backupDescription">Vor jedem Speichern einer Datei wird ein Backup angelegt. (empfohlen)</string>
     <string name="settings_language">Sprache</string>
-    <string name="settings_defaultLanguage">1</string>
 
     <string-array name="settings_languageArray">
         <item>Deutsch</item>
-        <item>Englisch</item>
+        <item>English</item>
     </string-array>
     <string-array name="settings_languageValues">
         <item>1</item>
@@ -35,31 +34,31 @@
     </string-array>
 
     <string name="settings_storage">Export</string>
-    <string name="settings_preferedStorage">bevorzugter Speicherort</string>
-    <string name="settings_defaultPfreferedStorage">1</string>
+    <string name="settings_preferredStorage">bevorzugter Speicherort</string>
+    <string name="settings_defaultPreferredStorage">2</string>
 
-    <string-array name="settings_preferedStorageArray">
+    <string-array name="settings_preferredStorageArray">
         <item>interner Speicher</item>
         <item>SD-Karte</item>
         <item>Datenbank</item>
     </string-array>
-    <string-array name="settings_preferedStorageValues">
+    <string-array name="settings_preferredStorageValues">
         <item>1</item>
         <item>2</item>
         <item>3</item>
     </string-array>
 
     <string name="settings_path">Speicherort</string>
-    <string name="settings_preferedFileFormat">bevorzugtes Dateiformat</string>
-    <string name="settings_defaultPreferedFileFormat">1</string>
+    <string name="settings_preferredFileFormat">bevorzugtes Dateiformat</string>
+    <string name="settings_defaultPreferredFileFormat">1</string>
 
-    <string-array name="settings_preferedFileFormatArray">
+    <string-array name="settings_preferredFileFormatArray">
         <item>kvtml</item>
         <item>csv</item>
         <item>html</item>
         <item>xhtml</item>
     </string-array>
-    <string-array name="settings_preferedFileFormatValues">
+    <string-array name="settings_preferredFileFormatValues">
         <item>1</item>
         <item>2</item>
         <item>3</item>
@@ -75,5 +74,6 @@
     <string name="settings_defaultBackground"></string>
     <string name="settings_backgroundDescription">Ein eigenes Bild als Hintergrund auswählen</string>
 
-    <string name="not">not yet implemented \n coming soon</string>
+    <string name="not">Noch nicht implementiert.\nEs dauert nicht mehr lange!</string>
+    <string name="fileExplorerNoResult">Der Dateimanager konnte die angegebene Datei nicht öffnen.</string>
 </resources>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="key_action_settings">action_settings</string>
+    <string name="key_action_general">action_general</string>
+    <string name="key_settings_user">settings_user</string>
+    <string name="key_settings_language">settings_language</string>
+    <string name="key_settings_backup">settings_backup</string>
+    <string name="key_settings_background">settings_background</string>
+    <string name="key_settings_storage">settings_storage</string>
+    <string name="key_settings_preferredStorage">settings_preferredStorage</string>
+    <string name="key_settings_preferredFileFormat">settings_preferredFileFormat</string>
+    <string name="key_settings_about">settings_about</string>
+    <string name="key_settings_licence">settings_licence</string>
+    <string name="key_settings_buildVersion">settings_buildVersion</string>
+</resources>

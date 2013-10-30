@@ -3,9 +3,6 @@ package at.rhomberg.parleydrone;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager.NameNotFoundException;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
@@ -14,7 +11,7 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 
-import java.util.Locale;
+import at.rhomberg.manager.LanguageManager;
 
 public class SettingsPreference extends PreferenceActivity implements OnSharedPreferenceChangeListener, OnPreferenceClickListener {
 			
@@ -33,12 +30,9 @@ public class SettingsPreference extends PreferenceActivity implements OnSharedPr
 		preferenceScreenObject.setOnPreferenceClickListener( this);
 		
 		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences( this);
-		try {
-			PackageInfo pInfo = getPackageManager().getPackageInfo( getPackageName(), 0);
-			preferenceScreenObject = (Preference) findPreference( getString( R.string.settings_buildVersion));
-			preferenceScreenObject.setSummary( preferenceScreenObject.getSummary() + pInfo.versionName);
-		} catch (NameNotFoundException e) {
-		}
+
+        preferenceScreenObject = (Preference) findPreference( getString( R.string.settings_buildVersion));
+        preferenceScreenObject.setSummary( preferenceScreenObject.getSummary() + ParleyDrone.BUILD_VERSION);
 		
 		preferenceScreenObject = (EditTextPreference) findPreference( getString( R.string.settings_user));
 		preferenceScreenObject.setSummary( sharedPreferences.getString( getString( R.string.settings_user), ""));
@@ -46,49 +40,52 @@ public class SettingsPreference extends PreferenceActivity implements OnSharedPr
 		preferenceScreenObject = (ListPreference) findPreference( getString( R.string.settings_language));
 		i = Integer.valueOf( sharedPreferences.getString( getString( R.string.settings_language), ""));
 		preferenceScreenObject.setSummary( this.getResources().getStringArray( R.array.settings_languageArray)[i-1]);
+
+		preferenceScreenObject = (ListPreference) findPreference( getString( R.string.settings_preferredStorage));
+		i = Integer.valueOf( sharedPreferences.getString( getString( R.string.settings_preferredStorage), ""));
+		preferenceScreenObject.setSummary( this.getResources().getStringArray( R.array.settings_preferredStorageArray)[i-1]);
 		
-		preferenceScreenObject = (ListPreference) findPreference( getString( R.string.settings_preferedStorage));
-		i = Integer.valueOf( sharedPreferences.getString( getString( R.string.settings_preferedStorage), ""));
-		preferenceScreenObject.setSummary( this.getResources().getStringArray( R.array.settings_preferedStorageArray)[i-1]);
-		
-		preferenceScreenObject = (ListPreference) findPreference( getString( R.string.settings_preferedFileFormat));
-		i = Integer.valueOf( sharedPreferences.getString( getString( R.string.settings_preferedFileFormat), ""));
-		preferenceScreenObject.setSummary( this.getResources().getStringArray( R.array.settings_preferedFileFormatArray)[i-1]);
+		preferenceScreenObject = (ListPreference) findPreference( getString( R.string.settings_preferredFileFormat));
+		i = Integer.valueOf( sharedPreferences.getString( getString( R.string.settings_preferredFileFormat), ""));
+		preferenceScreenObject.setSummary( this.getResources().getStringArray( R.array.settings_preferredFileFormatArray)[i-1]);
 		
 		/*
 		Intent intent = new Intent( Intent.ACTION_GET_CONTENT);
 		intent.setType( "file/*");
 		startActivityForResult( intent, PICKFILE_RESULT_CODE);
 		*/
-	}
+    }
 
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 		
-		if( key == getString( R.string.settings_user)) {
+		if( key.equals( getString( R.string.settings_user))) {
 			preferenceScreenObject = (EditTextPreference) findPreference( getString( R.string.settings_user));
 			preferenceScreenObject.setSummary( sharedPreferences.getString( key, ""));
 		}
-		else if( key == getString( R.string.settings_language)) {
+		else if( key.equals( getString( R.string.settings_language))) {
 			preferenceScreenObject = (ListPreference) findPreference( getString( R.string.settings_language));
 			i = Integer.valueOf( sharedPreferences.getString( key, ""));
 			preferenceScreenObject.setSummary( this.getResources().getStringArray( R.array.settings_languageArray)[i-1]);
-			
-			// change language of the programm
-			Locale locale = new Locale( sharedPreferences.getString( key, ""));
-			Locale.setDefault( locale);
-			Configuration config = new Configuration();
-			config.locale = locale;
-			getBaseContext().getResources().updateConfiguration( config, getBaseContext().getResources().getDisplayMetrics());
+
+            // change language of the programm
+            LanguageManager languageManager = new LanguageManager();
+            languageManager.loadLanguage(this);
+
+            Intent refresh = new Intent( this, ParleyDrone.class);
+            Intent preference = new Intent( this, SettingsPreference.class);
+            refresh.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity( refresh);
+            startActivity( preference);
 		}
-		else if( key == getString( R.string.settings_preferedStorage)) {
-			preferenceScreenObject = (ListPreference) findPreference( getString( R.string.settings_preferedStorage));
+		else if( key.equals( getString( R.string.settings_preferredStorage))) {
+			preferenceScreenObject = (ListPreference) findPreference( getString( R.string.settings_preferredStorage));
 			i = Integer.valueOf( sharedPreferences.getString( key, ""));
-			preferenceScreenObject.setSummary( this.getResources().getStringArray( R.array.settings_preferedStorageArray)[i-1]);
+			preferenceScreenObject.setSummary( this.getResources().getStringArray( R.array.settings_preferredStorageArray)[i-1]);
 		}
-		else if( key == getString( R.string.settings_preferedFileFormat)) {
-			preferenceScreenObject = (ListPreference) findPreference( getString( R.string.settings_preferedFileFormat));
+		else if( key.equals( getString( R.string.settings_preferredFileFormat))) {
+			preferenceScreenObject = (ListPreference) findPreference( getString( R.string.settings_preferredFileFormat));
 			i = Integer.valueOf( sharedPreferences.getString( key, ""));
-			preferenceScreenObject.setSummary( this.getResources().getStringArray( R.array.settings_preferedFileFormatArray)[i-1]);
+			preferenceScreenObject.setSummary( this.getResources().getStringArray( R.array.settings_preferredFileFormatArray)[i-1]);
 		}
 	}
 	

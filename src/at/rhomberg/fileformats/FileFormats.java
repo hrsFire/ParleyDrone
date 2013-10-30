@@ -9,11 +9,12 @@ import java.util.TreeMap;
 // http://edu.kde.org/kvtml/kvtml2.dtd
 
 public class FileFormats {
-	public Information info = new Information(); // information about the file
+	public Information information = new Information(); // information about the file
 	public TreeMap<Integer, Identifier> identifierList = new TreeMap<Integer, Identifier>();
 	public TreeMap<Integer, Entry> entryList = new TreeMap<Integer, Entry>();   // entries; contains the text which should be translated and the translated text in other languages
 	public ArrayList<Container> lessonContainerList = new ArrayList<Container>();   // contains lessons
 	public ArrayList<Container> wordTypesContainerList = new ArrayList<Container>();
+    public ArrayList<Container> leitnerboxesContainerList = new ArrayList<Container>();
 	
 	// not supported by kvtml2; only for the program
 	public String objectType;  // type of the data e.g. kvtml2

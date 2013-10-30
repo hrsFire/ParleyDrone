@@ -1,5 +1,7 @@
 package at.rhomberg.iowrapper;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import org.xml.sax.SAXException;
@@ -7,6 +9,7 @@ import org.xml.sax.SAXException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.TreeMap;
+import java.util.regex.Pattern;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -15,6 +18,7 @@ import at.rhomberg.fileformats.FileFormats;
 import at.rhomberg.fileformats.Identifier;
 import at.rhomberg.fileformats.Information;
 import at.rhomberg.manager.FileManager;
+import at.rhomberg.parleydrone.ParleyDrone;
 import at.rhomberg.parser.KVTML2Parser;
 
 public class IOWrapper extends FileFormats{
@@ -33,7 +37,7 @@ public class IOWrapper extends FileFormats{
     }
 	public Information getInformation(int id) {
         if( (id >= 0) && (id < fileFormatsList.size()))
-            return fileFormatsList.get(id).info;
+            return fileFormatsList.get(id).information;
         return null;
 	}
 	
@@ -61,27 +65,28 @@ public class IOWrapper extends FileFormats{
         String string;
         String type;
 
-        Log.d("ParleyDrone info", "start getStringFromFile");
-        string = fileManager.getStringFromFile(fileLocation + "/" + fileName);
-        Log.d("ParleyDrone info", "finished parsing");
+        Log.d("ParleyDrone information", "start getStringFromFile");
+        string = fileManager.getStringFromFile(fileLocation, fileName);
+        Log.d("ParleyDrone information", "finished parsing");
 
         if( (string != null) && (string != "")) {
-            Log.d("ParleyDrone info", "start getFileType");
-            type = getFileType( string);
-            Log.d("ParleyDrone info", "finished getFileType");
+            Log.d("ParleyDrone information", "start getFileType");
+            type = getFileType( string, fileName);
+            Log.d("ParleyDrone information", "finished getFileType");
 
             if( type == KVTML2) {
                 KVTML2Parser parser = new KVTML2Parser();
                 FileFormats ff;
 
                 try {
-                    Log.d("ParleyDrone info", "start parsing kvtml2");
+                    Log.d("ParleyDrone information", "start parsing kvtml2");
                     ff = parser.importf( fileLocation + "/" + fileName);
-                    Log.d("ParleyDrone info", "finished parsing kvtml2");
+                    Log.d("ParleyDrone information", "finished parsing kvtml2");
                     if( ff != null) {
                         ff.objectType = KVTML2;
-                        if( fileFormatsList.add( ff))
+                        if( fileFormatsList.add( ff)) {
                             return fileFormatsList.size() - 1;
+                        }
                     }
                 } catch (ParserConfigurationException e) {
                     Log.d( "ParleyDrone errors", "ParserConfigurationException: " + e.getStackTrace());
@@ -100,7 +105,7 @@ public class IOWrapper extends FileFormats{
                     return -1;
                 }
             }
-            Log.d("ParleyDrone info", "couldn't load the file");
+            Log.d("ParleyDrone information", "couldn't load the file");
         }
 		return -1;
 	}
@@ -113,7 +118,7 @@ public class IOWrapper extends FileFormats{
 
     // get the file type of the document
 
-    private String getFileType( String string) {
+    private String getFileType( String string, String fileName) {
         String type;
         /*
 		header
@@ -131,7 +136,13 @@ public class IOWrapper extends FileFormats{
         type = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE kvtml PUBLIC \"kvtml2.dtd\" \"http://edu.kde.org/kvtml/kvtml2.dtd\">";
         if( checkXML( string, type))
             return KVTML2;
+        else {
+            String[] name = fileName.split( Pattern.quote("."));
 
+            if( name.length > 1) {
+                return name[name.length-1].toString();
+            }
+        }
         return null;
     }
 
@@ -147,17 +158,17 @@ public class IOWrapper extends FileFormats{
         String verification = "";
 
         // remove multiple space characters
-        Log.d("ParleyDrone info", "start removeMultipleSpaceCharacters");
+        Log.d("ParleyDrone information", "start removeMultipleSpaceCharacters");
         pos = string.indexOf(string.indexOf(">") + 1);
         if( pos > 0)
             stringCache = string.substring( 0, pos);
         String text = removeMultipleSpaceCharacters( stringCache);
-        Log.d("ParleyDrone info", "finished removeMultipleSpaceCharacters");
-        Log.d("ParleyDrone info", "start removeMultipleSpaceCharacters");
+        Log.d("ParleyDrone information", "finished removeMultipleSpaceCharacters");
+        Log.d("ParleyDrone information", "start removeMultipleSpaceCharacters");
         String type = removeMultipleSpaceCharacters( typeString);
-        Log.d("ParleyDrone info", "finished removeMultipleSpaceCharacters");
+        Log.d("ParleyDrone information", "finished removeMultipleSpaceCharacters");
 
-        Log.d("ParleyDrone info", "start to check for errors in the xml file");
+        Log.d("ParleyDrone information", "start to check for errors in the xml file");
         if( string.length() >= type.length()) {// text
             for( int i = 0; (i < string.length()) && (typeAt < type.length()); i++) {
                 // before or after a angle bracket are new lines or space characters
@@ -194,7 +205,7 @@ public class IOWrapper extends FileFormats{
                     verification = "";
                 }
             }
-            Log.d("ParleyDrone info", "finished checkXML");
+            Log.d("ParleyDrone information", "finished checkXML");
             if( type.equals(verification)) {
                 return true;
             }
@@ -229,12 +240,9 @@ public class IOWrapper extends FileFormats{
     // save functions
 
 	public boolean saveFile( FileFormats fileFormats, String fileName, String fileLocation) {
-        String fullFileLocation;
         String export;
 
-
-
-        if( fileManager.createFolder( fileLocation)){
+        if( fileManager.createFolder( fileLocation, fileName)){
             if( fileFormats.objectType == KVTML2) {
                 KVTML2Parser parser = new KVTML2Parser();
 
@@ -244,7 +252,7 @@ public class IOWrapper extends FileFormats{
                     return false;
                 }
                 if( export != null) {
-                    fileManager.saveFile( export, fileName, fileLocation);
+                    fileManager.saveFile( export, fileLocation, fileName);
                     return true;
                 }
             }

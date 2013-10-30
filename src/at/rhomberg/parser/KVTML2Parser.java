@@ -9,6 +9,8 @@ import org.w3c.dom.NodeList;
 
 import java.io.File;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -60,49 +62,49 @@ public class KVTML2Parser implements ImportExportInterface {
 
             if( qName.equals( "information")) {
                 if( nNode.getNodeType() == Node.ELEMENT_NODE) {
-                    Log.d( "ParleyDrone info", "start parsing information");
+                    Log.d( "ParleyDrone information", "start parsing information");
                     eElement = (Element) nNode;
                     importSearchSetInformation( eElement);
-                    Log.d( "ParleyDrone info", "finished parsing information");
+                    Log.d( "ParleyDrone information", "finished parsing information");
                 }
             }
             else if( qName.equals( "identifiers")) {
                 if( subNodeList.getLength() > 0) {
-                    Log.d( "ParleyDrone info", "start parsing identifiers");
+                    Log.d( "ParleyDrone information", "start parsing identifiers");
                     importSearchSetIdentifiers( subNodeList);
-                    Log.d( "ParleyDrone info", "finished parsing identifiers");
+                    Log.d( "ParleyDrone information", "finished parsing identifiers");
                 }
             }
             else if( qName.equals( "entries")) {
                 if( subNodeList.getLength() > 0) {
-                    Log.d( "ParleyDrone info", "start parsing entries");
+                    Log.d( "ParleyDrone information", "start parsing entries");
                     importSearchSetEntries( subNodeList);
-                    Log.d( "ParleyDrone info", "finished parsing entries");
+                    Log.d( "ParleyDrone information", "finished parsing entries");
                 }
             }
             else if( qName.equals( "lessons")) {
                 if( subNodeList.getLength() > 0) {
-                    Log.d( "ParleyDrone info", "start parsing lessons");
+                    Log.d( "ParleyDrone information", "start parsing lessons");
                     importSearchSetLessons( subNodeList);
-                    Log.d( "ParleyDrone info", "finished parsing lessons");
+                    Log.d( "ParleyDrone information", "finished parsing lessons");
                 }
             }
             else if( qName.equals( "wordtypes")) {
                 if( subNodeList.getLength() > 0) {
-                    Log.d( "ParleyDrone info", "start parsing wordtypes");
+                    Log.d( "ParleyDrone information", "start parsing wordtypes");
                     importSearchSetWordTypes( subNodeList);
-                    Log.d( "ParleyDrone info", "finished parsing wordtypes");
+                    Log.d( "ParleyDrone information", "finished parsing wordtypes");
                 }
             }
 			else if( qName.equals( "leitnerboxes")) {
                 if( subNodeList.getLength() > 0) {
-                    Log.d( "ParleyDrone info", "start parsing leitnerboxes");
+                    Log.d( "ParleyDrone information", "start parsing leitnerboxes");
                     importSearchSetLeitnerboxes( subNodeList);
-                    Log.d( "ParleyDrone info", "finished parsing leitnerboxes");
+                    Log.d( "ParleyDrone information", "finished parsing leitnerboxes");
                 }
             }
             else {
-                Log.d( "ParleyDrone info", "an error occured");
+                Log.d( "ParleyDrone information", "an error occured");
                 error++; // not required
             }
         }
@@ -124,7 +126,7 @@ public class KVTML2Parser implements ImportExportInterface {
         if( subNodeList.getLength() > 0) {
             node = subNodeList.item(0);
             if( node != null)
-                fileFormats.info.generator = node.getTextContent();
+                fileFormats.information.generator = node.getTextContent();
         }
 
 		// title
@@ -132,7 +134,7 @@ public class KVTML2Parser implements ImportExportInterface {
         if( subNodeList.getLength() > 0) {
             node = subNodeList.item(0);
             if( node != null)
-                fileFormats.info.title = node.getTextContent();
+                fileFormats.information.title = node.getTextContent();
         }
 
 		// author
@@ -140,7 +142,7 @@ public class KVTML2Parser implements ImportExportInterface {
         if( subNodeList.getLength() > 0) {
             node = subNodeList.item(0);
             if( node != null)
-                fileFormats.info.author = node.getTextContent();
+                fileFormats.information.author = node.getTextContent();
         }
 
 		// contact
@@ -148,7 +150,7 @@ public class KVTML2Parser implements ImportExportInterface {
         if( subNodeList.getLength() > 0) {
             node = subNodeList.item(0);
             if( node != null)
-                fileFormats.info.contact = node.getTextContent();
+                fileFormats.information.contact = node.getTextContent();
         }
 
 		// license
@@ -156,7 +158,7 @@ public class KVTML2Parser implements ImportExportInterface {
         if( subNodeList.getLength() > 0) {
             node = subNodeList.item(0);
             if( node != null)
-                fileFormats.info.license = node.getTextContent();
+                fileFormats.information.license = node.getTextContent();
         }
 
 		// comment
@@ -164,7 +166,7 @@ public class KVTML2Parser implements ImportExportInterface {
         if( subNodeList.getLength() > 0) {
             node = subNodeList.item(0);
             if( node != null)
-                fileFormats.info.comment = node.getTextContent();
+                fileFormats.information.comment = node.getTextContent();
         }
 
 		// date
@@ -173,7 +175,7 @@ public class KVTML2Parser implements ImportExportInterface {
             node = subNodeList.item(0);
             if( node != null) {
                 try {
-                    fileFormats.info.date = Date.valueOf( node.getTextContent());
+                    fileFormats.information.date = Date.valueOf( node.getTextContent());
                 }
                 catch( IllegalArgumentException iae) {
                     error++;
@@ -186,7 +188,7 @@ public class KVTML2Parser implements ImportExportInterface {
         if( subNodeList.getLength() > 0) {
             node = subNodeList.item(0);
             if( node != null)
-                fileFormats.info.category = node.getTextContent();
+                fileFormats.information.category = node.getTextContent();
         }
 	}
 	
@@ -2475,7 +2477,7 @@ public class KVTML2Parser implements ImportExportInterface {
                             }
 
                             entry.translationList.put(idSubResult, translation);
-                            Log.d("ParleyDrone info", "translation list added" + idSubResult + translation.text);
+                            Log.d("ParleyDrone information", "translation list added" + idSubResult + translation.text);
                         }
 
                         // deactivated
@@ -2564,7 +2566,7 @@ public class KVTML2Parser implements ImportExportInterface {
             if( nodeListWordTypes.item(temp).getNodeName().equals( "container")) {
                 resultWordTypesContainer = searchSetContainer(nodeListWordTypes.item(temp));
                 if( resultWordTypesContainer != null) {
-                    fileFormats.wordTypesContainerList.add(resultWordTypesContainer);
+                    fileFormats.leitnerboxesContainerList.add(resultWordTypesContainer);
                 }
             }
             else {
@@ -2628,7 +2630,466 @@ public class KVTML2Parser implements ImportExportInterface {
     }
 
 	public String export(FileFormats fileFormats) throws Throwable{
-		
-		return null;
+        StringBuilder export = new StringBuilder();
+        export.append( "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                "<!DOCTYPE kvtml PUBLIC \"kvtml2.dtd\" \"http://edu.kde.org/kvtml/kvtml2.dtd\">\n" +
+                "<kvtml version=\"2.0\">\n");
+
+        // information
+        String informationContent = buildTag("\t\t", "generator", fileFormats.information.generator) +
+                                    buildTag("\t\t", "title", fileFormats.information.title) +
+                                    buildTag("\t\t", "author", fileFormats.information.author) +
+                                    buildTag("\t\t", "contact", fileFormats.information.contact) +
+                                    buildTag("\t\t", "license", fileFormats.information.license) +
+                                    buildTag("\t\t", "comment", fileFormats.information.comment) +
+                                    buildTag("\t\t", "date", "" + fileFormats.information.date) +
+                                    buildTag("\t\t", "category", fileFormats.information.category);
+
+        export.append( buildTag("\t", "information", informationContent));
+
+        // identifiers
+        if( fileFormats.identifierList.size() > 0) {
+            Iterator<Integer> identifierListIterator = fileFormats.identifierList.keySet().iterator();
+
+            export.append( "\t</identifiers>\n");
+
+            for( int i = 0; identifierListIterator.hasNext(); i++) {
+                Integer identifierListKey = identifierListIterator.next();
+
+                export.append( "\t\t<identifier id=\"" + identifierListKey + "\">\n");
+
+                Identifier identifier = fileFormats.identifierList.get( identifierListKey);
+
+                // identifier
+                if( identifier != null) {
+                    // content of definite in singular
+                    String articleSingularDefiniteContent = buildTag("\t\t\t\t\t", "male", identifier.article.articleSingular.definite.male) +
+                                                            buildTag("\t\t\t\t\t", "female", identifier.article.articleSingular.definite.female) +
+                                                            buildTag("\t\t\t\t\t", "neutral", identifier.article.articleSingular.definite.neutral);
+
+                    // content of indefinite in singular
+                    String articleSingularIndefiniteContent = buildTag("\t\t\t\t\t", "male", identifier.article.articleSingular.indefinite.male) +
+                                                                buildTag("\t\t\t\t\t", "female", identifier.article.articleSingular.indefinite.female) +
+                                                                buildTag("\t\t\t\t\t", "neutral", identifier.article.articleSingular.indefinite.neutral);
+
+                    // definite in singular
+                    String articleSingularDefinite = buildTag("\t\t\t\t", "definite", articleSingularDefiniteContent);
+
+                    // indefinite in singular
+                    String articleSingularIndefinite = buildTag("\t\t\t\t", "definite", articleSingularIndefiniteContent);
+
+
+                    // content of definite in plural
+                    String articlePluralDefiniteContent = buildTag("\t\t\t\t\t", "male", identifier.article.articlePlural.definite.male) +
+                                                            buildTag("\t\t\t\t\t", "female", identifier.article.articlePlural.definite.female) +
+                                                            buildTag("\t\t\t\t\t", "neutral", identifier.article.articlePlural.definite.neutral);
+
+                    // content of indefinite in plural
+                    String articlePluralIndefiniteContent = buildTag("\t\t\t\t\t", "male", identifier.article.articlePlural.indefinite.male) +
+                                                            buildTag("\t\t\t\t\t", "female", identifier.article.articlePlural.indefinite.female) +
+                                                            buildTag("\t\t\t\t\t", "neutral", identifier.article.articlePlural.indefinite.neutral);
+
+                    // definite in plural
+                    String articlePluralDefinite = buildTag("\t\t\t\t", "definite", articlePluralDefiniteContent);
+
+                    // indefinite in plural
+                    String articlePluralIndefinite = buildTag("\t\t\t\t", "definite", articlePluralIndefiniteContent);
+
+
+                    // singular
+                    String articleSingular = buildTag("\t\t\t", "singular", articleSingularDefinite + articleSingularIndefinite);
+
+                    // plural
+                    String articlePlural = buildTag("\t\t\t", "plural", articlePluralDefinite + articlePluralIndefinite);
+
+
+                    // article
+                    String article = articleSingular + articlePlural;
+
+
+
+                    // singular in personalpronouns
+                    String personalPronounsSingularContent = buildTag("\t\t\t\t\t", "firstperson", identifier.personalPronouns.singular.firstPerson) +
+                                                                buildTag("\t\t\t\t\t", "secondperson", identifier.personalPronouns.singular.secondPerson) +
+                                                                buildTag("\t\t\t\t\t", "thirdpersonneutralcommon", identifier.personalPronouns.singular.thirdPersonFemale);
+
+                    // plural in personalpronouns
+                    String personalPronounsPluralContent = buildTag("\t\t\t\t\t", "firstperson", identifier.personalPronouns.plural.firstPerson) +
+                            buildTag("\t\t\t\t\t", "secondperson", identifier.personalPronouns.plural.secondPerson) +
+                            buildTag("\t\t\t\t\t", "thirdpersonneutralcommon", identifier.personalPronouns.plural.thirdPersonFemale);
+
+
+                    // singular
+                    String personalPronounsSingular = buildTag("\t\t\t\t", "singular", personalPronounsSingularContent);
+
+                    // plural
+                    String personalPronounsPlural = buildTag("\t\t\t\t", "plural", personalPronounsPluralContent);
+
+                    // personalpronouns
+                    String personalPronouns = buildTag("\t\t\t", "personalpronouns", personalPronounsSingular + personalPronounsPlural);
+
+
+
+                    // tense
+                    StringBuilder tense = new StringBuilder();
+                    for( int n = 0; n < identifier.tenseList.size(); n++) {
+                        tense.append( buildTag("\t\t\t", "tense", identifier.tenseList.get(n)));
+                    }
+
+
+
+                    String identifierContent = buildTag("\t\t\t", "name", identifier.name) +
+                                                buildTag("\t\t\t", "locale", identifier.locale) +
+                                                buildTag("\t\t\t", "comment", identifier.comment) +
+                                                buildTag("\t\t\t", "sizeHint", "" + identifier.sizeHint) +
+                                                article +
+                                                personalPronouns +
+                                                tense;
+                }
+
+                export.append( "\t\t</identifier>\n");
+            }
+
+            export.append( "\t</identifiers>\n");
+        }
+
+
+        // entries
+        if( fileFormats.entryList.size() > 0) {
+            Iterator<Integer> entryListIterator = fileFormats.entryList.keySet().iterator();
+
+            export.append( "\t</entries>\n");
+
+            for( int i = 0; entryListIterator.hasNext(); i++) {
+                Integer entryListKey = entryListIterator.next();
+
+                export.append( "\t\t<entry id=\"" + entryListKey + "\">\n");
+
+                Entry entry = fileFormats.entryList.get( entryListKey);
+
+                StringBuilder translation = new StringBuilder();
+
+                if( entry.translationList.size() > 0) {
+                    Iterator<Integer> translationListIterator = entry.translationList.keySet().iterator();
+
+                    for( int n = 0; ; n++) {
+                        Integer translationListKey = translationListIterator.next();
+
+                        translation.append( "\t\t<translation id=\"" + translationListKey + "\">\n");
+
+                        Translation entryTranslation = entry.translationList.get( translationListKey);
+
+                        if( entryTranslation != null) {
+                            // content of grade
+                            String gradeContent = buildTag("\t\t\t\t", "currentgrade", "" + entryTranslation.grade.currentGrade) +
+                                                    buildTag("\t\t\t\t", "count", "" + entryTranslation.grade.count) +
+                                                    buildTag("\t\t\t\t", "errorcount", "" + entryTranslation.grade.errorCount) +
+                                                    buildTag("\t\t\t\t", "date", "" + entryTranslation.grade.date);
+
+                            // grade
+                            String grade = buildTag( "\t\t\t", "grade", gradeContent);
+
+
+
+                            // content of singular
+                            String translationSingularContent = buildTag( "\t\t\t\t", "firstperson", entryTranslation.conjugation.singular.firstPerson) +
+                                                                buildTag( "\t\t\t\t", "secondperson", entryTranslation.conjugation.singular.secondPerson) +
+                                                                buildTag( "\t\t\t\t", "thirdpersonneutralcommon", entryTranslation.conjugation.singular.thirdPersonNeutralCommon);
+
+                            // content of dual
+                            String translationDualContent = buildTag( "\t\t\t\t", "firstperson", entryTranslation.conjugation.dual.firstPerson) +
+                                    buildTag( "\t\t\t\t", "secondperson", entryTranslation.conjugation.dual.secondPerson) +
+                                    buildTag( "\t\t\t\t", "thirdpersonneutralcommon", entryTranslation.conjugation.dual.thirdPersonNeutralCommon);
+
+                            // content of plural
+                            String translationPluralContent = buildTag( "\t\t\t\t", "firstperson", entryTranslation.conjugation.plural.firstPerson) +
+                                    buildTag( "\t\t\t\t", "secondperson", entryTranslation.conjugation.plural.secondPerson) +
+                                    buildTag( "\t\t\t\t", "thirdpersonneutralcommon", entryTranslation.conjugation.plural.thirdPersonNeutralCommon);
+
+
+                            // conjugation
+                            String conjugation = buildTag("\t\t\t", "conjugation", translationSingularContent + translationDualContent + translationPluralContent);
+
+
+
+                            // content of singular in female
+                            String declensionFemaleSingularContent = buildTag("\t\t\t\t\t\t", "nominative", entryTranslation.declension.femaleList.singular.nominative) +
+                                                                buildTag("\t\t\t\t\t\t", "genitive", entryTranslation.declension.femaleList.singular.genitive) +
+                                                                buildTag("\t\t\t\t\t\t", "dative", entryTranslation.declension.femaleList.singular.dative) +
+                                                                buildTag("\t\t\t\t\t\t", "accusative", entryTranslation.declension.femaleList.singular.accusative) +
+                                                                buildTag("\t\t\t\t\t\t", "ablative", entryTranslation.declension.femaleList.singular.ablative) +
+                                                                buildTag("\t\t\t\t\t\t", "locative", entryTranslation.declension.femaleList.singular.locative) +
+                                                                buildTag("\t\t\t\t\t\t", "vocative", entryTranslation.declension.femaleList.singular.vocative);
+
+                            // content of dual in female
+                            String declensionFemaleDualContent = buildTag("\t\t\t\t\t\t", "nominative", entryTranslation.declension.femaleList.dual.nominative) +
+                                    buildTag("\t\t\t\t\t\t", "genitive", entryTranslation.declension.femaleList.dual.genitive) +
+                                    buildTag("\t\t\t\t\t\t", "dative", entryTranslation.declension.femaleList.dual.dative) +
+                                    buildTag("\t\t\t\t\t\t", "accusative", entryTranslation.declension.femaleList.dual.accusative) +
+                                    buildTag("\t\t\t\t\t\t", "ablative", entryTranslation.declension.femaleList.dual.ablative) +
+                                    buildTag("\t\t\t\t\t\t", "locative", entryTranslation.declension.femaleList.dual.locative) +
+                                    buildTag("\t\t\t\t\t\t", "vocative", entryTranslation.declension.femaleList.dual.vocative);
+
+                            // content of plural in female
+                            String declensionFemalePluralContent = buildTag("\t\t\t\t\t\t", "nominative", entryTranslation.declension.femaleList.plural.nominative) +
+                                    buildTag("\t\t\t\t\t\t", "genitive", entryTranslation.declension.femaleList.plural.genitive) +
+                                    buildTag("\t\t\t\t\t\t", "dative", entryTranslation.declension.femaleList.plural.dative) +
+                                    buildTag("\t\t\t\t\t\t", "accusative", entryTranslation.declension.femaleList.plural.accusative) +
+                                    buildTag("\t\t\t\t\t\t", "ablative", entryTranslation.declension.femaleList.plural.ablative) +
+                                    buildTag("\t\t\t\t\t\t", "locative", entryTranslation.declension.femaleList.plural.locative) +
+                                    buildTag("\t\t\t\t\t\t", "vocative", entryTranslation.declension.femaleList.plural.vocative);
+
+                            // singular in female
+                            String declensionFemaleSingular = buildTag( "\t\t\t\t\t", "singular", declensionFemaleSingularContent);
+
+                            // dual in female
+                            String declensionFemaleDual = buildTag( "\t\t\t\t\t", "dual", declensionFemaleDualContent);
+
+                            // plural in female
+                            String declensionFemalePlural = buildTag( "\t\t\t\t\t", "plural", declensionFemalePluralContent);
+
+                            // female in declension
+                            String declensionFemale = buildTag("\t\t\t\t", "female", declensionFemaleSingular + declensionFemaleDual + declensionFemalePlural);
+
+
+                            // content of singular in male
+                            String declensionMaleSingularContent = buildTag("\t\t\t\t\t\t", "nominative", entryTranslation.declension.maleList.singular.nominative) +
+                                    buildTag("\t\t\t\t\t\t", "genitive", entryTranslation.declension.maleList.singular.genitive) +
+                                    buildTag("\t\t\t\t\t\t", "dative", entryTranslation.declension.maleList.singular.dative) +
+                                    buildTag("\t\t\t\t\t\t", "accusative", entryTranslation.declension.maleList.singular.accusative) +
+                                    buildTag("\t\t\t\t\t\t", "ablative", entryTranslation.declension.maleList.singular.ablative) +
+                                    buildTag("\t\t\t\t\t\t", "locative", entryTranslation.declension.maleList.singular.locative) +
+                                    buildTag("\t\t\t\t\t\t", "vocative", entryTranslation.declension.maleList.singular.vocative);
+
+                            // content of dual in male
+                            String declensionMaleDualContent = buildTag("\t\t\t\t\t\t", "nominative", entryTranslation.declension.maleList.dual.nominative) +
+                                    buildTag("\t\t\t\t\t\t", "genitive", entryTranslation.declension.maleList.dual.genitive) +
+                                    buildTag("\t\t\t\t\t\t", "dative", entryTranslation.declension.maleList.dual.dative) +
+                                    buildTag("\t\t\t\t\t\t", "accusative", entryTranslation.declension.maleList.dual.accusative) +
+                                    buildTag("\t\t\t\t\t\t", "ablative", entryTranslation.declension.maleList.dual.ablative) +
+                                    buildTag("\t\t\t\t\t\t", "locative", entryTranslation.declension.maleList.dual.locative) +
+                                    buildTag("\t\t\t\t\t\t", "vocative", entryTranslation.declension.maleList.dual.vocative);
+
+                            // content of plural in male
+                            String declensionMalePluralContent = buildTag("\t\t\t\t\t\t", "nominative", entryTranslation.declension.maleList.plural.nominative) +
+                                    buildTag("\t\t\t\t\t\t", "genitive", entryTranslation.declension.maleList.plural.genitive) +
+                                    buildTag("\t\t\t\t\t\t", "dative", entryTranslation.declension.maleList.plural.dative) +
+                                    buildTag("\t\t\t\t\t\t", "accusative", entryTranslation.declension.maleList.plural.accusative) +
+                                    buildTag("\t\t\t\t\t\t", "ablative", entryTranslation.declension.maleList.plural.ablative) +
+                                    buildTag("\t\t\t\t\t\t", "locative", entryTranslation.declension.maleList.plural.locative) +
+                                    buildTag("\t\t\t\t\t\t", "vocative", entryTranslation.declension.maleList.plural.vocative);
+
+                            // singular in male
+                            String declensionMaleSingular = buildTag( "\t\t\t\t\t", "singular",declensionMaleSingularContent);
+
+                            // dual in male
+                            String declensionMaleDual = buildTag( "\t\t\t\t\t", "dual",declensionMaleDualContent);
+
+                            // plural in male
+                            String declensionMalePlural = buildTag( "\t\t\t\t\t", "plural",declensionMalePluralContent);
+
+                            // male in declension
+                            String declensionMale = buildTag("\t\t\t\t", "male", declensionMaleSingular + declensionMaleDual + declensionMalePlural);
+
+
+                            // content of singular in neutral
+                            String declensionNeutralSingularContent = buildTag("\t\t\t\t\t\t", "nominative", entryTranslation.declension.neutralList.singular.nominative) +
+                                    buildTag("\t\t\t\t\t\t", "genitive", entryTranslation.declension.neutralList.singular.genitive) +
+                                    buildTag("\t\t\t\t\t\t", "dative", entryTranslation.declension.neutralList.singular.dative) +
+                                    buildTag("\t\t\t\t\t\t", "accusative", entryTranslation.declension.neutralList.singular.accusative) +
+                                    buildTag("\t\t\t\t\t\t", "ablative", entryTranslation.declension.neutralList.singular.ablative) +
+                                    buildTag("\t\t\t\t\t\t", "locative", entryTranslation.declension.neutralList.singular.locative) +
+                                    buildTag("\t\t\t\t\t\t", "vocative", entryTranslation.declension.neutralList.singular.vocative);
+
+                            // content of dual in neutral
+                            String declensionNeutralDualContent = buildTag("\t\t\t\t\t\t", "nominative", entryTranslation.declension.neutralList.dual.nominative) +
+                                    buildTag("\t\t\t\t\t\t", "genitive", entryTranslation.declension.neutralList.dual.genitive) +
+                                    buildTag("\t\t\t\t\t\t", "dative", entryTranslation.declension.neutralList.dual.dative) +
+                                    buildTag("\t\t\t\t\t\t", "accusative", entryTranslation.declension.neutralList.dual.accusative) +
+                                    buildTag("\t\t\t\t\t\t", "ablative", entryTranslation.declension.neutralList.dual.ablative) +
+                                    buildTag("\t\t\t\t\t\t", "locative", entryTranslation.declension.neutralList.dual.locative) +
+                                    buildTag("\t\t\t\t\t\t", "vocative", entryTranslation.declension.neutralList.dual.vocative);
+
+                            // content of plural in neutral
+                            String declensionNeutralPluralContent = buildTag("\t\t\t\t\t\t", "nominative", entryTranslation.declension.neutralList.plural.nominative) +
+                                    buildTag("\t\t\t\t\t\t", "genitive", entryTranslation.declension.neutralList.plural.genitive) +
+                                    buildTag("\t\t\t\t\t\t", "dative", entryTranslation.declension.neutralList.plural.dative) +
+                                    buildTag("\t\t\t\t\t\t", "accusative", entryTranslation.declension.neutralList.plural.accusative) +
+                                    buildTag("\t\t\t\t\t\t", "ablative", entryTranslation.declension.neutralList.plural.ablative) +
+                                    buildTag("\t\t\t\t\t\t", "locative", entryTranslation.declension.neutralList.plural.locative) +
+                                    buildTag("\t\t\t\t\t\t", "vocative", entryTranslation.declension.neutralList.plural.vocative);
+
+                            // singular in neutral
+                            String declensionNeutralSingular = buildTag( "\t\t\t\t\t", "singular",declensionNeutralSingularContent);
+
+                            // dual in neutral
+                            String declensionNeutralDual = buildTag( "\t\t\t\t\t", "dual",declensionNeutralDualContent);
+
+                            // plural in neutral
+                            String declensionNeutralPlural = buildTag( "\t\t\t\t\t", "plural",declensionNeutralPluralContent);
+
+                            // neutral in declension
+                            String declensionNeutral = buildTag("\t\t\t\t", "neutral", declensionNeutralSingular + declensionNeutralDual + declensionNeutralPlural);
+
+
+                            // declension
+                            String declension = buildTag("\t\t\t", "declension", declensionFemale + declensionMale + declensionNeutral);
+
+
+                            String antonymPairEntries = "";
+                            // pair in antonym
+                            for( int d = 0; d < entryTranslation.antonymPair.size(); d++) {
+                                antonymPairEntries += buildTag("\t\t\t\t", "pair", "<\t\t\t\t\tentry id=\"" + entryTranslation.antonymPair.get(d).first.entryId + ">\n" +
+                                                                                                "\t\t\t\t\t\t<translation>" + entryTranslation.antonymPair.get(d).first.translationId + "</translation>\n" +
+                                                                                            "\t\t\t\t\t</entry>\n" +
+                                                                                            "\t\t\t\t\t<entry id=\"" + entryTranslation.antonymPair.get(d).second.entryId + ">\n" +
+                                                                                                "\t\t\t\t\t\t<translation>" + entryTranslation.antonymPair.get(d).second.translationId + "</translation>\n" +
+                                                                                            "\t\t\t\t\t</entry>\n");
+                            }
+
+                            // antonym
+                            String antonym = buildTag("\t\t\t", "antonym", antonymPairEntries);
+
+
+                            String synonymPairEntries = "";
+                            // pair in synonym
+                            for( int d = 0; d < entryTranslation.synonymPair.size(); d++) {
+                                synonymPairEntries += buildTag("\t\t\t\t", "pair", "<\t\t\t\t\tentry id=\"" + entryTranslation.synonymPair.get(d).first.entryId + ">\n" +
+                                        "\t\t\t\t\t\t<translation>" + entryTranslation.synonymPair.get(d).first.translationId + "</translation>\n" +
+                                        "\t\t\t\t\t</entry>\n" +
+                                        "\t\t\t\t\t<entry id=\"" + entryTranslation.synonymPair.get(d).second.entryId + ">\n" +
+                                        "\t\t\t\t\t\t<translation>" + entryTranslation.synonymPair.get(d).second.translationId + "</translation>\n" +
+                                        "\t\t\t\t\t</entry>\n");
+                            }
+
+                            // synonym
+                            String synonym = buildTag("\t\t\t", "synonym", synonymPairEntries);
+
+
+
+                            // content of comparison
+                            String comparisonContent = buildTag("\t\t\t\t", "absolute", entryTranslation.comparison.absolute) +
+                                                        buildTag("\t\t\t\t", "comparative", entryTranslation.comparison.comparative) +
+                                                        buildTag("\t\t\t\t", "superlative", entryTranslation.comparison.superlative);
+
+                            // comparison
+                            String comparison = buildTag("\t\t\t", "comparison", comparisonContent);
+
+
+
+                            String choices = "";
+                            // choices in multiple choice
+                            for( int d = 0; d < entryTranslation.multipleChoice.choice.size(); d++) {
+                                choices = buildTag("\t\t\t\t", "choice", entryTranslation.multipleChoice.choice.get(d));
+                            }
+
+                            // multiple choice
+                            String multipleChoice = buildTag("\t\t\t", "multiplechoice", choices);
+
+
+
+                            translation.append( buildTag("\t\t\t", "text", entryTranslation.text) +
+                                    grade +
+                                    conjugation +
+                                    declension +
+                                    buildTag("\t\t\t", "comment", entryTranslation.comment) +
+                                    buildTag("\t\t\t", "pronunciation", entryTranslation.pronunciation) +
+                                    buildTag("\t\t\t", "example", entryTranslation.example) +
+                                    buildTag("\t\t\t", "paraphrase", entryTranslation.paraphrase) +
+                                    //public String falseFriend = ""; with attr id, id is unique
+                                    antonym +
+                                    synonym +
+                                    comparison +
+                                    multipleChoice +
+                                    buildTag("\t\t\t", "image", entryTranslation.image) +
+                                    buildTag("\t\t\t", "sound", entryTranslation.sound));
+                        }
+
+
+                        translation.append( "\t\t</translation>");
+                    }
+                }
+
+
+
+                // entry
+                if( entry != null) {
+                    export.append( buildTag("\t\t\t", "deactivated", String.valueOf( entry.deactivated)) +
+                                    buildTag("\t\t\t", "sizehint", "" + entry.sizeHint) +
+                                    translation);
+                }
+
+                export.append( "\t\t</entry>\n");
+            }
+
+            export.append( "\t</entries>\n");
+        }
+
+
+
+        // container
+        export.append( buildTag( "\t", "lessons", buildContainerTags( fileFormats.lessonContainerList, 2)));
+
+        // wordtypes
+        export.append( buildTag( "\t", "wordtypes", buildContainerTags( fileFormats.wordTypesContainerList, 2)));
+
+        // leitnerboxes
+        export.append( buildTag( "\t", "leitnerboxes", buildContainerTags( fileFormats.leitnerboxesContainerList, 2)));
+
+
+        export.append("kvtml");
+
+		return export.toString();
 	}
+
+    // container content in lessons, wordTypes,leitnerboxes
+    private String buildContainerTags(ArrayList<Container> containerList, int tabLenghtStart) {
+        String containerContent = "";
+
+        for( int i = 0; i < containerList.size(); i++) {
+            StringBuilder entry = new StringBuilder();
+
+            // entry content in lessons, wordTypes,leitnerboxes
+            for( int n = 0; n < containerList.get(i).entryList.size(); n++) {
+                entry.append( "<" + multiplyString( "\t", tabLenghtStart + 1) + "entry id=\"" + containerList.get(i).entryList.get(n).intValue() + "\"/>\n");
+            }
+
+            String container = "";
+            if( containerList.get(i).container.size() > 0) {
+                container = buildContainerTags(containerList.get(i).container, tabLenghtStart + 2);
+            }
+
+            containerContent = buildTag( multiplyString( "\t", tabLenghtStart + 1), "name", containerList.get(i).name) +
+                    buildTag( multiplyString( "\t", tabLenghtStart + 1), "specialwordtype", containerList.get(i).specialWordType) +
+                    buildTag( multiplyString( "\t", tabLenghtStart + 1), "inpractice", String.valueOf( containerList.get(i).inPractice)) +
+                    container +
+                    entry +
+                    buildTag( multiplyString( "\t", tabLenghtStart + 1), "image", containerList.get(i).image);
+
+        }
+        return buildTag( multiplyString( "\t", tabLenghtStart), "container", containerContent);
+    }
+
+    private String multiplyString( String string, int times) {
+        StringBuilder result = new StringBuilder();
+
+        for( int i = 0; i < times; i++) {
+            result.append( string);
+        }
+
+        return result.toString();
+    }
+
+    private String buildTag( String tab, String tag, String content) {
+        String result = "";
+
+        if( !content.equals( "") || !content.equals("-1")) {
+            if( content.contains("\n"))
+                result = tab + "<" + tag + ">\n" + content + "</" + tag + ">\n";
+            else
+                result = tab + "<" + tag + ">" + content + "</" + tag + ">\n";
+        }
+
+        return result;
+    }
 }

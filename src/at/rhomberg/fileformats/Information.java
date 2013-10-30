@@ -2,13 +2,15 @@ package at.rhomberg.fileformats;
 
 import java.util.Date;
 
+import at.rhomberg.parleydrone.ParleyDrone;
+
 // kvtml2 format objects
 
 // for more information
 // http://edu.kde.org/kvtml/kvtml2.dtd
 
 public class Information {
-	public String generator = "";   // name of the generator
+	public String generator = ParleyDrone.PACKAGE_NAME + " " + ParleyDrone.BUILD_VERSION;   // name of the generator
 	public String title = "";   // title of the file
 	public String author = "";  // author of the file
 	public String contact = ""; // e-mail address of the author or phone number

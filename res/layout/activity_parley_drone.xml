@@ -20,7 +20,7 @@
         android:id="@+id/ButtonopenAviableCollection"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/openAviableCollection" />
+        android:text="@string/openAvailableCollection" />
 
     <Button
         android:id="@+id/ButtonloadCollectionsNetwork"

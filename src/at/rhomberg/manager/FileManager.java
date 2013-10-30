@@ -12,8 +12,8 @@ import java.io.IOException;
 
 public class FileManager {
 
-    public String getStringFromFile( String fileLocationAndName) {
-        File file = new File( fileLocationAndName);
+    public String getStringFromFile( String fileLocation, String fileName) {
+        File file = new File( fileLocation  + "/" + fileName);
         FileReader fr;
         try {
             fr = new FileReader( file);
@@ -22,7 +22,7 @@ public class FileManager {
         }
 
         StringBuilder output = new StringBuilder();
-        Log.d("ParleyDrone info", "get the full text");
+        Log.d("ParleyDrone information", "get the full text");
         if( fr != null) {
             BufferedReader br = new BufferedReader( fr);
 
@@ -43,13 +43,13 @@ public class FileManager {
                 return null;
             }
         }
-        Log.d("ParleyDrone info", "finished");
+        Log.d("ParleyDrone information", "finished");
 
         return output.toString();
     }
 
-    public boolean saveFile( String string, String fileName, String fileLocation) {
-        File file = new File( fileLocation);
+    public boolean saveFile( String string, String fileLocation, String fileName) {
+        File file = new File( fileLocation + "/" + fileName);
         FileWriter fw;
 
         try {
@@ -75,18 +75,22 @@ public class FileManager {
         return true;
     }
 
-    public boolean createFolder( String fileLocation) {
-        String fileDirectory;
-        String state = Environment.getExternalStorageState();
+    public boolean createFolder( String folderLocation, String folderName) {
+        if( new File( folderLocation).exists()) {
+            File f = new File( folderLocation + "/" + folderName);
 
-        File f = new File( Environment.getExternalStorageDirectory() + fileLocation);
-
-        if( Environment.MEDIA_MOUNTED.equals(state)) {
-            if( !f.exists()) {
-                if( f.mkdirs()) {
-                    return true;
-                }
+            if( f.mkdirs()) {
+                return true;
             }
+        }
+
+        return false;
+    }
+
+    public boolean isFileValid(String folderLocation, String folderName) {
+        File file = new File( folderLocation + "/" + folderName);
+        if( file.canRead()) {
+            return true;
         }
 
         return false;

@@ -1,48 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent" android:layout_height="fill_parent">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:orientation="vertical"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent">
 
 
-    <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/TextViewToTranslate"
-            android:layout_gravity="left|center_vertical"
-            android:gravity="center"
-            android:textSize="@android:dimen/notification_large_icon_height"/>
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/TextViewToTranslate"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:textSize="@android:dimen/app_icon_size"/>
 
-    <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Show Result"
-            android:id="@+id/ButtonShowResult"
-            android:layout_gravity="center"/>
+        <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Show Result"
+                android:id="@+id/ButtonShowResult" />
 
-    <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/d"
-            android:visibility="invisible"
-            android:gravity="center"
-            android:textSize="@android:dimen/notification_large_icon_height"
-            android:paddingStart="@android:dimen/thumbnail_width"/>
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/d"
+                android:visibility="invisible"
+                android:gravity="center"
+                android:textSize="@android:dimen/app_icon_size"
+            android:layout_gravity="center_horizontal" />
 
-    <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/TextViewTranslatedText"
-            android:visibility="invisible"
-            android:gravity="center_horizontal"
-            android:textSize="@android:dimen/notification_large_icon_height"
-            android:paddingStart="@android:dimen/thumbnail_width"/>
-    <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Next"
-            android:id="@+id/ButtonNextText"
-            android:layout_gravity="center"
-            android:visibility="visible"/>
-</LinearLayout>
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/TextViewTranslatedText"
+                android:visibility="invisible"
+                android:gravity="center_horizontal"
+                android:textSize="@android:dimen/app_icon_size"
+            android:layout_gravity="center_horizontal" />
+        <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Next"
+                android:id="@+id/ButtonNextText"
+                android:layout_gravity="center"
+                android:visibility="visible"/>
+
+    </LinearLayout>
+</ScrollView>
