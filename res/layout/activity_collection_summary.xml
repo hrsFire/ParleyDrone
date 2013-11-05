@@ -40,6 +40,7 @@
                 android:gravity="center_horizontal"
                 android:textSize="@android:dimen/app_icon_size"
             android:layout_gravity="center_horizontal" />
+
         <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -47,6 +48,22 @@
                 android:id="@+id/ButtonNextText"
                 android:layout_gravity="center"
                 android:visibility="visible"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Right"
+            android:id="@+id/ButtonRight"
+            android:layout_gravity="center"
+            android:visibility="visible"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Wrong"
+            android:id="@+id/ButtonWrong"
+            android:layout_gravity="center"
+            android:visibility="visible"/>
 
     </LinearLayout>
 </ScrollView>

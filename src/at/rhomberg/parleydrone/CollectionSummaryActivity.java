@@ -28,11 +28,15 @@ import at.rhomberg.iowrapper.IOWrapper;
 public class CollectionSummaryActivity extends Activity {
 
     private TextView toTranslateTextView, translatedTextTextView;
-    private Button showResultButton, nextTextButton;
+    private Button showResultButton, nextTextButton, rightButton, wrongButton;
     private int lastEntryIdForExercise;
+    private int lastEntryIdForRepeat = 0;
     private ArrayList<Integer> entryIdsForExercise = new ArrayList<Integer>();
+    private ArrayList<Integer> entryIdsForRepeat = new ArrayList<Integer>();
     private int toTranslateId, translatedTextId;
     private FileFormats fileFormats;
+    private int right = 0;
+    private boolean isNotRepeating = true;
 
 
     public void onCreate(Bundle savedInstanceState) {
@@ -70,6 +74,8 @@ public class CollectionSummaryActivity extends Activity {
         translatedTextTextView = (TextView) findViewById( R.id.TextViewTranslatedText);
         showResultButton = (Button) findViewById( R.id.ButtonShowResult);
         nextTextButton = (Button) findViewById( R.id.ButtonNextText);
+        rightButton = (Button) findViewById( R.id.ButtonRight);
+        wrongButton = (Button) findViewById( R.id.ButtonWrong);
 
         Intent intent = getIntent();
         String fileLocation = intent.getStringExtra( "fileLocation");
@@ -148,6 +154,7 @@ public class CollectionSummaryActivity extends Activity {
         translatedTextId = 1;
 
         toTranslateTextView.setText( fileFormats.entryList.get(lastEntryIdForExercise).translationList.get(toTranslateId).text);
+
         showResultButton.setOnClickListener( new View.OnClickListener() {
             public void onClick( View arg) {
                 translatedTextTextView.setVisibility(View.VISIBLE);
@@ -155,27 +162,64 @@ public class CollectionSummaryActivity extends Activity {
                 //nextTextButton.setVisibility( View.VISIBLE);
             }
         });
+
         nextTextButton.setOnClickListener( new View.OnClickListener() {
             public void onClick( View arg) {
-                lastEntryIdForExercise++;
-                if( lastEntryIdForExercise < entryIdsForExercise.size()) {
-                    if( !fileFormats.entryList.get(lastEntryIdForExercise).translationList.get(translatedTextId).text.equals("")) {
-                        toTranslateTextView.setText( fileFormats.entryList.get(lastEntryIdForExercise).translationList.get(toTranslateId).text);
-                        translatedTextTextView.setVisibility(View.INVISIBLE);
-                    }
-                    else
-                        endActivity();
-                }
-                else
-                    endActivity();
-                //nextTextButton.setVisibility( View.INVISIBLE);
+                loadNextEntry();
             }
         });
+
+        rightButton.setOnClickListener( new View.OnClickListener() {
+            public void onClick(View view) {
+                if( isNotRepeating) {
+                    right++;
+                }
+
+                loadNextEntry();
+            }
+        });
+
+        wrongButton.setOnClickListener( new View.OnClickListener() {
+            public void onClick(View view) {
+                entryIdsForRepeat.add( lastEntryIdForExercise);
+                loadNextEntry();
+            }
+        });
+
+    }
+
+    private void loadNextEntry() {
+        lastEntryIdForExercise++;
+        // "" strings must be fixed
+        if( (lastEntryIdForExercise < entryIdsForExercise.size()) && !fileFormats.entryList.get(lastEntryIdForExercise).translationList.get(translatedTextId).text.equals("")) {
+            toTranslateTextView.setText( fileFormats.entryList.get(lastEntryIdForExercise).translationList.get(toTranslateId).text);
+            translatedTextTextView.setVisibility(View.INVISIBLE);
+        }
+        else if( lastEntryIdForRepeat < entryIdsForRepeat.size()) {
+            toTranslateTextView.setText( fileFormats.entryList.get(lastEntryIdForRepeat).translationList.get(toTranslateId).text);
+            translatedTextTextView.setVisibility(View.INVISIBLE);
+
+            isNotRepeating = false;
+            lastEntryIdForRepeat++;
+        }
+        else {
+            showResult();
+        }
+
+        //nextTextButton.setVisibility( View.INVISIBLE);
+    }
+
+    private void showResult() {
+        Intent intent = new Intent( this, ResultActivity.class);
+        intent.setFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra( "result", right);
+        intent.putExtra( "full", entryIdsForExercise.size());
+        startActivity( intent);
     }
 
     private void endActivity() {
         Intent intent = new Intent( this, ParleyDrone.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.setFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity( intent);
     }
 
