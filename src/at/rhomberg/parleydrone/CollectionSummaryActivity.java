@@ -196,7 +196,7 @@ public class CollectionSummaryActivity extends Activity {
             translatedTextTextView.setVisibility(View.INVISIBLE);
         }
         else if( lastEntryIdForRepeat < entryIdsForRepeat.size()) {
-            toTranslateTextView.setText( fileFormats.entryList.get(lastEntryIdForRepeat).translationList.get(toTranslateId).text);
+            toTranslateTextView.setText( fileFormats.entryList.get(entryIdsForRepeat.get( lastEntryIdForRepeat)).translationList.get(toTranslateId).text);
             translatedTextTextView.setVisibility(View.INVISIBLE);
 
             isNotRepeating = false;
