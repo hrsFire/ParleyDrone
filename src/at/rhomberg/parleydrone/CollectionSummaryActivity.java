@@ -157,8 +157,12 @@ public class CollectionSummaryActivity extends Activity {
 
         showResultButton.setOnClickListener( new View.OnClickListener() {
             public void onClick( View arg) {
+                if( isNotRepeating)
+                    translatedTextTextView.setText( fileFormats.entryList.get(lastEntryIdForExercise).translationList.get(translatedTextId).text);
+                else
+                    translatedTextTextView.setText( fileFormats.entryList.get(lastEntryIdForRepeat).translationList.get(translatedTextId).text);
+
                 translatedTextTextView.setVisibility(View.VISIBLE);
-                translatedTextTextView.setText( fileFormats.entryList.get(lastEntryIdForExercise).translationList.get(translatedTextId).text);
                 //nextTextButton.setVisibility( View.VISIBLE);
             }
         });
