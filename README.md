@@ -1,4 +1,4 @@
-ParleyDrone
+ParleyDrone (Beta)
 ===========
 Parley for Android!
 
