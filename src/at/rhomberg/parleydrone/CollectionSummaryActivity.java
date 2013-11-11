@@ -1,15 +1,24 @@
 package at.rhomberg.parleydrone;
 
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.graphics.Point;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
@@ -39,6 +48,7 @@ public class CollectionSummaryActivity extends Activity {
     private boolean isNotRepeating = true;
 
 
+    @SuppressLint("NewApi")
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -154,6 +164,20 @@ public class CollectionSummaryActivity extends Activity {
         translatedTextId = 1;
 
         toTranslateTextView.setText( fileFormats.entryList.get(lastEntryIdForExercise).translationList.get(toTranslateId).text);
+        Resources resources = getResources();
+        Configuration configuration = resources.getConfiguration();
+        DisplayMetrics dm = resources.getDisplayMetrics();
+
+        //rightButton.setWidth((int) (configuration.screenWidthDp * dm.density / 2));
+        //wrongButton.setWidth( (int) (configuration.screenWidthDp * dm.density / 2));
+
+        ViewGroup.LayoutParams params = rightButton.getLayoutParams();
+        params.width = (int) (configuration.screenWidthDp * dm.density / 2);
+        rightButton.setLayoutParams( params);
+
+        params = wrongButton.getLayoutParams();
+        params.width = (int) (configuration.screenWidthDp * dm.density / 2);
+        wrongButton.setLayoutParams( params);
 
         showResultButton.setOnClickListener( new View.OnClickListener() {
             public void onClick( View arg) {
@@ -204,7 +228,7 @@ public class CollectionSummaryActivity extends Activity {
             translatedTextTextView.setVisibility(View.INVISIBLE);
 
             isNotRepeating = false;
-            lastEntryIdForRepeat++;
+            lastEntryIdForRepeat = entryIdsForRepeat.get( lastEntryIdForRepeat);
         }
         else {
             showResult();
