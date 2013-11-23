@@ -56,7 +56,7 @@
 
             <Button
                 android:layout_width="203dp"
-                android:layout_height="wrap_content"
+                android:layout_height="@android:dimen/app_icon_size"
                 android:text="Right"
                 android:id="@+id/ButtonRight"
                 android:layout_gravity="center"
@@ -64,7 +64,7 @@
 
             <Button
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@android:dimen/app_icon_size"
                 android:text="Wrong"
                 android:id="@+id/ButtonWrong"
                 android:layout_gravity="center"

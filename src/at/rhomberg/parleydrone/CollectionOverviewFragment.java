@@ -24,7 +24,7 @@ public class CollectionOverviewFragment extends Fragment {
     private ArrayList<Integer> entryIdsForExercise = new ArrayList<Integer>();
     private FileFormats fileFormats;
     private static int level;
-    private int lastEntryIdForExercise;
+    private int currentEntryIdForExercise;
     private int fileFormatsInt;
 
     public View onCreateView( LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -46,7 +46,7 @@ public class CollectionOverviewFragment extends Fragment {
         }
 
         if( entryIdsForExercise.size() >= 1)
-            lastEntryIdForExercise = 0;
+            currentEntryIdForExercise = 0;
         else
             getActivity().finish();
 

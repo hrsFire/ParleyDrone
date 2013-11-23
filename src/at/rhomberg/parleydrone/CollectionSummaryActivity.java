@@ -1,34 +1,20 @@
 package at.rhomberg.parleydrone;
 
-import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.graphics.Point;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.LinearLayout;
-import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
-
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 
 import at.rhomberg.fileformats.FileFormats;
@@ -38,43 +24,40 @@ public class CollectionSummaryActivity extends Activity {
 
     private TextView toTranslateTextView, translatedTextTextView;
     private Button showResultButton, nextTextButton, rightButton, wrongButton;
-    private int lastEntryIdForExercise;
-    private int lastEntryIdForRepeat = 0;
-    private ArrayList<Integer> entryIdsForExercise = new ArrayList<Integer>();
-    private ArrayList<Integer> entryIdsForRepeat = new ArrayList<Integer>();
+    private int currentEntryIdForExercise, currentEntryIdForFileFormats;
+    private int sizeOfEntriesForExercise;
+    private ArrayList<PracticeStructure> entryIdsForExercise = new ArrayList<PracticeStructure>();
     private int toTranslateId, translatedTextId;
     private FileFormats fileFormats;
     private int right = 0;
-    private boolean isNotRepeating = true;
 
 
-    @SuppressLint("NewApi")
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         /*LinearLayout layout = new LinearLayout(this);
 
-        CheckBox checkBox = new CheckBox(this);
-        checkBox.setText("text");
+CheckBox checkBox = new CheckBox(this);
+checkBox.setText("text");
 
-        layout.addView( checkBox);
-        layout.setOrientation( LinearLayout.VERTICAL);
-        LinearLayout layout1 = new LinearLayout(this);
-        CheckBox checkBox1 = new CheckBox(this);
-        checkBox1.setText( "bla");
-        layout1.getChildAt(layout1.getChildCount()).setId();
-        layout1.addView( checkBox1);
-        layout.addView( layout1);
-        layout1.setPadding( 28 * (int) getResources().getDisplayMetrics().density, 0, 0, 0);
-        setContentView(layout);*/
+layout.addView( checkBox);
+layout.setOrientation( LinearLayout.VERTICAL);
+LinearLayout layout1 = new LinearLayout(this);
+CheckBox checkBox1 = new CheckBox(this);
+checkBox1.setText( "bla");
+layout1.getChildAt(layout1.getChildCount()).setId();
+layout1.addView( checkBox1);
+layout.addView( layout1);
+layout1.setPadding( 28 * (int) getResources().getDisplayMetrics().density, 0, 0, 0);
+setContentView(layout);*/
 
         /*FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        CollectionOverviewFragment collectionOverviewFragment = new CollectionOverviewFragment();
-        fragmentTransaction.add(1, collectionOverviewFragment);
-        fragmentTransaction.commit();*/
+FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+CollectionOverviewFragment collectionOverviewFragment = new CollectionOverviewFragment();
+fragmentTransaction.add(1, collectionOverviewFragment);
+fragmentTransaction.commit();*/
         /*CollectionOverviewFragment cof = new CollectionOverviewFragment();
-        setContentView();
+setContentView();
 */
         setContentView(R.layout.activity_collection_summary);
 
@@ -86,6 +69,27 @@ public class CollectionSummaryActivity extends Activity {
         nextTextButton = (Button) findViewById( R.id.ButtonNextText);
         rightButton = (Button) findViewById( R.id.ButtonRight);
         wrongButton = (Button) findViewById( R.id.ButtonWrong);
+
+
+        // set layout
+        calibrateScreenElements();
+
+        int px = Math.round(65 * getApplicationContext().getResources().getDisplayMetrics().density);
+        rightButton.setHeight( px);
+        wrongButton.setHeight( px);
+
+        Resources resources = getResources();
+        Configuration configuration = resources.getConfiguration();
+        DisplayMetrics displayMetrics = resources.getDisplayMetrics();
+
+        ViewGroup.LayoutParams params = rightButton.getLayoutParams();
+        params.width = (int) (configuration.screenWidthDp * displayMetrics.density / 2);
+        rightButton.setLayoutParams( params);
+
+        params = wrongButton.getLayoutParams();
+        params.width = (int) (configuration.screenWidthDp * displayMetrics.density / 2);
+        wrongButton.setLayoutParams( params);
+
 
         Intent intent = getIntent();
         String fileLocation = intent.getStringExtra( "fileLocation");
@@ -105,7 +109,7 @@ public class CollectionSummaryActivity extends Activity {
 
             JSONArray jsonArray = null;
             try {
-                if( sharedPreferences.getString("lastOpenedCollections", "")  != "")
+                if( sharedPreferences.getString("lastOpenedCollections", "") != "")
                     jsonArray = new JSONArray( sharedPreferences.getString("lastOpenedCollections", ""));
                 else
                     jsonArray = new JSONArray();
@@ -150,12 +154,14 @@ public class CollectionSummaryActivity extends Activity {
 
         for( int i = 0; i < fileFormats.entryList.size(); i++) {
             if( fileFormats.entryList.get(i).translationList.size() > 1) {
-                entryIdsForExercise.add( i);
+                entryIdsForExercise.add( new PracticeStructure( i));
             }
         }
 
-        if( entryIdsForExercise.size() >= 1)
-            lastEntryIdForExercise = 0;
+        sizeOfEntriesForExercise = entryIdsForExercise.size();
+
+        if( sizeOfEntriesForExercise >= 1)
+            loadNextEntry();
         else
             finish();
 
@@ -163,45 +169,35 @@ public class CollectionSummaryActivity extends Activity {
         toTranslateId = 0;
         translatedTextId = 1;
 
-        toTranslateTextView.setText( fileFormats.entryList.get(lastEntryIdForExercise).translationList.get(toTranslateId).text);
-        Resources resources = getResources();
-        Configuration configuration = resources.getConfiguration();
-        DisplayMetrics dm = resources.getDisplayMetrics();
-
-        //rightButton.setWidth((int) (configuration.screenWidthDp * dm.density / 2));
-        //wrongButton.setWidth( (int) (configuration.screenWidthDp * dm.density / 2));
-
-        ViewGroup.LayoutParams params = rightButton.getLayoutParams();
-        params.width = (int) (configuration.screenWidthDp * dm.density / 2);
-        rightButton.setLayoutParams( params);
-
-        params = wrongButton.getLayoutParams();
-        params.width = (int) (configuration.screenWidthDp * dm.density / 2);
-        wrongButton.setLayoutParams( params);
+        toTranslateTextView.setText( fileFormats.entryList.get(currentEntryIdForExercise).translationList.get(toTranslateId).text);
 
         showResultButton.setOnClickListener( new View.OnClickListener() {
             public void onClick( View arg) {
-                if( isNotRepeating)
-                    translatedTextTextView.setText( fileFormats.entryList.get(lastEntryIdForExercise).translationList.get(translatedTextId).text);
-                else
-                    translatedTextTextView.setText( fileFormats.entryList.get(lastEntryIdForRepeat).translationList.get(translatedTextId).text);
+                translatedTextTextView.setText( fileFormats.entryList.get( currentEntryIdForFileFormats).translationList.get( translatedTextId).text);
+                translatedTextTextView.setVisibility( View.VISIBLE);
 
-                translatedTextTextView.setVisibility(View.VISIBLE);
                 //nextTextButton.setVisibility( View.VISIBLE);
             }
         });
 
         nextTextButton.setOnClickListener( new View.OnClickListener() {
             public void onClick( View arg) {
+                translatedTextTextView.setVisibility( View.INVISIBLE);
                 loadNextEntry();
             }
         });
 
         rightButton.setOnClickListener( new View.OnClickListener() {
             public void onClick(View view) {
-                if( isNotRepeating) {
+                if( entryIdsForExercise.get( currentEntryIdForExercise).isWrong == false) {
                     right++;
                 }
+
+                translatedTextTextView.setVisibility( View.INVISIBLE);
+
+                PracticeStructure localPracticeStructure = entryIdsForExercise.get( currentEntryIdForExercise);
+                localPracticeStructure.isFinished = true;
+                entryIdsForExercise.set(currentEntryIdForExercise, localPracticeStructure);
 
                 loadNextEntry();
             }
@@ -209,7 +205,20 @@ public class CollectionSummaryActivity extends Activity {
 
         wrongButton.setOnClickListener( new View.OnClickListener() {
             public void onClick(View view) {
-                entryIdsForRepeat.add( lastEntryIdForExercise);
+                // set the existing isWrong argument
+                PracticeStructure ps = entryIdsForExercise.get( currentEntryIdForExercise);
+                ps.isWrong = true;
+                ps.isFinished = false;
+                entryIdsForExercise.set( currentEntryIdForExercise, ps);
+
+                // create a new structure
+                PracticeStructure newPs = new PracticeStructure( currentEntryIdForFileFormats);
+                newPs.isWrong = true;
+                newPs.isFinished = false;
+                entryIdsForExercise.add( newPs);
+
+                translatedTextTextView.setVisibility( View.INVISIBLE);
+
                 loadNextEntry();
             }
         });
@@ -217,23 +226,42 @@ public class CollectionSummaryActivity extends Activity {
     }
 
     private void loadNextEntry() {
-        lastEntryIdForExercise++;
-        // "" strings must be fixed
-        if( (lastEntryIdForExercise < entryIdsForExercise.size()) && !fileFormats.entryList.get(lastEntryIdForExercise).translationList.get(translatedTextId).text.equals("")) {
-            toTranslateTextView.setText( fileFormats.entryList.get(lastEntryIdForExercise).translationList.get(toTranslateId).text);
-            translatedTextTextView.setVisibility(View.INVISIBLE);
-        }
-        else if( lastEntryIdForRepeat < entryIdsForRepeat.size()) {
-            toTranslateTextView.setText( fileFormats.entryList.get(entryIdsForRepeat.get( lastEntryIdForRepeat)).translationList.get(toTranslateId).text);
-            translatedTextTextView.setVisibility(View.INVISIBLE);
+        boolean isSearching = true;
+        int breakCount = 0;
+        int random;
 
-            isNotRepeating = false;
-            lastEntryIdForRepeat = entryIdsForRepeat.get( lastEntryIdForRepeat);
-        }
-        else {
-            showResult();
-        }
+        while( isSearching) {
+            random = (int) Math.round( Math.random() * (entryIdsForExercise.size() -1));
 
+            if( entryIdsForExercise.get( random).isFinished == false) {
+                isSearching = false;
+
+                currentEntryIdForExercise = random;
+                currentEntryIdForFileFormats = entryIdsForExercise.get(currentEntryIdForExercise).entryId;
+
+                toTranslateTextView.setText( fileFormats.entryList.get( currentEntryIdForFileFormats).translationList.get( toTranslateId).text);
+            }
+            else {
+                ArrayList<Integer> values = new ArrayList<Integer>();
+                boolean isNotAvailable = true;
+
+                for( int i = 0; i < values.size(); i++) {
+                    if( values.get(i).intValue() == random) {
+                        isNotAvailable = false;
+                    }
+                }
+
+                if( isNotAvailable) {
+                    values.add( random);
+                    breakCount++;
+                }
+            }
+
+            if( breakCount == entryIdsForExercise.size()) {
+                isSearching = false;
+                showResult();
+            }
+        }
         //nextTextButton.setVisibility( View.INVISIBLE);
     }
 
@@ -241,8 +269,22 @@ public class CollectionSummaryActivity extends Activity {
         Intent intent = new Intent( this, ResultActivity.class);
         intent.setFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra( "result", right);
-        intent.putExtra( "full", entryIdsForExercise.size());
+        intent.putExtra("full", sizeOfEntriesForExercise);
         startActivity( intent);
+    }
+
+    private void calibrateScreenElements() {
+        Resources resources = getResources();
+        Configuration configuration = resources.getConfiguration();
+        DisplayMetrics displayMetrics = resources.getDisplayMetrics();
+
+        ViewGroup.LayoutParams rightButtonLayoutParams = this.rightButton.getLayoutParams();
+        rightButtonLayoutParams.width = ((int)(configuration.screenWidthDp * displayMetrics.density / 2));
+        rightButton.setLayoutParams(rightButtonLayoutParams);
+
+        ViewGroup.LayoutParams wrongButtonLayoutParams = this.wrongButton.getLayoutParams();
+        wrongButtonLayoutParams.width = ((int)(configuration.screenWidthDp * displayMetrics.density / 2));
+        wrongButton.setLayoutParams( wrongButtonLayoutParams);
     }
 
     private void endActivity() {
@@ -255,8 +297,9 @@ public class CollectionSummaryActivity extends Activity {
         endActivity();
     }
 
-    public void onCreateView() {
-
+    public void onConfigurationChanged(Configuration conf) {
+        super.onConfigurationChanged( conf);
+        calibrateScreenElements();
     }
 
     public void onSaveInstanceState( Bundle outState) {

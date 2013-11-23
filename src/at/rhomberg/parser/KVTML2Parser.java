@@ -11,6 +11,8 @@ import java.io.File;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.TreeMap;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -114,6 +116,31 @@ public class KVTML2Parser implements ImportExportInterface {
 		//doc.getDocumentElement().getNodeName(); // root element
 		//doc.getDocumentElement().getChildNodes().item(1).getNodeName();
 		//doc.getDocumentElement().getChildNodes().item(1).getChildNodes();
+
+        // check for duplicated entries
+        TreeMap<Integer, Entry> entryListTemp = new TreeMap<Integer, Entry>();
+
+        for( Iterator<Map.Entry<Integer,Entry>> i = fileFormats.entryList.entrySet().iterator(); i.hasNext();) {
+            int textCount = 0;
+            Map.Entry<Integer, Entry> o = i.next();
+
+            Entry entry = new Entry();
+
+            for( int n = 0; n < fileFormats.entryList.get( o.getKey()).translationList.size(); n++) {
+                if( fileFormats.entryList.get( o.getKey()).translationList.get(n).text.equals( "")) {
+                    textCount++;
+                }
+                if( n == (fileFormats.entryList.get(o.getKey()).translationList.size() - 1)) {
+                    if( textCount != fileFormats.entryList.get( o.getKey()).translationList.size()) {
+                        //fileFormats.entryList.remove( o.getKey());
+                        entry = fileFormats.entryList.get( o.getKey());
+                        entryListTemp.put( o.getKey(), entry);
+                    }
+                }
+            }
+        }
+
+        fileFormats.entryList = entryListTemp;
 
 		return fileFormats;
    }
