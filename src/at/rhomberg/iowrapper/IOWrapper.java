@@ -24,44 +24,32 @@ import at.rhomberg.parser.KVTML2Parser;
 public class IOWrapper extends FileFormats{
 
     private FileManager fileManager = new FileManager();
-    private ArrayList<FileFormats> fileFormatsList = new ArrayList<FileFormats>(1);
+    private FileFormats fileFormats = new FileFormats();
 
-	public IOWrapper()
-	{	
+	public IOWrapper() {
 	}
 
-    public FileFormats getFileFormats(int id) {
-        if( (id >= 0) && (id < fileFormatsList.size()))
-            return fileFormatsList.get(id);
-        return null;
+    public FileFormats getFileFormats() {
+        return fileFormats;
     }
-	public Information getInformation(int id) {
-        if( (id >= 0) && (id < fileFormatsList.size()))
-            return fileFormatsList.get(id).information;
-        return null;
+	public Information getInformation() {
+        return fileFormats.information;
 	}
 	
-	public String getObjectType(int id) {
-        if( (id >= 0) && (id < fileFormatsList.size()))
-		    return fileFormatsList.get(id).objectType;
-        return null;
+	public String getObjectType() {
+	    return fileFormats.objectType;
 	}
 	
-	public TreeMap<Integer, Identifier> getIdentifierList(int id) {
-        if( (id >= 0) && (id < fileFormatsList.size()))
-		    return fileFormatsList.get(id).identifierList;
-        return null;
+	public TreeMap<Integer, Identifier> getIdentifierList() {
+	    return fileFormats.identifierList;
 	}
-	public TreeMap<Integer, Entry> getEntryList(int id) {
-        if( (id >= 0) && (id < fileFormatsList.size()))
-		    return fileFormatsList.get(id).entryList;
-        return null;
-	}	
+	public TreeMap<Integer, Entry> getEntryList() {
+	    return fileFormats.entryList;
+	}
 
 
-	// read and parse file from different locations
-    // the return value is the id for the ArrayList
-	public int getFileFromInternalExternalStorage( String fileName, String fileLocation) {
+	// read and parse the file from different locations
+	public boolean getFileFromInternalExternalStorage( String fileName, String fileLocation) {
         String string;
         String type;
 
@@ -84,30 +72,30 @@ public class IOWrapper extends FileFormats{
                     Log.d("ParleyDrone information", "finished parsing kvtml2");
                     if( ff != null) {
                         ff.objectType = KVTML2;
-                        if( fileFormatsList.add( ff)) {
-                            return fileFormatsList.size() - 1;
-                        }
+                        fileFormats = ff;
+
+                        return true;
                     }
                 } catch (ParserConfigurationException e) {
                     Log.d( "ParleyDrone errors", "ParserConfigurationException: " + e.getStackTrace());
-                    return -1;
+                    return false;
                 } catch (SAXException e) {
                     Log.d( "ParleyDrone errors", "SAXException: " + e.getStackTrace());
-                    return -1;
+                    return false;
                 } catch (IOException e) {
                     Log.d( "ParleyDrone errors", "IOException: " + e.getStackTrace());
-                    return -1;
+                    return false;
                 } catch (Exception e) {
                     Log.d( "ParleyDrone errors", "Exception: " + e.getStackTrace());
-                    return -1;
+                    return false;
                 }  catch (Throwable e) {
                     Log.d( "ParleyDrone errors", "Throwable: " + e.getStackTrace());
-                    return -1;
+                    return false;
                 }
             }
             Log.d("ParleyDrone information", "couldn't load the file");
         }
-		return -1;
+		return false;
 	}
 	
 	public int getFileFromNetwork( String fileName, String fileLocation) {  // data type

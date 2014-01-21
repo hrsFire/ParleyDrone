@@ -1,6 +1,5 @@
 package at.rhomberg.parleydrone;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,11 +33,10 @@ public class ParleyDrone extends Activity {
     public static String PACKAGE_NAME = "ParleyDrone";
     public static String BUILD_VERSION = "";
 
-	@SuppressLint("NewApi")
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-        // change the language of the programm
+        // change the language of the program
         LanguageManager languageManager = new LanguageManager();
 
         PreferenceManager.setDefaultValues( this, R.xml.parleydrone_preferences, false);
@@ -51,8 +50,9 @@ public class ParleyDrone extends Activity {
 
         languageManager.loadLanguage(this);
 
-
+        // set layout
 		setContentView(R.layout.activity_parley_drone);
+
 
         try {
             BUILD_VERSION = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
@@ -218,15 +218,22 @@ public class ParleyDrone extends Activity {
 		return true;
 	}
 	
-	public void onStart( Bundle savedInstanceState) {
+	public void onStart() {
 		super.onStart();
 	}
 	
-	public void onResume( Bundle savedInstanceState) {
+	public void onResume() {
 		super.onResume();
-	}
+
+        // destroy class
+        ExerciseInformationLoader exerciseInformationLoader = new ExerciseInformationLoader();
+        exerciseInformationLoader.destroyClass();
+    }
+
+    public void onWindowFocusChanged( boolean hasFocus) {
+    }
 	
-	public void onStop( Bundle savedInstanceState) {
+	public void onStop() {
 		super.onStop();
 	}
 }

@@ -32,6 +32,7 @@
         <activity android:name=".CollectionSummaryActivity" android:configChanges="orientation|screenSize" />
         <activity android:name="at.rhomberg.fileexplorer.FileExplorer" android:configChanges="orientation|screenSize" />
         <activity android:name=".ResultActivity" />
+        <activity android:name=".ExerciseRightWrongActivity" android:configChanges="orientation|screenSize" />
     </application>
 
 </manifest>

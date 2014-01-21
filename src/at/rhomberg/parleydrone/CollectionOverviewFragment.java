@@ -30,10 +30,9 @@ public class CollectionOverviewFragment extends Fragment {
     public View onCreateView( LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         IOWrapper iow = new IOWrapper();
         Log.d("ParleyDrone information", "start parsing");
-        fileFormatsInt = iow.getFileFromInternalExternalStorage("test1.kvtml", Environment.getExternalStorageDirectory().toString());
         if( fileFormatsInt != -1) {
             Log.d("ParleyDrone information", "start parsing");
-            fileFormats = iow.getFileFormats(fileFormatsInt);
+            fileFormats = iow.getFileFormats();
             Log.d("ParleyDrone information", "finished parsing");
         }
         else
